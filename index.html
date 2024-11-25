@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Portfolio Website</title>
+</head>
+
+<style>
+/* Reset de style de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth; /* Permet le défilement fluide */
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: #101728; /* Fond sombre */
+    color: #fff; /* Texte blanc */
+}
+
+/* Style de l'en-tête */
+header {
+    margin-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 9%;
+    background-color: transparent;
+    filter: drop-shadow(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 3rem;
+    color: #9340ff; /* Couleur violette du logo */
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+nav a {
+    font-size: 1.8rem;
+    color: white;
+    margin-left: 4rem;
+    font-weight: 500;
+    transition: 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+nav a:hover,
+nav a.active {
+    color: #9340ff; /* Couleur violette du survol */
+    border-bottom: 3px solid #9340ff;
+}
+
+/* Menu mobile */
+@media(max-width: 995px) {
+    nav {
+        position: absolute;
+        display: none;
+        top: 0;
+        right: 0;
+        width: 40%;
+        border-left: 3px solid #9340ff; /* Bordure violette */
+        border-bottom: 3px solid #9340ff;
+        border-bottom-left-radius: 2rem;
+        padding: 1rem;
+        background-color: #101728;
+        border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
+    }
+
+    nav.active {
+        display: block;
+    }
+
+    nav a {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+    }
+
+    nav a:hover,
+    nav a.active {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-bottom: 0.5rem solid #9340ff; /* Bordure violette sur hover */
+    }
+}
+
+/* Style des sections */
+section {
+    min-height: 100vh;
+    padding: 5rem 9% 5rem;
+}
+
+/* Sections spécifiques */
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8rem;
+    background-color: #101728;
+}
+
+.home .home-content h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+span {
+    color: #ff3c5f; /* Couleur rose vif */
+}
+
+.home-content h3 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.home-content p {
+    font-size: 1.6rem;
+}
+
+.home-img img {
+    position: relative;
+    width: 32vw;
+    border-radius: 50%;
+    box-shadow: 0 0 25px solid #ff3c5f; /* Ombre rose vif */
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+.home-img img:hover {
+    transform: scale(1.05);
+}
+
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    background-color: transparent;
+    border: 0.2rem solid #ff3c5f; /* Bordure rose vif */
+    font-size: 2rem;
+    border-radius: 50%;
+    margin: 3rem 1.5rem 3rem 0;
+    transition: 0.3s ease;
+    color: #ff3c5f; /* Texte rose vif */
+}
+
+.social-icons a:hover {
+    color: #101728;
+    transform: scale(1.3) translateY(-5px);
+    background-color: #ff3c5f;
+    box-shadow: 0 0 25px #ff3c5f;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    font-size: 1.8rem;
+    color: #fff;
+    background: linear-gradient(90deg, #9340ff, #ff3c5f);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #ffffff;
+}
+
+/* Sections secondaires */
+.highlight {
+    background-color: #2b3a52;
+    border-radius: 15px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+}
+
+.section-content h2 {
+    font-size: 3rem;
+    color: #9340ff;
+    margin-bottom: 1rem;
+}
+
+.section-content p {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-secondary {
+    background-color: #9340ff;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #ff3c5f;
+}
+
+/* Formulaire de contact */
+#contact-form form {
+    display: inline-block;
+    max-width: 600px;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+#contact-form label {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c3e50;
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+#contact-form input:focus,
+#contact-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.7);
+}
+
+#contact-form button {
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #9340ff, #ff3c5f);
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#contact-form button:hover {
+    transform: scale(1.1);
+}
+
+#contact-form {
+    padding: 50px 20px;
+    background-color: #101728;
+    text-align: center;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Footer */
+footer {
+    background-color: #101728;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+    font-size: 1.4rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Carte Google */
+#map iframe {
+    width: 100%;
+    height: 400px;
+    border: 0;
+}
+
+/* Section spécifique (My Story) */
+#about, #passion, #skills, #creations, #materials,#contact  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#about .section-content,
+#passion .section-content,
+#skills .section-content,
+#creations .section-content,
+#materials .section-content,
+#contact .section-content {
+    text-align: center;
+}
+
+#about .section-content h2,
+#passion .section-content h2,
+#skills .section-content h2,
+#creations .section-content h2,
+#materials .section-content h2,
+#contact .section-content h2 {
+    font-size: 4rem;
+    color: #9340ff;
+}
+
+#about .section-content p,
+#passion .section-content p,
+#skills .section-content p,
+#creations .section-content p,
+#materials .section-content p,
+#contact  .section-content p{
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+#about .btn-secondary,
+#passion .btn-secondary,
+#skills .btn-secondary,
+#creations .btn-secondary,
+#materials .btn-secondary,
+    #contact .btn-secondary {
+    background-color: #9340ff;
+    color: white;
+    font-size: 1.5rem;
+}
+.typing-text span{
+    position: relative;
+        
+}
+
+.typing-text span::before {
+    content: "Software Developer"; /* Début du texte */
+    color: #b74b4b;
+    animation: words 20s infinite;
+}
+
+.typing-text span::after {
+    content: "";
+
+    position: absolute;
+    width: calc(100% + 8px);
+    height: 100%;
+    border-left: 3px solid black;
+    right: -8;
+    animation: cursor 0.6s infinite;
+}
+
+        /* Animations */
+        @keyframes words {
+    0%, 20% {
+        content: "Web Developer";
+    }
+    21%, 40% {
+        content: "Graphiste";
+    }
+    41%, 60% {
+        content: "Web Designer";
+    }
+    61%, 80% {
+        content: "Modélisateur 3D";
+    }
+    81%, 100% {
+        content: "Imprimeur 3D";
+    }
+}
+
+@keyframes cursor {
+    to {
+        border-left: 3px solid #b74b4b;
+    }
+}
+
+@media (max-width: 1000px){
+    .home{
+        gap: 4rem;
+    }
+}
+
+@media(max-width:995px){
+    .home{
+        flex-direction: column;
+        margin: 5rem 4rem;
+    }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes drip {
+            0%, 100% {
+                clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 70%, 80% 80%, 70% 60%, 60% 80%, 50% 60%, 40% 80%, 30% 60%, 20% 80%, 10% 60%, 0 80%);
+            }
+            50% {
+                clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 75%, 80% 70%, 70% 60%, 60% 70%, 50% 60%, 40% 70%, 30% 60%, 20% 75%, 10% 65%, 0 80%);
+            }
+        }
+    }
+    </style>
+<body>
+    <header>
+        <a href="image/votre-photo.jpg" class="logo">Quentin</a>
+
+        <nav>
+            <a href="index.html" class="active"> Accueil</a>
+            <a href="#about" >À propos</a>
+            <a href="#skills" >Skills</a>
+            <a href="#passion" >Passion</a>
+            <a href="#creations" >Créations</a>
+            <a href="#materials" >Matériels</a>
+            <a href="#contact" >Contact</a>
+        </nav>
+    </header>
+    <section class="home">
+        <div class="home-img">
+            <img src="image/votre-photo.jpg" alt="">
+        </div>
+        <div class="home-content">
+            <h1>Salut, c'est <span>Quentin</span></h1>
+            <h3 class="typing-text">je suis <span></span></h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus labore dolores esse. Odit similique doloribus tenetur doloremque, sunt commodi in ipsa repudiandae debitis deleniti blanditiis quibusdam quaerat neque asperiores ea.</p>
+            <div class="social-icons">
+                <a href="https://fr.linkedin.com/in/quentin-da-costa-soares-443b7b290"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100010545675950"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/luminart2dcs"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.instagram.com/quentin_da_costa_soares/"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <a href="#about" class="btn">en savoir plus</a>
+        </div>
+    </section>
+        <!-- Section "À propos" -->
+        <section id="about" class="highlight" data-aos="fade-right">
+            <div class="section-content">
+                <h2>My story</h2>
+                <p>Passionné par la créativité, je suis un jeune professionnel en quête de nouvelles aventures dans le monde numérique et industriel.</p>
+                <a href="about.html" class="btn btn-secondary">En savoir plus</a>
+            </div>
+        </section>
+    
+        <!-- Section Passion -->
+        <section id="passion" class="highlight" data-aos="fade-left">
+            <div class="section-content">
+                <h2>Ma Passion</h2>
+                <p>Découvrez ma passion pour le dessin, la photographie et le design, où je donne vie à mes idées.</p>
+                <a href="passions.html" class="btn btn-secondary">Mes passions</a>
+            </div>
+        </section>
+    
+        <!-- Section Compétences -->
+        <section id="skills" class="highlight" data-aos="fade-up">
+            <div class="section-content">
+                <h2>Skills</h2>
+                <p>Découvrez mes compétences en graphisme, modélisation 3D, et bien plus encore.</p>
+                <a href="competences.html" class="btn btn-secondary">Mes compétences</a>
+            </div>
+        </section>
+    
+        <!-- Section Créations -->
+        <section id="creations" class="highlight" data-aos="fade-down">
+            <div class="section-content">
+                <h2>Créations</h2>
+                <p>Explorez mes créations et projets réalisés dans différents domaines.</p>
+                <a href="creations.html" class="btn btn-secondary">Mes créations</a>
+            </div>
+        </section>
+    
+        <!-- Section Matériels -->
+        <section id="materials" class="highlight" data-aos="fade-right">
+            <div class="section-content">
+                <h2>Matériels</h2>
+                <p>Découvrez les outils et matériels que j'utilise pour mes projets.</p>
+                <a href="materiel.html" class="btn btn-secondary">Mes matériels</a>
+            </div>
+        </section>
+    
+        <!-- Section Contact -->
+        <section id="contact" data-aos="fade-up">
+            <div class="section-content">
+                <h2>Contactez-moi</h2>
+                <p>Si vous souhaitez travailler avec moi ou avoir plus d'informations, contactez-moi.</p>
+                    <h3>Email</h3>
+                    <p> <a href="mailto:quentindacostaso@gmail.com">quentindacostaso@gmail.com</a></p>
+    
+                    <h3>Téléphone</h3>
+                    <p><a href="tel:+33786737792">07 86 73 77 92</a></p>
+    
+            </div>
+        </section>
+    
+      
+           <!-- Google Map Section -->
+           <section id="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2902.7443591626584!2d5.382876111658354!3d43.3196106709995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12c9c144b6380029%3A0x40b4f42880aab5ff!2s14%20Trav.%20du%20Progr%C3%A8s%2C%2013014%20Marseille!5e0!3m2!1sen!2sfr!4v1732199563201!5m2!1sen!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </section>        
+        <section id="contact-form">
+            <form>
+                <label for="name">Nom :</label>
+                <input type="text" id="name" name="name" placeholder="Votre nom">
+                
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" placeholder="Votre email">
+                
+                <label for="message">Message :</label>
+                <textarea id="message" name="message" placeholder="Votre message"></textarea>
+                
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </section>    
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 Quentin DA Costa Soares. Tous droits réservés.</p>
+        </footer>
+    
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        // Effet de défilement en douceur pour les liens d'ancrage
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
