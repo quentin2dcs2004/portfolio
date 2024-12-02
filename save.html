@@ -8,226 +8,224 @@
     <title>Portfolio Website</title>
 </head>
 
-
 <style>
-   /* Reset de style de base */
- /* Reset de style de base */
- * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        text-decoration: none;
-        border: none;
-        outline: none;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    html {
-        font-size: 62.5%;
-        scroll-behavior: smooth;
-    }
-    
-    body {
-        width: 100%;
-        height: 100vh;
-        overflow-x: hidden;
-        background-color: #101728; /* Fond sombre */
-        color: #fff; /* Texte blanc */
-    }
-    
-    /* Style de l'en-tête */
-    header {
-        margin-top: 20px;
-        position: fixed;
+/* Reset de style de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth; /* Permet le défilement fluide */
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: #101728; /* Fond sombre */
+    color: #fff; /* Texte blanc */
+}
+
+/* Style de l'en-tête */
+header {
+    margin-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 9%;
+    background-color: transparent;
+    filter: drop-shadow(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 3rem;
+    color: #9340ff; /* Couleur violette du logo */
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+nav a {
+    font-size: 1.8rem;
+    color: white;
+    margin-left: 4rem;
+    font-weight: 500;
+    transition: 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+nav a:hover,
+nav a.active {
+    color: #9340ff; /* Couleur violette du survol */
+    border-bottom: 3px solid #9340ff;
+}
+
+/* Menu mobile */
+@media(max-width: 995px) {
+    nav {
+        position: absolute;
+        display: none;
         top: 0;
-        left: 0;
-        width: 100%;
-        padding: 1rem 9%;
-        background-color: transparent;
-        filter: drop-shadow(10px);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 100;
+        right: 0;
+        width: 40%;
+        border-left: 3px solid #9340ff; /* Bordure violette */
+        border-bottom: 3px solid #9340ff;
+        border-bottom-left-radius: 2rem;
+        padding: 1rem;
+        background-color: #101728;
+        border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
     }
-    
-    .logo {
-        font-size: 3rem;
-        color: #9340ff; /* Couleur violette du logo */
-        font-weight: 800;
-        cursor: pointer;
-        transition: 0.5s ease;
+
+    nav.active {
+        display: block;
     }
-    
-    .logo:hover {
-        transform: scale(1.1);
-    }
-    
+
     nav a {
-        font-size: 1.8rem;
-        color: white;
-        margin-left: 4rem;
-        font-weight: 500;
-        transition: 0.3s ease;
-        border-bottom: 3px solid transparent;
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
     }
-    
+
     nav a:hover,
     nav a.active {
-        color: #9340ff; /* Couleur violette du survol */
-        border-bottom: 3px solid #9340ff;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-bottom: 0.5rem solid #9340ff; /* Bordure violette sur hover */
     }
-    
-    /* Menu mobile */
-    @media(max-width: 995px) {
-        nav {
-            position: absolute;
-            display: none;
-            top: 0;
-            right: 0;
-            width: 40%;
-            border-left: 3px solid #9340ff; /* Bordure violette */
-            border-bottom: 3px solid #9340ff;
-            border-bottom-left-radius: 2rem;
-            padding: 1rem;
-            background-color: #101728;
-            border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
-        }
-    
-        nav.active {
-            display: block;
-        }
-    
-        nav a {
-            display: block;
-            font-size: 2rem;
-            margin: 3rem 0;
-        }
-    
-        nav a:hover,
-        nav a.active {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border-bottom: 0.5rem solid #9340ff; /* Bordure violette sur hover */
-        }
-    }
-    
-    /* Style des sections */
-    section {
-        min-height: 100vh;
-        padding: 5rem 9% 5rem;
-    }
-      
-    .home {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8rem;
-        background-color: #101728;
-    }
-    
-    .home .home-content h1 {
-        font-size: 6rem;
-        font-weight: 700;
-        line-height: 1.3;
-    }
-    
-    span {
-        color: #ff3c5f; /* Couleur rose vif */
-    }
-    
-    .home-content h3 {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
-    
-    .home-content p {
-        font-size: 1.6rem;
-    }
-    
-    .home-img img {
-        position: relative;
-        width: 32vw;
-        border-radius: 50%;
-        box-shadow: 0 0 25px solid #ff3c5f; /* Ombre rose vif */
-        cursor: pointer;
-        transition: 0.2s linear;
-    }
-    
-    .home-img img:hover {
-        transform: scale(1.05);
-    }
-    
-    .social-icons a {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 4rem;
-        height: 4rem;
-        background-color: transparent;
-        border: 0.2rem solid #ff3c5f; /* Bordure rose vif */
-        font-size: 2rem;
-        border-radius: 50%;
-        margin: 3rem 1.5rem 3rem 0;
-        transition: 0.3s ease;
-        color: #ff3c5f; /* Texte rose vif */
-    }
-    
-    .social-icons a:hover {
-        color: #101728;
-        transform: scale(1.3) translateY(-5px);
-        background-color: #ff3c5f;
-        box-shadow: 0 0 25px #ff3c5f;
-    }
-    
-    /* Boutons */
-    .btn {
-        display: inline-block;
-        padding: 1rem 2.8rem;
-        font-size: 1.8rem;
-        color: #fff;
-        background: linear-gradient(90deg, #9340ff, #ff3c5f);
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
-    
-    .btn:hover {
-        background-color: #ffffff;
-    }
-    
-    /* Sections secondaires */
-    .highlight {
-        background-color: #2b3a52;
-        border-radius: 15px;
-        padding: 3rem;
-        margin-bottom: 3rem;
-    }
-    
-    .section-content h2 {
-        font-size: 3rem;
-        color: #9340ff;
-        margin-bottom: 1rem;
-    }
-    
-    .section-content p {
-        font-size: 1.6rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .btn-secondary {
-        background-color: #9340ff;
-        color: white;
-        padding: 1rem 2rem;
-        font-size: 1.5rem;
-        transition: 0.3s ease;
-    }
-    
-    .btn-secondary:hover {
-        background-color: #ff3c5f;
-    }
-    
+}
+
+/* Style des sections */
+section {
+    min-height: 100vh;
+    padding: 5rem 9% 5rem;
+}
+
+/* Sections spécifiques */
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8rem;
+    background-color: #101728;
+}
+
+.home .home-content h1 {
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+span {
+    color: #ff3c5f; /* Couleur rose vif */
+}
+
+.home-content h3 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.home-content p {
+    font-size: 1.6rem;
+}
+
+.home-img img {
+    position: relative;
+    width: 32vw;
+    border-radius: 50%;
+    box-shadow: 0 0 25px solid #ff3c5f; /* Ombre rose vif */
+    cursor: pointer;
+    transition: 0.2s linear;
+}
+
+.home-img img:hover {
+    transform: scale(1.05);
+}
+
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    background-color: transparent;
+    border: 0.2rem solid #ff3c5f; /* Bordure rose vif */
+    font-size: 2rem;
+    border-radius: 50%;
+    margin: 3rem 1.5rem 3rem 0;
+    transition: 0.3s ease;
+    color: #ff3c5f; /* Texte rose vif */
+}
+
+.social-icons a:hover {
+    color: #101728;
+    transform: scale(1.3) translateY(-5px);
+    background-color: #ff3c5f;
+    box-shadow: 0 0 25px #ff3c5f;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    font-size: 1.8rem;
+    color: #fff;
+    background: linear-gradient(90deg, #9340ff, #ff3c5f);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #ffffff;
+}
+
+/* Sections secondaires */
+.highlight {
+    background-color: #2b3a52;
+    border-radius: 15px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+}
+
+.section-content h2 {
+    font-size: 3rem;
+    color: #9340ff;
+    margin-bottom: 1rem;
+}
+
+.section-content p {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-secondary {
+    background-color: #9340ff;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #ff3c5f;
+}
 
 /* Formulaire de contact */
 #contact-form form {
@@ -319,293 +317,165 @@ footer p {
     border: 0;
 }
 
-/* Style pour la section "My Story" */
-#about {
+/* Section spécifique (My Story) */
+#about, #passion, #skills, #creations, #materials,#contact  {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-#about .section-content {
-    text-align: center;
-}
-
-#about .section-content h2 {
-    font-size: 4rem;
-    color: #9340ff;
-}
-
-#about .section-content p {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-#about .btn-secondary {
-    background-color: #9340ff;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    transition: 0.3s ease;
-}
-
-#about .btn-secondary:hover {
-    background-color: #ff3c5f;
-}
-/* Style pour la section "passion" */
-#passion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-#passion .section-content {
-    text-align: center;
-}
-
-#passion .section-content h2 {
-    font-size: 4rem;
-    color: #9340ff;
-}
-
-#passion .section-content p {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-#passion .btn-secondary {
-    background-color: #9340ff;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    transition: 0.3s ease;
-}
-
-#passion .btn-secondary:hover {
-    background-color: #ff3c5f;
-}
-/* Style pour la section "skills" */
-#skills {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-#skills .section-content {
-    text-align: center;
-}
-
-#skills .section-content h2 {
-    font-size: 4rem;
-    color: #9340ff;
-}
-
-#skills .section-content p {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-#skills .btn-secondary {
-    background-color: #9340ff;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    transition: 0.3s ease;
-}
-
-#skills .btn-secondary:hover {
-    background-color: #ff3c5f;
-}
-
-/* Style pour la section "creations" */
-#creations {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-#creations.section-content {
-    text-align: center;
-}
-
-#creations .section-content h2 {
-    font-size: 4rem;
-    color: #9340ff;
-}
-
-#creations .section-content p {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-#creations .btn-secondary {
-    background-color: #9340ff;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    transition: 0.3s ease;
-}
-
-#creations .btn-secondary:hover {
-    background-color: #ff3c5f;
-}
-
-/* Style pour la section "materials" */
-#materials {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-#materials.section-content {
-    text-align: center;
-}
-
-#materials .section-content h2 {
-    font-size: 4rem;
-    color: #9340ff;
-}
-
-#materials .section-content p {
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
-
-#materials .btn-secondary {
-    background-color: #9340ff;
-    color: white;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    transition: 0.3s ease;
-}
-
-#materials .btn-secondary:hover {
-    background-color: #ff3c5f;
-}
-
-/* Style pour la section "contact" */
-#contact {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
+#about .section-content,
+#passion .section-content,
+#skills .section-content,
+#creations .section-content,
+#materials .section-content,
 #contact .section-content {
     text-align: center;
 }
 
+#about .section-content h2,
+#passion .section-content h2,
+#skills .section-content h2,
+#creations .section-content h2,
+#materials .section-content h2,
 #contact .section-content h2 {
     font-size: 4rem;
     color: #9340ff;
 }
 
-#contact .section-content p {
+#about .section-content p,
+#passion .section-content p,
+#skills .section-content p,
+#creations .section-content p,
+#materials .section-content p,
+#contact  .section-content p{
     font-size: 1.8rem;
     margin-bottom: 2rem;
 }
 
-#contact .btn-secondary {
+#about .btn-secondary,
+#passion .btn-secondary,
+#skills .btn-secondary,
+#creations .btn-secondary,
+#materials .btn-secondary,
+    #contact .btn-secondary {
     background-color: #9340ff;
     color: white;
-    padding: 1rem 2rem;
     font-size: 1.5rem;
-    transition: 0.3s ease;
+}
+.typing-text span{
+    position: relative;
+        
 }
 
-#contact .btn-secondary:hover {
-    background-color: #ff3c5f;
-
-
+.typing-text span::before {
+    content: "Software Developer"; /* Début du texte */
+    color: #b74b4b;
+    animation: words 20s infinite;
 }
 
-/* Animation AOS */
-[data-aos] {
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
+.typing-text span::after {
+    content: "";
+
+    position: absolute;
+    width: calc(100% + 8px);
+    height: 100%;
+    border-left: 3px solid black;
+    right: -8;
+    animation: cursor 0.6s infinite;
 }
 
-.aos-animate {
-    opacity: 1;
-}
-
-/* Animations */
-@keyframes words{
-    0%, 20%{
+        /* Animations */
+        @keyframes words {
+    0%, 20% {
         content: "Web Developer";
     }
-    21%, 40%{
-        content: "graphiste";
+    21%, 40% {
+        content: "Graphiste";
     }
-    41%, 60%{
+    41%, 60% {
         content: "Web Designer";
     }
-    61%, 80%{
-        content: "modelisateur 3D";
+    61%, 80% {
+        content: "Modélisateur 3D";
     }
-    81%, 100%{
-        content: "imprimeur 3D";
-    }
-}
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
+    81%, 100% {
+        content: "Imprimeur 3D";
     }
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
+@keyframes cursor {
+    to {
+        border-left: 3px solid #b74b4b;
     }
 }
 
-@keyframes slideIn {
-    0% {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
+@media (max-width: 1000px){
+    .home{
+        gap: 4rem;
     }
 }
 
-@keyframes slideInUp {
-    0% {
-        transform: translateY(100px);
-        opacity: 0;
+@media(max-width:995px){
+    .home{
+        flex-direction: column;
+        margin: 5rem 4rem;
     }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
 
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes drip {
+            0%, 100% {
+                clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 70%, 80% 80%, 70% 60%, 60% 80%, 50% 60%, 40% 80%, 30% 60%, 20% 80%, 10% 60%, 0 80%);
+            }
+            50% {
+                clip-path: polygon(0 0, 100% 0, 100% 80%, 90% 75%, 80% 70%, 70% 60%, 60% 70%, 50% 60%, 40% 70%, 30% 60%, 20% 75%, 10% 65%, 0 80%);
+            }
+        }
+    }
     </style>
 <body>
     <header>
         <a href="image/votre-photo.jpg" class="logo">Quentin</a>
 
         <nav>
-            <a href="#" class="active"> Accueil</a>
+            <a href="index.html" class="active"> Accueil</a>
             <a href="#about" >À propos</a>
-            <a href="#Skills" >Skills</a>
+            <a href="#skills" >Skills</a>
             <a href="#passion" >Passion</a>
-            <a href="#Créations" >Créations</a>
-            <a href="#Matériels" >Matériels</a>
-            <a href="#Contact" >Contact</a>
+            <a href="#creations" >Créations</a>
+            <a href="#materials" >Matériels</a>
+            <a href="#contact" >Contact</a>
         </nav>
     </header>
     <section class="home">
@@ -623,7 +493,7 @@ footer p {
                 <a href="https://www.instagram.com/luminart2dcs"><i class="fa-brands fa-instagram"></i></a>
                 <a href="https://www.instagram.com/quentin_da_costa_soares/"><i class="fa-brands fa-instagram"></i></a>
             </div>
-            <a href="#" class="btn">en savoir plus</a>
+            <a href="#about" class="btn">en savoir plus</a>
         </div>
     </section>
         <!-- Section "À propos" -->
@@ -712,6 +582,20 @@ footer p {
         <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
         <script>
             AOS.init();
-        </script>
-    </body>
-    </html>
+        // Effet de défilement en douceur pour les liens d'ancrage
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
