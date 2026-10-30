@@ -8,23 +8,24 @@ Site portfolio statique (HTML / CSS / JS) avec **Three.js** en expérience visue
 2. **Projets** (`projets.html`) — **livre enchanté** interactif (esprit Minecraft enchant / glow runique)
 3. **Stories** (`cyber.html`) — feed / stories cyberpunk style Instagram + **Q&A** préparé (pas de backend)
 
-## Lancer en local
+## Lancer en local (preview pour l’instant)
 
-Aucun build requis. Servir en HTTP (modules ES + import map Three.js) :
+**Localhost only** pendant le build / review — pas de GitHub Pages / Netlify / deploy public pour le moment (preview en ligne plus tard).
+
+Aucun build requis. À la racine du repo :
 
 ```bash
 python3 -m http.server 8080
-# ou : npx --yes serve -l 8080
 ```
 
-→ [http://localhost:8080](http://localhost:8080)
+Ouvrir [http://localhost:8080](http://localhost:8080) dans le navigateur.
 
-| Page | URL |
-|------|-----|
-| Accueil | `/` |
-| Livre enchanté | `/projets.html` |
-| Stories cyber Q&A | `/cyber.html` |
-| Mon histoire | `/about.html` |
+| Page | URL locale |
+|------|------------|
+| Accueil | http://localhost:8080/ |
+| Livre enchanté | http://localhost:8080/projets.html |
+| Stories cyber Q&A | http://localhost:8080/cyber.html |
+| Mon histoire | http://localhost:8080/about.html |
 
 ## Photos — placeholders uniquement (pour l’instant)
 
