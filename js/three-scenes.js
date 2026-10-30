@@ -9,9 +9,9 @@ import * as THREE from 'three';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IS_MOBILE = window.matchMedia('(max-width: 768px)').matches;
-const IS_ABOUT =
-  document.body.classList.contains('page-about') ||
-  document.body.classList.contains('page-book');
+const IS_ABOUT = document.body.classList.contains('page-about');
+const IS_BOOK = document.body.classList.contains('page-book');
+const IS_SUBTLE = IS_ABOUT || IS_BOOK;
 
 const COLORS = {
   bg: 0x07090d,
@@ -19,6 +19,8 @@ const COLORS = {
   amber: 0xe8a87c,
   steel: 0x7eb6c9,
   ink: 0x121820,
+  enchant: 0xc77dff,
+  enchantCyan: 0x7cf0ff,
 };
 
 function makeRenderer(canvas, { alpha = true, dprCap = 1.75 } = {}) {
@@ -171,19 +173,19 @@ function createHeroBackground() {
 
   const renderer = makeRenderer(canvas, { alpha: true, dprCap: IS_MOBILE ? 1.25 : 1.75 });
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(COLORS.bg, IS_ABOUT ? 0.08 : 0.028);
+  scene.fog = new THREE.FogExp2(IS_BOOK ? 0x0a0414 : COLORS.bg, IS_SUBTLE ? 0.08 : 0.028);
 
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 120);
-  camera.position.set(0, 0.2, IS_ABOUT ? 7.5 : 6.2);
+  camera.position.set(0, 0.2, IS_SUBTLE ? 7.5 : 6.2);
 
-  scene.add(new THREE.AmbientLight(0x1a2430, 1.2));
-  const key = new THREE.PointLight(COLORS.mint, 2.4, 40);
+  scene.add(new THREE.AmbientLight(IS_BOOK ? 0x2a1040 : 0x1a2430, 1.2));
+  const key = new THREE.PointLight(IS_BOOK ? COLORS.enchant : COLORS.mint, 2.4, 40);
   key.position.set(4, 3, 5);
   scene.add(key);
-  const fill = new THREE.PointLight(COLORS.amber, 1.6, 36);
+  const fill = new THREE.PointLight(IS_BOOK ? COLORS.enchantCyan : COLORS.amber, 1.6, 36);
   fill.position.set(-5, -2, 3);
   scene.add(fill);
-  const rim = new THREE.DirectionalLight(COLORS.steel, 0.7);
+  const rim = new THREE.DirectionalLight(IS_BOOK ? COLORS.enchant : COLORS.steel, 0.7);
   rim.position.set(-2, 4, -3);
   scene.add(rim);
 
@@ -228,12 +230,21 @@ function createHeroBackground() {
   ring2.material.opacity = 0.28;
   group.add(ring2);
 
-  if (IS_ABOUT) {
-    group.scale.setScalar(0.72);
-    group.position.set(1.4, 0.1, -1.2);
+  if (IS_SUBTLE) {
+    group.scale.setScalar(IS_BOOK ? 0.85 : 0.72);
+    group.position.set(IS_BOOK ? 0 : 1.4, 0.1, IS_BOOK ? -0.6 : -1.2);
   }
 
-  const pCount = IS_ABOUT ? (IS_MOBILE ? 400 : 900) : (IS_MOBILE ? 800 : 2400);
+  if (IS_BOOK) {
+    knot.material.emissive = new THREE.Color(COLORS.enchant);
+    knot.material.emissiveIntensity = 0.55;
+    wire.material.color = new THREE.Color(COLORS.enchantCyan);
+    wire.material.opacity = 0.35;
+    ring.material.color = new THREE.Color(COLORS.enchant);
+    ring2.material.color = new THREE.Color(COLORS.enchantCyan);
+  }
+
+  const pCount = IS_SUBTLE ? (IS_MOBILE ? 400 : 900) : (IS_MOBILE ? 800 : 2400);
   const pPos = new Float32Array(pCount * 3);
   for (let i = 0; i < pCount; i++) {
     pPos[i * 3] = (Math.random() - 0.5) * 28;
@@ -244,9 +255,9 @@ function createHeroBackground() {
   pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
   const pMat = new THREE.PointsMaterial({
     size: IS_MOBILE ? 0.04 : 0.03,
-    color: COLORS.steel,
+    color: IS_BOOK ? COLORS.enchant : COLORS.steel,
     transparent: true,
-    opacity: 0.55,
+    opacity: IS_BOOK ? 0.7 : 0.55,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
   });
@@ -322,8 +333,8 @@ function createHeroBackground() {
     field.position.y = -scrollNorm * 2.5;
 
     camera.position.x = pointer.x * 0.35;
-    camera.position.y = 0.2 + pointer.y * 0.2 - scrollNorm * (IS_ABOUT ? 0.4 : 1.1);
-    camera.position.z = (IS_ABOUT ? 7.5 : 6.2) - scrollNorm * (IS_ABOUT ? 0.6 : 1.8);
+    camera.position.y = 0.2 + pointer.y * 0.2 - scrollNorm * (IS_SUBTLE ? 0.4 : 1.1);
+    camera.position.z = (IS_SUBTLE ? 7.5 : 6.2) - scrollNorm * (IS_SUBTLE ? 0.6 : 1.8);
     camera.lookAt(0, 0, 0);
 
     key.intensity = 2.1 + Math.sin(t * 1.4) * 0.35;

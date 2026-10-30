@@ -1,14 +1,24 @@
-/* Interactive project book */
+/* Interactive project book — esprit « livre enchanté Minecraft »
+   (glow runique / enchant glint — pas un clone pixel-perfect) */
 
 .page-book {
-  --paper: #f3ebe0;
-  --paper-ink: #1a1510;
-  --paper-muted: #6a5e52;
-  --spine: #c4b5a3;
+  --paper: #ebe0c8;
+  --paper-ink: #1c1428;
+  --paper-muted: #5a4a68;
+  --enchant: #c77dff;
+  --enchant-hot: #e9b3ff;
+  --enchant-cyan: #7cf0ff;
+  --leather: #2a1840;
+  --leather-deep: #12081f;
 }
 
 .page-book .site-header.is-scrolled {
-  background: rgba(7, 9, 13, 0.85);
+  background: rgba(10, 4, 18, 0.88);
+}
+
+.page-book .eyebrow {
+  color: var(--enchant-hot);
+  text-shadow: 0 0 18px rgba(199, 125, 255, 0.45);
 }
 
 .book-stage {
@@ -23,7 +33,7 @@
 
 .book-stage__meta {
   text-align: center;
-  max-width: 36rem;
+  max-width: 38rem;
 }
 .book-stage__title {
   font-family: var(--font-display);
@@ -31,27 +41,15 @@
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   letter-spacing: -0.03em;
   margin-bottom: 0.5rem;
+  background: linear-gradient(120deg, #fff 20%, var(--enchant-hot) 55%, var(--enchant-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(199, 125, 255, 0.35));
 }
 .book-stage__lead {
   color: var(--muted);
   font-size: 0.98rem;
-}
-
-.placeholder-tag {
-  display: inline-block;
-  margin-left: 0.35rem;
-  padding: 0.15rem 0.45rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px dashed var(--amber);
-  color: var(--amber);
-  vertical-align: middle;
-}
-.placeholder-inline {
-  color: var(--amber);
-  font-style: italic;
-  font-size: 0.92em;
 }
 
 .book-shell {
@@ -60,10 +58,30 @@
   gap: 0.75rem;
   align-items: center;
   width: min(100%, 920px);
+  position: relative;
+}
+
+/* Ambient enchant aura around the book */
+.book-shell::before {
+  content: "";
+  position: absolute;
+  inset: -12% -6%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(199, 125, 255, 0.22), transparent 58%),
+    radial-gradient(circle at 30% 40%, rgba(124, 240, 255, 0.1), transparent 45%);
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 0;
+  animation: auraPulse 4.5s ease-in-out infinite;
+}
+@keyframes auraPulse {
+  0%, 100% { opacity: 0.65; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.03); }
 }
 
 .book {
   position: relative;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 1.55 / 1;
   min-height: 320px;
@@ -82,7 +100,7 @@
   transition:
     opacity 0.45s var(--ease),
     transform 0.45s var(--ease);
-  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 0 28px rgba(199, 125, 255, 0.28)) drop-shadow(0 28px 40px rgba(0, 0, 0, 0.55));
 }
 .book__spread.is-active {
   opacity: 1;
@@ -122,7 +140,7 @@
 }
 
 .book__leaf {
-  background: linear-gradient(180deg, #f7f1e8 0%, var(--paper) 100%);
+  background: linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
   color: var(--paper-ink);
   padding: clamp(1rem, 2.5vw, 1.75rem);
   display: flex;
@@ -130,32 +148,55 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(26, 21, 16, 0.08);
+  border: 1px solid rgba(90, 40, 120, 0.18);
 }
+
+/* Runic margin glyphs */
+.book__leaf:not(.book__leaf--blank)::before {
+  content: "ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ";
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.45em;
+  color: rgba(140, 70, 190, 0.35);
+  pointer-events: none;
+  animation: runeFlicker 3.2s steps(2) infinite;
+}
+@keyframes runeFlicker {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; text-shadow: 0 0 8px rgba(199, 125, 255, 0.5); }
+}
+
 .book__leaf--left {
-  border-radius: 0.35rem 0 0 0.35rem;
-  box-shadow: inset -10px 0 24px rgba(0, 0, 0, 0.06);
+  border-radius: 0.2rem 0 0 0.2rem;
+  box-shadow: inset -12px 0 28px rgba(80, 30, 120, 0.08);
   background-image:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.04), transparent 18%),
-    linear-gradient(180deg, #f7f1e8 0%, var(--paper) 100%);
+    linear-gradient(90deg, rgba(80, 30, 120, 0.08), transparent 18%),
+    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
 }
 .book__leaf--right {
-  border-radius: 0 0.35rem 0.35rem 0;
-  box-shadow: inset 10px 0 24px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0.2rem 0.2rem 0;
+  box-shadow: inset 12px 0 28px rgba(80, 30, 120, 0.07);
   background-image:
-    linear-gradient(270deg, rgba(0, 0, 0, 0.035), transparent 18%),
-    linear-gradient(180deg, #f7f1e8 0%, var(--paper) 100%);
+    linear-gradient(270deg, rgba(80, 30, 120, 0.07), transparent 18%),
+    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
 }
 .book__leaf--blank {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
+.book__leaf--blank::before { content: none !important; }
+
 .book__leaf h3 {
   font-family: "Libre Baskerville", Georgia, serif;
   font-size: clamp(1.15rem, 2.4vw, 1.55rem);
   margin-bottom: 0.45rem;
   line-height: 1.25;
+  color: #2a1540;
 }
 .book__leaf p {
   font-size: clamp(0.85rem, 1.5vw, 0.98rem);
@@ -167,54 +208,98 @@
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #9a8470;
+  color: #8a5cb0;
   margin-bottom: 0.85rem;
+  text-shadow: 0 0 10px rgba(199, 125, 255, 0.25);
 }
 .book__kicker {
   font-family: var(--font-display);
   font-size: 0.75rem !important;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #2a6f62 !important;
+  color: #6b3d9a !important;
   margin-bottom: 0.65rem !important;
 }
 .book__leaf--colophon .btn {
   margin-top: 1.25rem;
   align-self: flex-start;
+  background: linear-gradient(120deg, #9b59ff, #7cf0ff);
+  color: #12081f;
 }
 
+/* Leather cover + enchant glint (Minecraft-inspired) */
 .book__cover {
   background:
-    radial-gradient(circle at 30% 20%, rgba(61, 255, 200, 0.18), transparent 45%),
-    linear-gradient(145deg, #121820 0%, #0a1016 55%, #1a120e 100%) !important;
-  color: var(--ink) !important;
-  border: 1px solid rgba(61, 255, 200, 0.25) !important;
-  box-shadow: inset 0 0 0 1px rgba(232, 168, 124, 0.15) !important;
+    linear-gradient(135deg, rgba(199, 125, 255, 0.18), transparent 40%),
+    linear-gradient(160deg, var(--leather) 0%, var(--leather-deep) 55%, #1a0a2e 100%) !important;
+  color: #f5e9ff !important;
+  border: 2px solid rgba(199, 125, 255, 0.55) !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(18, 8, 31, 0.65),
+    inset 0 0 40px rgba(199, 125, 255, 0.15),
+    0 0 40px rgba(199, 125, 255, 0.35) !important;
+  overflow: hidden;
 }
+.book__cover::before { content: none !important; }
+
+/* Enchanted item glint sweep */
+.book__cover::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 42%,
+    rgba(233, 179, 255, 0.55) 50%,
+    rgba(124, 240, 255, 0.35) 54%,
+    transparent 62%
+  );
+  mix-blend-mode: screen;
+  animation: enchantGlint 2.8s linear infinite;
+  pointer-events: none;
+}
+@keyframes enchantGlint {
+  0% { transform: translateX(-30%) translateY(10%) rotate(0.001deg); }
+  100% { transform: translateX(30%) translateY(-10%) rotate(0.001deg); }
+}
+
 .book__cover-inner {
   text-align: center;
   display: grid;
   gap: 0.55rem;
   place-items: center;
+  position: relative;
+  z-index: 1;
 }
 .book__cover-mark {
   font-family: var(--font-display);
   font-weight: 800;
   letter-spacing: 0.28em;
-  color: var(--mint);
+  color: var(--enchant-hot);
   text-indent: 0.28em;
+  text-shadow: 0 0 18px rgba(199, 125, 255, 0.8);
+}
+.book__cover-runes {
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  color: var(--enchant-cyan);
+  text-shadow: 0 0 12px rgba(124, 240, 255, 0.7);
+  animation: runeFlicker 2.4s steps(2) infinite;
 }
 .book__cover h2 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.8rem, 4.5vw, 2.7rem);
   font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 22px rgba(199, 125, 255, 0.65);
 }
 .book__cover-hint {
   margin-top: 1rem;
   font-size: 0.75rem !important;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted) !important;
+  color: rgba(245, 233, 255, 0.65) !important;
 }
 
 .book__leaf--visual {
@@ -226,63 +311,71 @@
   place-content: center;
   gap: 0.35rem;
   text-align: center;
-  border: 1px solid rgba(26, 21, 16, 0.12);
+  border: 1px solid rgba(140, 70, 190, 0.28);
   min-height: 70%;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(199, 125, 255, 0.12);
+}
+.book__plate::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(233, 179, 255, 0.35) 50%,
+    transparent 60%
+  );
+  animation: enchantGlint 3.4s linear infinite;
+  pointer-events: none;
 }
 .book__plate span {
   font-family: var(--font-display);
   font-size: 0.72rem;
   letter-spacing: 0.2em;
-  opacity: 0.7;
+  opacity: 0.75;
+  position: relative;
+  z-index: 1;
 }
 .book__plate strong {
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 800;
+  position: relative;
+  z-index: 1;
 }
-.book__plate[data-tone="mint"] {
-  background:
-    linear-gradient(135deg, rgba(61, 255, 200, 0.25), transparent 60%),
-    #dfece7;
-  color: #0d3d34;
-}
-.book__plate[data-tone="amber"] {
-  background:
-    linear-gradient(135deg, rgba(232, 168, 124, 0.35), transparent 60%),
-    #efe2d4;
-  color: #5a3418;
-}
-.book__plate[data-tone="steel"] {
-  background:
-    linear-gradient(135deg, rgba(126, 182, 201, 0.35), transparent 60%),
-    #d9e5ea;
-  color: #1d3a45;
-}
+.book__plate[data-tone="mint"],
+.book__plate[data-tone="amber"],
+.book__plate[data-tone="steel"],
 .book__plate[data-tone="ink"] {
   background:
-    linear-gradient(135deg, rgba(14, 19, 26, 0.9), #1c2834);
-  color: var(--mint);
-  border-color: rgba(61, 255, 200, 0.25);
+    radial-gradient(circle at 30% 30%, rgba(199, 125, 255, 0.28), transparent 55%),
+    linear-gradient(160deg, #3a2458, #1a0f2c);
+  color: #f0e4ff;
+  border-color: rgba(199, 125, 255, 0.4);
 }
 
 .book-nav {
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: rgba(14, 19, 26, 0.65);
-  color: var(--ink);
+  border-radius: 0.2rem;
+  border: 1px solid rgba(199, 125, 255, 0.45);
+  background: rgba(30, 12, 48, 0.75);
+  color: var(--enchant-hot);
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  transition: border-color 0.25s, color 0.25s, transform 0.25s;
+  box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
+  transition: border-color 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
+  position: relative;
+  z-index: 2;
 }
 .book-nav:hover:not(:disabled) {
-  border-color: var(--mint);
-  color: var(--mint);
+  border-color: var(--enchant-cyan);
+  color: var(--enchant-cyan);
   transform: scale(1.06);
+  box-shadow: 0 0 22px rgba(124, 240, 255, 0.35);
 }
 .book-nav:disabled {
   opacity: 0.3;
@@ -291,22 +384,34 @@
 
 .book-progress {
   width: min(100%, 420px);
-  height: 2px;
-  background: var(--line);
+  height: 3px;
+  background: rgba(199, 125, 255, 0.15);
   border-radius: 999px;
   overflow: hidden;
+  box-shadow: 0 0 12px rgba(199, 125, 255, 0.2);
 }
 .book-progress__bar {
   height: 100%;
   width: 16%;
-  background: linear-gradient(90deg, var(--mint), var(--amber));
+  background: linear-gradient(90deg, var(--enchant), var(--enchant-cyan));
+  box-shadow: 0 0 12px rgba(199, 125, 255, 0.7);
   transition: width 0.4s var(--ease);
 }
 .book-counter {
   font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(233, 179, 255, 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-shell::before,
+  .book__cover::after,
+  .book__plate::after,
+  .book__leaf:not(.book__leaf--blank)::before,
+  .book__cover-runes {
+    animation: none !important;
+  }
 }
 
 @media (max-width: 720px) {
@@ -327,18 +432,18 @@
     grid-template-columns: 1fr;
   }
   .book__leaf--left {
-    border-radius: 0.35rem 0.35rem 0 0;
+    border-radius: 0.2rem 0.2rem 0 0;
     min-height: 52%;
   }
   .book__leaf--right {
-    border-radius: 0 0 0.35rem 0.35rem;
+    border-radius: 0 0 0.2rem 0.2rem;
     min-height: 48%;
   }
   .book__leaf--blank { display: none; }
   .book__cover {
     grid-column: 1;
     min-height: 100%;
-    border-radius: 0.35rem !important;
+    border-radius: 0.2rem !important;
   }
   .book__spread[data-spread="0"] {
     grid-template-columns: 1fr;

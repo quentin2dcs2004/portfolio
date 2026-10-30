@@ -46,24 +46,35 @@
   </header>
 
   <main>
-    <!-- Hero: one composition, brand-first, full-bleed Three.js -->
-    <section class="hero" id="accueil">
-      <div class="hero__copy">
-        <p class="hero__brand reveal" data-reveal>Quentin DA COSTA SOARES</p>
-        <h1 class="hero__title reveal" data-reveal>
-          Créer en 3D.<br>Imprimer l’idée.
-        </h1>
-        <p class="hero__lead reveal" data-reveal>
-          Lancez votre réussite professionnelle avec moi —
-          graphisme, modélisation et impression 3D.
-        </p>
-        <div class="hero__cta reveal" data-reveal>
-          <a href="projets.html" class="btn btn--primary" data-magnetic>Ouvrir le livre</a>
-          <a href="cyber.html" class="btn btn--ghost" data-magnetic>Stories cyber</a>
+    <!-- Hero perso: photo + intro courte, Three.js full-bleed derrière -->
+    <section class="hero hero--persona" id="accueil">
+      <div class="hero__persona">
+        <div class="hero__photo reveal" data-reveal>
+          <img
+            src="image/placeholder-portrait.svg"
+            alt="Placeholder — photo de Quentin à venir"
+            width="720"
+            height="900"
+            fetchpriority="high">
+          <span class="hero__photo-tag placeholder-tag">Placeholder — vraies photos plus tard (bureau)</span>
         </div>
-        <p class="hero__roles reveal" data-reveal aria-live="polite">
-          Je suis <span id="typing-effect" class="typing"></span>
-        </p>
+        <div class="hero__copy">
+          <p class="hero__brand reveal" data-reveal>Quentin DA COSTA SOARES</p>
+          <h1 class="hero__title reveal" data-reveal>
+            Salut, c’est&nbsp;Quentin
+          </h1>
+          <p class="hero__lead reveal" data-reveal>
+            Graphiste, modélisateur 3D et imprimeur 3D.
+            Intro courte : je donne forme aux idées — du pixel à la pièce.
+          </p>
+          <p class="hero__roles reveal" data-reveal aria-live="polite">
+            Je suis <span id="typing-effect" class="typing"></span>
+          </p>
+          <div class="hero__cta reveal" data-reveal>
+            <a href="projets.html" class="btn btn--primary" data-magnetic>Ouvrir le livre</a>
+            <a href="cyber.html" class="btn btn--ghost" data-magnetic>Stories cyber</a>
+          </div>
+        </div>
       </div>
       <p class="hero__hint reveal" data-reveal>
         <span class="hero__hint-dot"></span>
@@ -137,7 +148,8 @@
         </div>
       </div>
       <aside class="portrait reveal" data-reveal>
-        <img src="image/votre-photo.jpg" alt="Portrait de Quentin DA COSTA SOARES" width="480" height="480" loading="lazy">
+        <img src="image/placeholder-portrait.svg" alt="Placeholder — photo de Quentin à venir" width="480" height="480" loading="lazy">
+        <span class="placeholder-tag">Placeholder photo</span>
       </aside>
     </section>
 
