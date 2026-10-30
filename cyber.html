@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stories cyberpunk interactives — Q&A préparé · Quentin DA COSTA SOARES.">
+  <title>Stories Cyber · Quentin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/cyber.css">
+</head>
+<body class="page-cyber">
+  <div id="page-transition" class="is-leaving" aria-hidden="true"></div>
+  <div class="cyber-scan" aria-hidden="true"></div>
+  <canvas id="cyber-canvas" class="cyber-canvas" aria-hidden="true"></canvas>
+
+  <header class="cyber-top">
+    <a href="index.html" class="cyber-top__back">← Portfolio</a>
+    <p class="cyber-top__handle">@quentin<span>_dcs</span></p>
+    <span class="cyber-top__live">LIVE NET</span>
+  </header>
+
+  <main class="cyber-app">
+    <p class="cyber-disclaimer">
+      <span class="placeholder-tag">Placeholder</span>
+      Feed / stories style Instagram cyberpunk — questions à choisir, réponses déjà préparées (pas de backend).
+    </p>
+
+    <!-- Stories row -->
+    <section class="stories-rail" aria-label="Stories">
+      <button type="button" class="story-ring is-active" data-story="0" aria-pressed="true">
+        <span class="story-ring__avatar">Q</span>
+        <span class="story-ring__label">Moi</span>
+      </button>
+      <button type="button" class="story-ring" data-story="1" aria-pressed="false">
+        <span class="story-ring__avatar">3D</span>
+        <span class="story-ring__label">Print</span>
+      </button>
+      <button type="button" class="story-ring" data-story="2" aria-pressed="false">
+        <span class="story-ring__avatar">?</span>
+        <span class="story-ring__label">Q&amp;A</span>
+      </button>
+      <button type="button" class="story-ring" data-story="3" aria-pressed="false">
+        <span class="story-ring__avatar">⚡</span>
+        <span class="story-ring__label">Night</span>
+      </button>
+    </section>
+
+    <!-- Story viewer -->
+    <section class="story-viewer" id="story-viewer" hidden>
+      <div class="story-viewer__bars" id="story-bars"></div>
+      <button type="button" class="story-viewer__close" id="story-close" aria-label="Fermer">×</button>
+      <div class="story-viewer__body" id="story-body"></div>
+      <button type="button" class="story-viewer__hit story-viewer__hit--prev" id="story-prev" aria-label="Précédent"></button>
+      <button type="button" class="story-viewer__hit story-viewer__hit--next" id="story-next" aria-label="Suivant"></button>
+    </section>
+
+    <!-- Phone feed -->
+    <section class="feed" aria-label="Feed">
+      <article class="post">
+        <header class="post__head">
+          <div class="post__user">
+            <span class="post__avatar">Q</span>
+            <div>
+              <strong>quentin_dcs</strong>
+              <small>Marseille · net://atelier</small>
+            </div>
+          </div>
+          <span class="post__chip">CYBER</span>
+        </header>
+        <div class="post__media post__media--neon">
+          <p class="post__glitch" data-text="ASK ME">ASK ME</p>
+          <p class="post__media-caption">Choisis une question ci-dessous</p>
+        </div>
+        <div class="post__actions">
+          <span><i class="fa-solid fa-bolt"></i> 128</span>
+          <span><i class="fa-regular fa-comment"></i> Q&amp;A</span>
+          <span><i class="fa-solid fa-share-nodes"></i></span>
+        </div>
+        <p class="post__caption">
+          <strong>quentin_dcs</strong>
+          Session questions — réponses pré-enregistrées. Tape une option.
+        </p>
+      </article>
+
+      <!-- Interactive Q&A sticker panel -->
+      <article class="qa-panel" id="qa-panel">
+        <p class="qa-panel__label">◆ QUESTIONS DU JOUR</p>
+        <div class="qa-list" id="qa-list" role="list"></div>
+        <div class="qa-answer" id="qa-answer" hidden>
+          <p class="qa-answer__q" id="qa-answer-q"></p>
+          <p class="qa-answer__a" id="qa-answer-a"></p>
+          <button type="button" class="qa-answer__back" id="qa-back">← Autre question</button>
+        </div>
+      </article>
+
+      <article class="post">
+        <header class="post__head">
+          <div class="post__user">
+            <span class="post__avatar post__avatar--alt">3D</span>
+            <div>
+              <strong>luminart_lab</strong>
+              <small>placeholder · filament</small>
+            </div>
+          </div>
+        </header>
+        <div class="post__media post__media--grid">
+          <div></div><div></div><div></div><div></div>
+        </div>
+        <p class="post__caption">
+          <strong>luminart_lab</strong>
+          <span class="placeholder-inline">[Placeholder] Grille créas à remplacer par de vraies photos.</span>
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <nav class="cyber-tabbar" aria-label="Navigation cyber">
+    <a href="index.html" title="Accueil"><i class="fa-solid fa-house"></i></a>
+    <a href="projets.html" title="Projets"><i class="fa-solid fa-book-open"></i></a>
+    <a href="cyber.html" class="is-active" title="Stories"><i class="fa-solid fa-circle-nodes"></i></a>
+    <a href="about.html" title="Histoire"><i class="fa-regular fa-user"></i></a>
+  </nav>
+
+  <script type="module" src="js/animations.js"></script>
+  <script type="module" src="js/cyber.js"></script>
+</body>
+</html>
