@@ -3,129 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Stories cyberpunk interactives — Q&A préparé · Quentin DA COSTA SOARES.">
-  <title>Stories Cyber · Quentin</title>
+  <meta name="description" content="Téléphone virtuel — projets et conversation MP avec Quentin DA COSTA SOARES.">
+  <title>Phone · Quentin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&family=Syne:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="css/cyber.css">
+  <link rel="stylesheet" href="css/phone.css">
 </head>
-<body class="page-cyber">
+<body class="page-phone">
   <div id="page-transition" class="is-leaving" aria-hidden="true"></div>
-  <div class="cyber-scan" aria-hidden="true"></div>
-  <canvas id="cyber-canvas" class="cyber-canvas" aria-hidden="true"></canvas>
+  <canvas id="bg-canvas" class="bg-canvas bg-canvas--subtle" aria-hidden="true"></canvas>
 
-  <header class="cyber-top">
-    <a href="index.html" class="cyber-top__back">← Portfolio</a>
-    <p class="cyber-top__handle">@quentin<span>_dcs</span></p>
-    <span class="cyber-top__live">LIVE NET</span>
+  <header class="site-header" id="site-header">
+    <a href="index.html" class="brand" data-magnetic>
+      <span class="brand__mark">Q</span>
+      <span class="brand__text">Quentin</span>
+    </a>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="projets.html">Projets</a>
+      <a href="cyber.html" class="is-active">Phone</a>
+      <a href="about.html">Mon histoire</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
   </header>
 
-  <main class="cyber-app">
-    <p class="cyber-disclaimer">
-      <span class="placeholder-tag">Placeholder</span>
-      Feed / stories style Instagram cyberpunk — questions à choisir, réponses déjà préparées (pas de backend).
-    </p>
+  <main class="phone-stage">
+    <div class="phone-stage__copy">
+      <p class="eyebrow">Quentin · en ligne</p>
+      <h1 class="phone-stage__title">Phone</h1>
+      <p class="phone-stage__lead">
+        Ses projets dans un écran, et une conversation MP pour lui poser des questions —
+        réponses déjà préparées.
+        <span class="placeholder-tag">Placeholders OK</span>
+      </p>
+    </div>
 
-    <!-- Stories row -->
-    <section class="stories-rail" aria-label="Stories">
-      <button type="button" class="story-ring is-active" data-story="0" aria-pressed="true">
-        <span class="story-ring__avatar">Q</span>
-        <span class="story-ring__label">Moi</span>
-      </button>
-      <button type="button" class="story-ring" data-story="1" aria-pressed="false">
-        <span class="story-ring__avatar">3D</span>
-        <span class="story-ring__label">Print</span>
-      </button>
-      <button type="button" class="story-ring" data-story="2" aria-pressed="false">
-        <span class="story-ring__avatar">?</span>
-        <span class="story-ring__label">Q&amp;A</span>
-      </button>
-      <button type="button" class="story-ring" data-story="3" aria-pressed="false">
-        <span class="story-ring__avatar">⚡</span>
-        <span class="story-ring__label">Night</span>
-      </button>
-    </section>
-
-    <!-- Story viewer -->
-    <section class="story-viewer" id="story-viewer" hidden>
-      <div class="story-viewer__bars" id="story-bars"></div>
-      <button type="button" class="story-viewer__close" id="story-close" aria-label="Fermer">×</button>
-      <div class="story-viewer__body" id="story-body"></div>
-      <button type="button" class="story-viewer__hit story-viewer__hit--prev" id="story-prev" aria-label="Précédent"></button>
-      <button type="button" class="story-viewer__hit story-viewer__hit--next" id="story-next" aria-label="Suivant"></button>
-    </section>
-
-    <!-- Phone feed -->
-    <section class="feed" aria-label="Feed">
-      <article class="post">
-        <header class="post__head">
-          <div class="post__user">
-            <span class="post__avatar">Q</span>
-            <div>
-              <strong>quentin_dcs</strong>
-              <small>Marseille · net://atelier</small>
-            </div>
+    <div class="device" id="device">
+      <div class="device__aura" aria-hidden="true"></div>
+      <div class="device__shell">
+        <div class="device__notch" aria-hidden="true"><span></span></div>
+        <div class="device__screen" id="phone-screen">
+          <div class="phone-status" aria-hidden="true">
+            <span class="phone-status__time" id="phone-time">21:29</span>
+            <span class="phone-status__icons">5G · ▮▮▮</span>
           </div>
-          <span class="post__chip">CYBER</span>
-        </header>
-        <div class="post__media post__media--neon">
-          <p class="post__glitch" data-text="ASK ME">ASK ME</p>
-          <p class="post__media-caption">Choisis une question ci-dessous</p>
-        </div>
-        <div class="post__actions">
-          <span><i class="fa-solid fa-bolt"></i> 128</span>
-          <span><i class="fa-regular fa-comment"></i> Q&amp;A</span>
-          <span><i class="fa-solid fa-share-nodes"></i></span>
-        </div>
-        <p class="post__caption">
-          <strong>quentin_dcs</strong>
-          Session questions — réponses pré-enregistrées. Tape une option.
-        </p>
-      </article>
 
-      <!-- Interactive Q&A sticker panel -->
-      <article class="qa-panel" id="qa-panel">
-        <p class="qa-panel__label">◆ QUESTIONS DU JOUR</p>
-        <div class="qa-list" id="qa-list" role="list"></div>
-        <div class="qa-answer" id="qa-answer" hidden>
-          <p class="qa-answer__q" id="qa-answer-q"></p>
-          <p class="qa-answer__a" id="qa-answer-a"></p>
-          <button type="button" class="qa-answer__back" id="qa-back">← Autre question</button>
-        </div>
-      </article>
-
-      <article class="post">
-        <header class="post__head">
-          <div class="post__user">
-            <span class="post__avatar post__avatar--alt">3D</span>
-            <div>
-              <strong>luminart_lab</strong>
-              <small>placeholder · filament</small>
+          <!-- APP: Projets -->
+          <section class="phone-view is-active" id="view-projets" data-view="projets" aria-label="Projets">
+            <header class="phone-appbar">
+              <div>
+                <p class="phone-appbar__kicker">Galerie</p>
+                <h2>Projets</h2>
+              </div>
+              <span class="phone-pill">Virtuel</span>
+            </header>
+            <div class="phone-projects" id="phone-projects">
+              <!-- filled by js -->
             </div>
-          </div>
-        </header>
-        <div class="post__media post__media--grid">
-          <div></div><div></div><div></div><div></div>
+          </section>
+
+          <!-- APP: Messages -->
+          <section class="phone-view" id="view-mp" data-view="mp" aria-label="Messages" hidden>
+            <header class="phone-chathead">
+              <div class="phone-chathead__avatar" aria-hidden="true">Q</div>
+              <div>
+                <h2>Quentin</h2>
+                <p class="phone-chathead__status"><span class="dot"></span> En ligne · MP</p>
+              </div>
+            </header>
+            <div class="phone-thread" id="phone-thread" role="log" aria-live="polite">
+              <div class="bubble bubble--in">
+                <p>Salut — choisis une question ci-dessous, je te réponds tout de suite.</p>
+                <time>maintenant</time>
+              </div>
+            </div>
+            <div class="phone-chips" id="phone-chips" aria-label="Questions présélectionnées">
+              <!-- filled by js -->
+            </div>
+          </section>
+
+          <!-- APP: Profil -->
+          <section class="phone-view" id="view-profil" data-view="profil" aria-label="Profil" hidden>
+            <header class="phone-appbar phone-appbar--center">
+              <div class="phone-profile">
+                <div class="phone-profile__photo">
+                  <img src="image/placeholder-portrait.svg" alt="Placeholder portrait Quentin" width="120" height="120">
+                </div>
+                <h2>Quentin DA COSTA SOARES</h2>
+                <p>Graphisme · 3D · impression</p>
+                <p class="phone-profile__note">
+                  <span class="placeholder-tag">Photo à venir</span>
+                </p>
+              </div>
+            </header>
+            <ul class="phone-profile__links">
+              <li><a href="projets.html">Ouvrir le livre enchanté</a></li>
+              <li><a href="index.html#contact">Coordonnées</a></li>
+              <li><a href="about.html">Mon histoire</a></li>
+            </ul>
+          </section>
+
+          <nav class="phone-dock" aria-label="Apps du téléphone">
+            <button type="button" class="phone-dock__btn is-active" data-tab="projets" aria-selected="true">
+              <span class="phone-dock__icon phone-dock__icon--grid" aria-hidden="true"></span>
+              <span>Projets</span>
+            </button>
+            <button type="button" class="phone-dock__btn" data-tab="mp" aria-selected="false">
+              <span class="phone-dock__icon phone-dock__icon--chat" aria-hidden="true"></span>
+              <span>MP</span>
+            </button>
+            <button type="button" class="phone-dock__btn" data-tab="profil" aria-selected="false">
+              <span class="phone-dock__icon phone-dock__icon--user" aria-hidden="true"></span>
+              <span>Profil</span>
+            </button>
+          </nav>
         </div>
-        <p class="post__caption">
-          <strong>luminart_lab</strong>
-          <span class="placeholder-inline">[Placeholder] Grille créas à remplacer par de vraies photos.</span>
-        </p>
-      </article>
-    </section>
+        <div class="device__btn device__btn--side" aria-hidden="true"></div>
+      </div>
+    </div>
   </main>
 
-  <nav class="cyber-tabbar" aria-label="Navigation cyber">
-    <a href="index.html" title="Accueil"><i class="fa-solid fa-house"></i></a>
-    <a href="projets.html" title="Projets"><i class="fa-solid fa-book-open"></i></a>
-    <a href="cyber.html" class="is-active" title="Stories"><i class="fa-solid fa-circle-nodes"></i></a>
-    <a href="about.html" title="Histoire"><i class="fa-regular fa-user"></i></a>
-  </nav>
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Quentin DA COSTA SOARES</p>
+    <a href="index.html" class="text-link">Accueil</a>
+  </footer>
 
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/three-scenes.js"></script>
   <script type="module" src="js/animations.js"></script>
-  <script type="module" src="js/cyber.js"></script>
+  <script type="module" src="js/phone.js"></script>
 </body>
 </html>

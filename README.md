@@ -6,7 +6,7 @@ Site portfolio statique (HTML / CSS / JS) avec **Three.js** en expérience visue
 
 1. **Accueil** (`index.html`) — intro **Netflix lettre Q** (premium) → hero type [YouTube portfolio](https://www.youtube.com/watch?v=-u3vE84Wo_U&t=2s) (portrait rond + « Salut, c’est Quentin » + typing FR) + Three.js. Textes en français.
 2. **Projets** (`projets.html`) — **livre enchanté** interactif (esprit Minecraft enchant / glow runique)
-3. **Stories** (`cyber.html`) — feed / stories cyberpunk style Instagram + **Q&A** préparé (pas de backend)
+3. **Phone** (`cyber.html`) — téléphone premium à l’écran : **projets virtuels** + **conversation MP** (questions présélectionnées, réponses préparées, pas de backend)
 
 ## Lancer en local (preview pour l’instant)
 
@@ -24,7 +24,7 @@ Ouvrir [http://localhost:8080](http://localhost:8080) dans le navigateur.
 |------|------------|
 | Accueil | http://localhost:8080/ |
 | Livre enchanté | http://localhost:8080/projets.html |
-| Stories cyber Q&A | http://localhost:8080/cyber.html |
+| Phone (projets + MP) | http://localhost:8080/cyber.html |
 | Mon histoire | http://localhost:8080/about.html |
 
 ## Photos — placeholders uniquement (pour l’instant)
@@ -37,11 +37,11 @@ Quand Quentin aura le dossier photo sur le bureau :
 2. Remplacer les `src` dans `index.html` (hero + section Passions) qui pointent vers `image/placeholder-portrait.svg`
 3. L’ancien `image/votre-photo.jpg` peut rester ou être retiré — ce n’est plus référencé par les pages actives
 
-Projets du livre + textes Stories / Q&A : aussi marqués **Placeholder**.
+Projets du livre + textes Phone / MP : aussi marqués **Placeholder**.
 
 ## Three.js
 
 CDN `three@0.170.0` (jsDelivr).
 
 - `js/three-scenes.js` — intro, hero, orbite ; palette enchant violette sur la page livre
-- `js/cyber.js` — fond néon Stories
+- `js/phone.js` — apps du téléphone (projets + MP)
