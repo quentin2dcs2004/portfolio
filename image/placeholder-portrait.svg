@@ -5,19 +5,19 @@
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0a0818"/>
       <stop offset="55%" stop-color="#12102a"/>
-      <stop offset="100%" stop-color="#1a1440"/>
+      <stop offset="100%" stop-color="#14143a"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#6ea8ff"/>
-      <stop offset="100%" stop-color="#8b7cff"/>
+      <stop offset="0%" stop-color="#5b8cff"/>
+      <stop offset="100%" stop-color="#7c6bff"/>
     </linearGradient>
   </defs>
   <rect width="720" height="900" fill="url(#bg)"/>
-  <rect x="24" y="24" width="672" height="852" fill="none" stroke="#8b7cff" stroke-width="2" stroke-dasharray="10 12" opacity="0.55"/>
-  <circle cx="360" cy="340" r="110" fill="none" stroke="#6ea8ff" stroke-width="3" opacity="0.45"/>
-  <circle cx="360" cy="310" r="48" fill="#1a1440" stroke="#8b7cff" stroke-width="2" opacity="0.8"/>
-  <path d="M260 470c20-70 80-100 100-100s80 30 100 100" fill="none" stroke="#a78bfa" stroke-width="3" opacity="0.7"/>
-  <text x="360" y="580" text-anchor="middle" fill="#8b7cff" font-family="Syne, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">PLACEHOLDER</text>
+  <rect x="24" y="24" width="672" height="852" fill="none" stroke="#7c6bff" stroke-width="2" stroke-dasharray="10 12" opacity="0.55"/>
+  <circle cx="360" cy="340" r="110" fill="none" stroke="#5b8cff" stroke-width="3" opacity="0.45"/>
+  <circle cx="360" cy="310" r="48" fill="#14143a" stroke="#7c6bff" stroke-width="2" opacity="0.8"/>
+  <path d="M260 470c20-70 80-100 100-100s80 30 100 100" fill="none" stroke="#8b9cff" stroke-width="3" opacity="0.7"/>
+  <text x="360" y="580" text-anchor="middle" fill="#7c6bff" font-family="Syne, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">PLACEHOLDER</text>
   <text x="360" y="620" text-anchor="middle" fill="#9aa3c7" font-family="Sora, Arial, sans-serif" font-size="18">Photo de Quentin — a venir</text>
   <text x="360" y="660" text-anchor="middle" fill="#9aa3c7" font-family="Sora, Arial, sans-serif" font-size="14">Remplacer image/placeholder-portrait.svg</text>
   <rect x="200" y="720" width="320" height="3" fill="url(#accent)" opacity="0.8"/>
