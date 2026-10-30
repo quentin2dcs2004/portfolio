@@ -582,6 +582,95 @@ main {
   left: var(--gutter);
 }
 
+/* From À propos → Contact: layout réellement centré (pro / propre) */
+#apropos,
+#competences,
+#passions,
+#contact {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+#apropos::before,
+#passions::before {
+  display: none;
+}
+#apropos .section__inner,
+#competences .section__inner,
+#passions .section__inner,
+#contact .section__inner {
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+#competences .section__inner--wide {
+  width: min(100%, 68rem);
+}
+#apropos .section__text,
+#competences .section__text,
+#passions .section__text,
+#contact .section__text,
+#apropos .eyebrow,
+#competences .eyebrow,
+#passions .eyebrow,
+#contact .eyebrow {
+  margin-inline: auto;
+  text-align: center;
+}
+#apropos .section__title::after,
+#competences .section__title::after,
+#passions .section__title::after,
+#contact .section__title::after {
+  margin-inline: auto;
+  transform-origin: center;
+}
+#apropos .section__visual,
+#passions .portrait,
+#contact .map-wrap {
+  justify-self: center;
+  width: min(100%, 420px);
+  margin-inline: auto;
+}
+#passions {
+  align-items: center;
+}
+#passions .passion-strip {
+  justify-content: center;
+}
+#passions .portrait {
+  margin-top: 2rem;
+}
+#competences .skill-rail {
+  width: 100%;
+  justify-items: center;
+}
+#competences .skill-item {
+  text-align: center;
+  width: 100%;
+}
+#contact .contact-rows,
+#contact .contact-form {
+  width: min(100%, 32rem);
+  margin-inline: auto;
+  text-align: center;
+}
+#contact .contact-row {
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+#contact .socials {
+  justify-content: center;
+}
+#contact .map-wrap {
+  width: min(100%, 52rem);
+  margin-top: 2rem;
+}
+
 .skill-rail {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -766,11 +855,12 @@ main {
   display: block;
 }
 
-/* ---------- About page (tout centré) ---------- */
+/* ---------- About page (tout réellement centré) ---------- */
 .page-about main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 .page-about .about-hero,
 .page-about .about-block {
@@ -793,6 +883,7 @@ main {
   font-size: clamp(2.6rem, 7vw, 4.8rem);
   letter-spacing: -0.035em;
   margin-bottom: 1rem;
+  text-align: center;
 }
 .about-block {
   padding: 3rem var(--gutter) 4rem;
@@ -801,9 +892,17 @@ main {
 }
 .page-about .section__text,
 .page-about .eyebrow,
-.page-about .hero__brand {
-  margin-inline: auto;
+.page-about .hero__brand,
+.page-about .section__title,
+.page-about p,
+.page-about h1,
+.page-about h2,
+.page-about li {
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
+}
+.page-about .section__text {
   max-width: 36rem;
 }
 .page-about .section__title::after,
@@ -817,6 +916,7 @@ main {
   width: min(4.5rem, 40%);
   height: 2px;
   margin-top: 0.75rem;
+  margin-inline: auto;
   border-radius: 999px;
   background: var(--galaxy);
   transform: scaleX(0);
@@ -832,12 +932,15 @@ main {
   width: min(100%, 34rem);
   text-align: center;
   justify-items: center;
+  padding: 0;
 }
 .goals-list li {
   position: relative;
-  padding: 0.85rem 1rem 0.85rem 1rem;
+  padding: 0.85rem 1rem;
   color: var(--muted);
   max-width: 34rem;
+  text-align: center;
+  list-style: none;
 }
 .goals-list li::before {
   content: "";
@@ -857,6 +960,87 @@ main {
   text-align: center;
   flex-direction: column;
   align-items: center;
+}
+
+.about-skills {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: min(100%, 36rem);
+  margin: 1.75rem auto 0;
+  padding: 0;
+  text-align: center;
+}
+.about-skills li {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+  padding: 1.15rem 0.85rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.about-skills span {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--steel);
+}
+.about-skills strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.about-skills p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+.about-passions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 1.25rem auto 0;
+  width: min(100%, 36rem);
+}
+.about-contact {
+  display: grid;
+  gap: 0.75rem;
+  width: min(100%, 28rem);
+  margin: 1.25rem auto 1.25rem;
+}
+.page-about .contact-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.35rem;
+  background: rgba(14, 19, 26, 0.35);
+  transition: border-color 0.25s, transform 0.25s var(--ease);
+}
+.page-about .contact-row:hover {
+  border-color: rgba(155, 92, 255, 0.55);
+  transform: translateY(-2px);
+}
+.page-about .contact-row span {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.page-about .socials {
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .about-skills {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- Placeholders ---------- */
