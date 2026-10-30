@@ -5,7 +5,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background:
+    radial-gradient(ellipse at 35% 40%, rgba(88, 60, 180, 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(40, 80, 180, 0.28) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(20, 30, 80, 0.5) 0%, transparent 55%),
+    #03010a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,7 +22,7 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: #000000;
+  background: transparent;
   overflow: hidden;
 }
 #container netflixintro {
@@ -34,7 +38,7 @@
   animation-fill-mode: forwards;
   background-size: 4000px;
   background-position: -1950px 0;
-  filter: drop-shadow(0 0 28px rgba(228, 9, 19, 0.35));
+  filter: drop-shadow(0 0 28px rgba(124, 107, 255, 0.35));
 }
 #container netflixintro::before {
   content: "";
@@ -67,7 +71,7 @@
   animation-duration: 2s;
   animation-delay: 0.55s;
   animation-fill-mode: forwards;
-  background-color: rgba(228, 9, 19, 0.5);
+  background-color: rgba(124, 107, 255, 0.5);
 }
 #container netflixintro[letter=Q] .helper-1 .effect-brush {
   animation-name: brush-moving;
@@ -142,10 +146,10 @@
   display: block;
   content: "";
   position: absolute;
-  background-color: #e40913;
+  background-color: #7c6bff;
   width: 100%;
   height: 70%;
-  box-shadow: 0px 0px 29px 24px #e40913;
+  box-shadow: 0px 0px 29px 24px #7c6bff;
 }
 #container netflixintro [class*=helper-] .effect-brush [class*=fur-] {
   display: block;
@@ -156,157 +160,157 @@
 #container netflixintro [class*=helper-] .effect-brush .fur-1 {
   left: 0%;
   width: 3.8%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 15%, rgba(0, 0, 0, 0) 81%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 15%, rgba(0, 0, 0, 0) 81%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-2 {
   left: 3.8%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 10%, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 10%, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-3 {
   left: 6.6%;
   width: 4.8%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-4 {
   left: 11.4%;
   width: 4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 23%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 23%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-5 {
   left: 15.4%;
   width: 4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 15%, rgba(0, 0, 0, 0) 86%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 15%, rgba(0, 0, 0, 0) 86%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-6 {
   left: 19.4%;
   width: 2.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 27%, rgba(0, 0, 0, 0) 89%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 27%, rgba(0, 0, 0, 0) 89%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-7 {
   left: 21.9%;
   width: 4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 20%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 20%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-8 {
   left: 25.9%;
   width: 2%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 30%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 30%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-9 {
   left: 27.9%;
   width: 4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 35%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 35%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-10 {
   left: 31.9%;
   width: 3.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-11 {
   left: 35.4%;
   width: 2%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 34%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-12 {
   left: 37.4%;
   width: 2.6%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 22%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 22%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-13 {
   left: 40%;
   width: 6%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 47%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 47%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-14 {
   left: 46%;
   width: 2%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 36%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 36%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-15 {
   left: 48%;
   width: 5.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 29%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 29%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-16 {
   left: 53.5%;
   width: 3%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-17 {
   left: 56.5%;
   width: 4.1%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 45%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 45%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-18 {
   left: 60.6%;
   width: 2.4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 34%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-19 {
   left: 63%;
   width: 4%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 47%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 47%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-20 {
   left: 67%;
   width: 1.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 27%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 27%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-21 {
   left: 68.5%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-22 {
   left: 71.3%;
   width: 2.3%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 9%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 9%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-23 {
   left: 73.6%;
   width: 2.2%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 28%, rgba(0, 0, 0, 0) 92%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 28%, rgba(0, 0, 0, 0) 92%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-24 {
   left: 75.8%;
   width: 1%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-25 {
   left: 76.8%;
   width: 2.1%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 28%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 28%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-26 {
   left: 78.9%;
   width: 4.1%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 34%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-27 {
   left: 83%;
   width: 2.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 21%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 21%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-28 {
   left: 85.5%;
   width: 4.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 39%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-29 {
   left: 90%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 30%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 30%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-30 {
   left: 92.8%;
   width: 3.5%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 19%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 19%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-31 {
   left: 96.3%;
   width: 3.7%;
-  background: linear-gradient(to bottom, #e40913 0%, #e40913 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-lumieres {
   position: absolute;
@@ -322,7 +326,7 @@
   position: absolute;
   display: block;
   height: 100%;
-  box-shadow: 0px 0px 10px 0px rgba(228, 9, 19, 0.75);
+  box-shadow: 0px 0px 10px 0px rgba(124, 107, 255, 0.75);
   background: var(--color);
 }
 #container netflixintro [class*=helper-] .effect-lumieres [class*=lamp-]::before {
@@ -332,7 +336,7 @@
   width: 100%;
   height: 100%;
   background: var(--color);
-  box-shadow: 0px 0px 10px 0px rgba(228, 9, 19, 0.75);
+  box-shadow: 0px 0px 10px 0px rgba(124, 107, 255, 0.75);
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-1 {
   --color: #ff0100;
@@ -748,64 +752,19 @@
 }
 @keyframes fading-lumieres-box {
   0% {
-    background-color: rgba(228, 9, 19, 0.5);
+    background-color: rgba(124, 107, 255, 0.5);
   }
   100% {
-    background-color: rgba(228, 9, 19, 0);
+    background-color: rgba(124, 107, 255, 0);
   }
 }
-
-/* Reset de style de base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  border: none;
-  outline: none;
-  font-family: 'Poppins', sans-serif;
-}
-
-html {
-  font-size: 62.5%;
-  scroll-behavior: smooth; /* Permet le défilement fluide */
-}
-
-body {
-  width: 100%;
-  height: 100vh;
-  overflow-x: hidden;
-  background-color: #101728; /* Fond sombre */
-  color: #fff; /* Texte blanc */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    font-family: 'Poppins', sans-serif;
-}
-
-html {
-    font-size: 62.5%;
-    scroll-behavior: smooth; /* Permet le défilement fluide */
-}
-
-body {
-    width: 100%;
-    height: 100vh;
-    overflow-x: hidden;
-    background-color: #101728; /* Fond sombre */
-    color: #fff; /* Texte blanc */
-
-}
-
 
 /* Premium intro chrome */
 #intro-container {
-  background: radial-gradient(ellipse at center, #1a0507 0%, #000 55%, #000 100%);
+  background:
+  radial-gradient(ellipse at 30% 35%, rgba(100, 70, 200, 0.32) 0%, transparent 48%),
+  radial-gradient(ellipse at 75% 55%, rgba(50, 90, 190, 0.25) 0%, transparent 42%),
+  #03010a;
 }
 #intro-container.is-done {
   opacity: 0;
@@ -830,7 +789,8 @@ body {
   letter-spacing: 0.42em;
   text-indent: 0.42em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.92);
+  color: rgba(220, 228, 255, 0.92);
+  text-shadow: 0 0 24px rgba(124, 107, 255, 0.45);
 }
 #intro-container .intro-skip {
   position: absolute;
@@ -850,8 +810,8 @@ body {
 }
 #intro-container .intro-skip:hover {
   color: #fff;
-  border-color: rgba(228, 9, 19, 0.8);
-  background: rgba(228, 9, 19, 0.2);
+  border-color: rgba(124, 107, 255, 0.8);
+  background: rgba(124, 107, 255, 0.2);
 }
 @keyframes introCaptionIn {
   from { opacity: 0; transform: translateY(12px); }

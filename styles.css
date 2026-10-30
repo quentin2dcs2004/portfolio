@@ -1,17 +1,20 @@
 /* Quentin DA COSTA SOARES — portfolio
-   Direction: deep graphite + mint/amber craft — expressive Syne/Sora */
+   Direction: galaxy / nebula — deep space + violet/blue (premium, soft) */
 
 :root {
-  --bg: #07090d;
-  --bg-elev: #0e131a;
-  --ink: #e8eef4;
-  --muted: #8b9aab;
-  --mint: #3dffc8;
-  --mint-dim: rgba(61, 255, 200, 0.14);
-  --amber: #e8a87c;
-  --amber-dim: rgba(232, 168, 124, 0.16);
-  --steel: #7eb6c9;
-  --line: rgba(232, 238, 244, 0.1);
+  --bg: #05040c;
+  --bg-elev: #0c0a18;
+  --ink: #e8ecff;
+  --muted: #9aa3c7;
+  /* Accents = soft nebula (kept as --mint/--amber names for compatibility) */
+  --mint: #8b7cff;
+  --mint-dim: rgba(139, 124, 255, 0.16);
+  --amber: #6ea8ff;
+  --amber-dim: rgba(110, 168, 255, 0.16);
+  --steel: #a78bfa;
+  --line: rgba(180, 190, 255, 0.12);
+  --nebula-a: rgba(100, 70, 200, 0.28);
+  --nebula-b: rgba(40, 90, 180, 0.22);
   --font-display: "Syne", sans-serif;
   --font-body: "Sora", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -48,9 +51,10 @@ body {
   line-height: 1.65;
   color: var(--ink);
   background:
-    radial-gradient(120% 80% at 80% -10%, rgba(61, 255, 200, 0.08), transparent 55%),
-    radial-gradient(90% 70% at 10% 20%, rgba(232, 168, 124, 0.07), transparent 50%),
-    linear-gradient(165deg, #07090d 0%, #0b1118 45%, #0a0f14 100%);
+    radial-gradient(90% 70% at 15% 20%, rgba(100, 70, 200, 0.22), transparent 55%),
+    radial-gradient(80% 60% at 85% 10%, rgba(40, 90, 180, 0.18), transparent 50%),
+    radial-gradient(70% 50% at 60% 90%, rgba(70, 40, 140, 0.16), transparent 55%),
+    linear-gradient(165deg, #05040c 0%, #0a0818 45%, #07061a 100%);
   overflow-x: hidden;
 }
 
@@ -260,11 +264,12 @@ main {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(50% 45% at 28% 45%, rgba(61, 255, 200, 0.14), transparent 58%),
-    radial-gradient(42% 38% at 72% 40%, rgba(232, 168, 124, 0.12), transparent 55%);
+    radial-gradient(55% 50% at 30% 45%, rgba(120, 90, 220, 0.2), transparent 58%),
+    radial-gradient(45% 40% at 75% 35%, rgba(60, 120, 220, 0.16), transparent 55%),
+    radial-gradient(40% 35% at 55% 75%, rgba(160, 100, 255, 0.1), transparent 50%);
   mix-blend-mode: screen;
-  opacity: 0.9;
-  animation: glowDrift 12s ease-in-out infinite alternate;
+  opacity: 0.85;
+  animation: glowDrift 14s ease-in-out infinite alternate;
 }
 @keyframes glowDrift {
   from { transform: translate3d(-1.5%, 0, 0) scale(1); }
@@ -311,18 +316,18 @@ main {
   border-radius: 50%;
   border: 0.35rem solid var(--mint);
   box-shadow:
-    0 0 0 0.55rem rgba(61, 255, 200, 0.12),
-    0 0 42px rgba(61, 255, 200, 0.35),
-    0 0 80px rgba(232, 168, 124, 0.18);
+    0 0 0 0.55rem rgba(139, 124, 255, 0.12),
+    0 0 42px rgba(139, 124, 255, 0.35),
+    0 0 80px rgba(110, 168, 255, 0.18);
   cursor: pointer;
   transition: transform 0.35s var(--ease), box-shadow 0.35s;
 }
 .home-img img:hover {
   transform: scale(1.04);
   box-shadow:
-    0 0 0 0.55rem rgba(61, 255, 200, 0.18),
-    0 0 55px rgba(61, 255, 200, 0.5),
-    0 0 90px rgba(232, 168, 124, 0.28);
+    0 0 0 0.55rem rgba(139, 124, 255, 0.18),
+    0 0 55px rgba(139, 124, 255, 0.5),
+    0 0 90px rgba(110, 168, 255, 0.28);
 }
 .home-img__tag {
   position: absolute;
@@ -350,7 +355,7 @@ main {
 }
 .home-content h1 span {
   color: var(--mint);
-  text-shadow: 0 0 28px rgba(61, 255, 200, 0.35);
+  text-shadow: 0 0 28px rgba(139, 124, 255, 0.35);
 }
 .home-content .typing-text {
   font-family: var(--font-display);
@@ -391,7 +396,7 @@ main {
   background: var(--mint);
   color: var(--bg);
   transform: scale(1.15) translateY(-4px);
-  box-shadow: 0 0 22px rgba(61, 255, 200, 0.45);
+  box-shadow: 0 0 22px rgba(139, 124, 255, 0.45);
 }
 
 .home-content .btn {
@@ -464,8 +469,8 @@ main {
   transition: transform 0.25s var(--ease), background 0.25s, color 0.25s, border-color 0.25s;
 }
 .btn--primary {
-  background: linear-gradient(120deg, var(--mint), #6fe8d0 55%, var(--steel));
-  color: #061016;
+  background: linear-gradient(120deg, #6ea8ff 0%, #8b7cff 50%, #a78bfa 100%);
+  color: #0a0818;
 }
 .btn--primary:hover {
   filter: brightness(1.06);

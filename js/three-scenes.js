@@ -15,13 +15,13 @@ const IS_HOME = !IS_ABOUT && !IS_BOOK && !!document.getElementById('accueil');
 const IS_SUBTLE = IS_ABOUT || IS_BOOK;
 
 const COLORS = {
-  bg: 0x07090d,
-  mint: 0x3dffc8,
-  amber: 0xe8a87c,
-  steel: 0x7eb6c9,
-  ink: 0x121820,
-  enchant: 0xc77dff,
-  enchantCyan: 0x7cf0ff,
+  bg: 0x05040c,
+  mint: 0x8b7cff,      // nebula violet
+  amber: 0x6ea8ff,     // soft cosmic blue
+  steel: 0xa78bfa,     // lilac starlight
+  ink: 0x0c0a18,
+  enchant: 0xb794ff,
+  enchantCyan: 0x7aa2ff,
 };
 
 function makeRenderer(canvas, { alpha = true, dprCap = 1.75 } = {}) {
