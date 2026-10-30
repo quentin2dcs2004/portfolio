@@ -585,7 +585,8 @@
 @media (prefers-reduced-motion: reduce) {
   .device__aura,
   .phone-chathead__status .dot,
-  .bubble--typing i {
+  .bubble--typing i,
+  .device.is-ready {
     animation: none !important;
   }
   .device { opacity: 1; transform: none; }

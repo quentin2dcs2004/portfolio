@@ -637,6 +637,7 @@
   }
   .book {
     transition: none;
+    animation: none !important;
     opacity: 1;
     transform: none;
   }
