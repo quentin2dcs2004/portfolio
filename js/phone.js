@@ -196,6 +196,17 @@ function renderChips() {
   });
 }
 
+/* Subtle desk parallax on the handset */
+if (device && !REDUCED) {
+  const shell = device.querySelector('.device__shell');
+  window.addEventListener('pointermove', (e) => {
+    if (!shell) return;
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 6;
+    shell.style.transform = `perspective(900px) rotateY(${-8 + x}deg) rotateX(${4 - y}deg)`;
+  }, { passive: true });
+}
+
 /* Boot */
 renderProjects();
 renderChips();
