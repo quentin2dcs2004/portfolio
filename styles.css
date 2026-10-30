@@ -82,12 +82,14 @@ button, input, textarea {
   background: var(--bg);
   transform: scaleY(0);
   transform-origin: top;
-  transition: transform 0.45s var(--ease);
+  transition: transform 0.5s var(--ease), backdrop-filter 0.5s var(--ease);
+  backdrop-filter: blur(0);
 }
 #page-transition.is-leaving {
   transform: scaleY(1);
   transform-origin: bottom;
   pointer-events: all;
+  backdrop-filter: blur(10px);
 }
 #page-transition.is-ready:not(.is-leaving) {
   transform: scaleY(0);
@@ -172,6 +174,11 @@ body.intro-complete .hero-glow {
   overflow: hidden;
   background: #05040c;
   box-shadow: 0 0 0 1px rgba(155, 92, 255, 0.25);
+  animation: brandPulse 4.5s ease-in-out infinite;
+}
+@keyframes brandPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(155, 92, 255, 0.25); }
+  50% { box-shadow: 0 0 0 1px rgba(47, 107, 255, 0.45), 0 0 18px rgba(155, 92, 255, 0.35); }
 }
 .brand__mark img {
   width: 100%;
@@ -488,12 +495,35 @@ main {
   transition: transform 0.25s var(--ease), background 0.25s, color 0.25s, border-color 0.25s;
 }
 .btn--primary {
+  position: relative;
+  overflow: hidden;
   background: var(--galaxy);
   color: #fff;
   box-shadow: -10px 0 28px rgba(155, 92, 255, 0.35), 10px 0 28px rgba(47, 107, 255, 0.35);
 }
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.28) 48%,
+    transparent 62%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease);
+  pointer-events: none;
+}
 .btn--primary:hover {
   filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+.btn--primary:hover::after {
+  transform: translateX(120%);
+}
+.btn--primary:active {
+  transform: translateY(0);
 }
 .btn--ghost {
   border: 1px solid var(--line);
@@ -736,10 +766,26 @@ main {
   display: block;
 }
 
-/* ---------- About page ---------- */
+/* ---------- About page (tout centré) ---------- */
+.page-about main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.page-about .about-hero,
+.page-about .about-block {
+  width: min(100%, 42rem);
+  margin-inline: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .about-hero {
   padding: calc(var(--header-h) + 3.5rem) var(--gutter) 3rem;
-  max-width: 48rem;
+  max-width: 42rem;
 }
 .about-hero__title {
   font-family: var(--font-display);
@@ -750,28 +796,67 @@ main {
 }
 .about-block {
   padding: 3rem var(--gutter) 4rem;
-  max-width: 48rem;
+  max-width: 42rem;
   border-top: 1px solid var(--line);
+}
+.page-about .section__text,
+.page-about .eyebrow,
+.page-about .hero__brand {
+  margin-inline: auto;
+  text-align: center;
+  max-width: 36rem;
+}
+.page-about .section__title::after,
+.page-about .about-hero__title::after {
+  margin-inline: auto;
+  transform-origin: center;
+}
+.page-about .about-hero__title::after {
+  content: "";
+  display: block;
+  width: min(4.5rem, 40%);
+  height: 2px;
+  margin-top: 0.75rem;
+  border-radius: 999px;
+  background: var(--galaxy);
+  transform: scaleX(0);
+  transition: transform 0.9s var(--ease);
+}
+.page-about .about-hero__title.is-drawn::after {
+  transform: scaleX(1);
 }
 .goals-list {
   display: grid;
   gap: 0.85rem;
-  margin: 1.5rem 0 1.75rem;
+  margin: 1.5rem auto 1.75rem;
+  width: min(100%, 34rem);
+  text-align: center;
+  justify-items: center;
 }
 .goals-list li {
   position: relative;
-  padding-left: 1.5rem;
+  padding: 0.85rem 1rem 0.85rem 1rem;
   color: var(--muted);
+  max-width: 34rem;
 }
 .goals-list li::before {
   content: "";
-  position: absolute;
-  left: 0;
-  top: 0.65rem;
+  display: block;
   width: 0.55rem;
   height: 0.55rem;
+  margin: 0 auto 0.55rem;
   background: var(--mint);
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  position: static;
+}
+.page-about .btn {
+  margin-inline: auto;
+}
+.page-about .site-footer {
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ---------- Placeholders ---------- */
@@ -813,15 +898,102 @@ main {
   transform: translateY(28px);
   filter: blur(6px);
   transition:
-    opacity 0.85s var(--ease),
-    transform 0.85s var(--ease),
-    filter 0.85s var(--ease);
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: none;
   filter: none;
+}
+
+/* ---------- Premium motion layer (fluide / propre) ---------- */
+::selection {
+  background: rgba(155, 92, 255, 0.35);
+  color: #fff;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(155, 92, 255, 0.45) transparent;
+}
+html::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--violet), var(--blue));
+  border-radius: 999px;
+}
+
+.section__title,
+.phone-stage__title,
+.book-stage__title,
+.about-hero__title {
+  position: relative;
+}
+.section__title::after,
+.book-stage__title::after,
+.phone-stage__title::after {
+  content: "";
+  display: block;
+  width: min(4.5rem, 40%);
+  height: 2px;
+  margin-top: 0.65rem;
+  border-radius: 999px;
+  background: var(--galaxy);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s var(--ease);
+}
+.section__title.is-drawn::after,
+.book-stage__title.is-drawn::after,
+.phone-stage__title.is-drawn::after {
+  transform: scaleX(1);
+}
+.phone-stage__copy .phone-stage__title::after,
+.book-stage__meta .book-stage__title::after {
+  margin-inline: auto;
+  transform-origin: center;
+}
+
+.site-footer {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: footerIn 0.9s 0.35s var(--ease) forwards;
+}
+@keyframes footerIn {
+  to { opacity: 1; transform: none; }
+}
+
+/* Soft ambient cursor wash (desktop) */
+.cursor-glow {
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, rgba(155, 92, 255, 0.12), rgba(47, 107, 255, 0.08) 40%, transparent 68%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  mix-blend-mode: screen;
+}
+.cursor-glow.is-on {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand__mark,
+  .site-footer,
+  .btn--primary::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .cursor-glow { display: none !important; }
 }
 
 /* ---------- Responsive ---------- */

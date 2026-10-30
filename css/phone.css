@@ -56,6 +56,11 @@
 .device.is-ready {
   transform: none;
   opacity: 1;
+  animation: deviceFloat 5.5s ease-in-out 0.8s infinite;
+}
+@keyframes deviceFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .device__aura {
