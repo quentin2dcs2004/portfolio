@@ -4,7 +4,7 @@ Site portfolio statique (HTML / CSS / JS) avec **Three.js** en expérience visue
 
 ## Concept produit
 
-1. **Accueil** (`index.html`) — layout type réf [YouTube portfolio](https://www.youtube.com/watch?v=-u3vE84Wo_U&t=2s) (portrait rond + « Salut, c’est Quentin » + typing FR) + Three.js full-bleed. Textes en français.
+1. **Accueil** (`index.html`) — intro **Netflix lettre Q** (premium) → hero type [YouTube portfolio](https://www.youtube.com/watch?v=-u3vE84Wo_U&t=2s) (portrait rond + « Salut, c’est Quentin » + typing FR) + Three.js. Textes en français.
 2. **Projets** (`projets.html`) — **livre enchanté** interactif (esprit Minecraft enchant / glow runique)
 3. **Stories** (`cyber.html`) — feed / stories cyberpunk style Instagram + **Q&A** préparé (pas de backend)
 
