@@ -37,7 +37,7 @@
       <p class="eyebrow">Projets · Enchantés</p>
       <h1 class="book-stage__title">Livre enchanté</h1>
       <p class="book-stage__lead">
-        Tournez les pages d’un grimoire runique — chaque double-page est un projet.
+        Une page à la fois — comme un vrai livre. Clique, glisse ou utilise les flèches.
         <span class="placeholder-tag">Contenu placeholder</span>
       </p>
     </div>
@@ -47,104 +47,135 @@
         <span aria-hidden="true">‹</span>
       </button>
 
-      <div class="book" id="book" aria-live="polite">
-        <!-- Cover (odd side starts closed on right) -->
-        <div class="book__spread is-active" data-spread="0">
-          <div class="book__leaf book__leaf--left book__leaf--blank" aria-hidden="true"></div>
-          <div class="book__leaf book__leaf--right book__cover">
-            <div class="book__cover-inner">
-              <p class="book__cover-runes" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ</p>
-              <p class="book__cover-mark">QDCS</p>
-              <h2>Livre enchanté</h2>
-              <p>Volume 01 · Projets</p>
-              <p class="book__cover-hint">Cliquez · flèches · swipe</p>
+      <div class="book" id="book" aria-live="polite" role="region" aria-label="Livre de projets">
+        <canvas id="book-fx" class="book__fx" aria-hidden="true"></canvas>
+        <div class="book__scene">
+          <div class="book__tilt">
+            <div class="book__block" aria-hidden="true"></div>
+            <div class="book__stack" id="book-stack">
+
+          <!-- Sheet 0: cover → back = projet 01 left -->
+          <article class="sheet" data-sheet="0">
+            <div class="sheet__face sheet__face--front sheet__face--cover">
+              <div class="book__cover-inner">
+                <p class="book__cover-runes" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ</p>
+                <p class="book__cover-mark">QDCS</p>
+                <h2>Livre enchanté</h2>
+                <p>Volume 01 · Projets</p>
+                <p class="book__cover-hint">Glisse · clic · flèches</p>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back">
+              <div class="sheet__content">
+                <p class="book__folio">01</p>
+                <h3>Cosplay — pièce d’armure</h3>
+                <p class="book__kicker">Impression 3D · PLA</p>
+                <p>
+                  Prototype d’élément de cosplay : modélisation, supports, finition.
+                  <em class="placeholder-inline">[Placeholder — remplacer par un vrai projet]</em>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sheet 1: 01 right → 02 left -->
+          <article class="sheet" data-sheet="1">
+            <div class="sheet__face sheet__face--front sheet__face--visual">
+              <div class="book__plate" data-tone="mint">
+                <span>3D</span>
+                <strong>Armure</strong>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back">
+              <div class="sheet__content">
+                <p class="book__folio">02</p>
+                <h3>Identité visuelle</h3>
+                <p class="book__kicker">Graphisme · Brand</p>
+                <p>
+                  Recherche de signe, typographie et déclinaisons pour une marque locale.
+                  <em class="placeholder-inline">[Placeholder]</em>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sheet 2: 02 right → 03 left -->
+          <article class="sheet" data-sheet="2">
+            <div class="sheet__face sheet__face--front sheet__face--visual">
+              <div class="book__plate" data-tone="amber">
+                <span>GFX</span>
+                <strong>Marque</strong>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back">
+              <div class="sheet__content">
+                <p class="book__folio">03</p>
+                <h3>Pièce mécanique</h3>
+                <p class="book__kicker">CAO · Matières mixtes</p>
+                <p>
+                  Conception d’une pièce fonctionnelle adaptée à l’usage et à la matière.
+                  <em class="placeholder-inline">[Placeholder]</em>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sheet 3: 03 right → 04 left -->
+          <article class="sheet" data-sheet="3">
+            <div class="sheet__face sheet__face--front sheet__face--visual">
+              <div class="book__plate" data-tone="steel">
+                <span>MEC</span>
+                <strong>Fonction</strong>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back">
+              <div class="sheet__content">
+                <p class="book__folio">04</p>
+                <h3>Expérience web</h3>
+                <p class="book__kicker">UI · Motion</p>
+                <p>
+                  Interface immersive pour présenter un univers créatif.
+                  <em class="placeholder-inline">[Placeholder — ce portfolio en est l’ébauche]</em>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sheet 4: 04 right → Fin left -->
+          <article class="sheet" data-sheet="4">
+            <div class="sheet__face sheet__face--front sheet__face--visual">
+              <div class="book__plate" data-tone="ink">
+                <span>WEB</span>
+                <strong>Immersion</strong>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back sheet__face--colophon">
+              <div class="sheet__content">
+                <p class="book__folio">Fin</p>
+                <h3>Suite à écrire</h3>
+                <p>
+                  Ajoute ici tes vraies captures, matières et liens.
+                  En attendant, le livre tourne déjà.
+                </p>
+                <a href="cyber.html" class="btn btn--primary">Ouvrir les Stories</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Sheet 5: end right (decorative) -->
+          <article class="sheet" data-sheet="5">
+            <div class="sheet__face sheet__face--front sheet__face--end">
+              <div class="sheet__content sheet__content--center">
+                <p class="book__cover-runes" aria-hidden="true">ᚹ ᛃ ᛇ ᛈ</p>
+                <p class="book__folio">✦</p>
+                <h3>Grimoire fermé</h3>
+                <p>Reviens quand les projets seront gravés.</p>
+              </div>
+            </div>
+            <div class="sheet__face sheet__face--back sheet__face--blank" aria-hidden="true"></div>
+          </article>
             </div>
           </div>
-        </div>
-
-        <div class="book__spread" data-spread="1">
-          <div class="book__leaf book__leaf--left">
-            <p class="book__folio">01</p>
-            <h3>Cosplay — pièce d’armure</h3>
-            <p class="book__kicker">Impression 3D · PLA</p>
-            <p>
-              Prototype d’élément de cosplay : modélisation, supports, finition.
-              <em class="placeholder-inline">[Placeholder — remplacer par un vrai projet]</em>
-            </p>
-          </div>
-          <div class="book__leaf book__leaf--right book__leaf--visual">
-            <div class="book__plate" data-tone="mint">
-              <span>3D</span>
-              <strong>Armure</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="book__spread" data-spread="2">
-          <div class="book__leaf book__leaf--left">
-            <p class="book__folio">02</p>
-            <h3>Identité visuelle</h3>
-            <p class="book__kicker">Graphisme · Brand</p>
-            <p>
-              Recherche de signe, typographie et déclinaisons pour une marque locale.
-              <em class="placeholder-inline">[Placeholder]</em>
-            </p>
-          </div>
-          <div class="book__leaf book__leaf--right book__leaf--visual">
-            <div class="book__plate" data-tone="amber">
-              <span>GFX</span>
-              <strong>Marque</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="book__spread" data-spread="3">
-          <div class="book__leaf book__leaf--left">
-            <p class="book__folio">03</p>
-            <h3>Pièce mécanique</h3>
-            <p class="book__kicker">CAO · Matières mixtes</p>
-            <p>
-              Conception d’une pièce fonctionnelle adaptée à l’usage et à la matière.
-              <em class="placeholder-inline">[Placeholder]</em>
-            </p>
-          </div>
-          <div class="book__leaf book__leaf--right book__leaf--visual">
-            <div class="book__plate" data-tone="steel">
-              <span>MEC</span>
-              <strong>Fonction</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="book__spread" data-spread="4">
-          <div class="book__leaf book__leaf--left">
-            <p class="book__folio">04</p>
-            <h3>Expérience web</h3>
-            <p class="book__kicker">UI · Motion</p>
-            <p>
-              Interface immersive pour présenter un univers créatif.
-              <em class="placeholder-inline">[Placeholder — ce portfolio en est l’ébauche]</em>
-            </p>
-          </div>
-          <div class="book__leaf book__leaf--right book__leaf--visual">
-            <div class="book__plate" data-tone="ink">
-              <span>WEB</span>
-              <strong>Immersion</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="book__spread" data-spread="5">
-          <div class="book__leaf book__leaf--left book__leaf--colophon">
-            <p class="book__folio">Fin</p>
-            <h3>Suite à écrire</h3>
-            <p>
-              Ajoute ici tes vraies captures, matières et liens.
-              En attendant, le livre tourne déjà.
-            </p>
-            <a href="cyber.html" class="btn btn--primary">Ouvrir les Stories</a>
-          </div>
-          <div class="book__leaf book__leaf--right book__leaf--blank" aria-hidden="true"></div>
         </div>
       </div>
 
@@ -156,7 +187,7 @@
     <div class="book-progress" aria-hidden="true">
       <div class="book-progress__bar" id="book-progress-bar"></div>
     </div>
-    <p class="book-counter" id="book-counter">1 / 6</p>
+    <p class="book-counter" id="book-counter">Couverture · 0 / 5</p>
   </main>
 
   <footer class="site-footer">

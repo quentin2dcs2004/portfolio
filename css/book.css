@@ -1,15 +1,17 @@
-/* Interactive project book — esprit « livre enchanté Minecraft »
-   (glow runique / enchant glint — pas un clone pixel-perfect) */
+/* Enchanted Minecraft-inspired book — real stacked 3D page flips */
 
 .page-book {
   --paper: #ebe0c8;
   --paper-ink: #1c1428;
   --paper-muted: #5a4a68;
-  --enchant: #c77dff;
-  --enchant-hot: #e9b3ff;
-  --enchant-cyan: #7cf0ff;
+  --enchant: #9b5cff;
+  --enchant-hot: #c9a0ff;
+  --enchant-blue: #2f6bff;
+  --enchant-cyan: #7eb6ff;
   --leather: #2a1840;
   --leather-deep: #12081f;
+  --flip-ease: cubic-bezier(0.45, 0.05, 0.25, 1);
+  --flip-ms: 900ms;
 }
 
 .page-book .site-header.is-scrolled {
@@ -18,7 +20,7 @@
 
 .page-book .eyebrow {
   color: var(--enchant-hot);
-  text-shadow: 0 0 18px rgba(199, 125, 255, 0.45);
+  text-shadow: 0 0 18px rgba(155, 92, 255, 0.45);
 }
 
 .book-stage {
@@ -41,11 +43,11 @@
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   letter-spacing: -0.03em;
   margin-bottom: 0.5rem;
-  background: linear-gradient(120deg, #fff 20%, var(--enchant-hot) 55%, var(--enchant-cyan));
+  background: linear-gradient(115deg, #fff 10%, var(--enchant) 45%, var(--enchant-blue) 90%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 18px rgba(199, 125, 255, 0.35));
+  filter: drop-shadow(0 0 18px rgba(155, 92, 255, 0.35));
 }
 .book-stage__lead {
   color: var(--muted);
@@ -57,149 +59,285 @@
   grid-template-columns: auto 1fr auto;
   gap: 0.75rem;
   align-items: center;
-  width: min(100%, 920px);
+  width: min(100%, 960px);
   position: relative;
 }
 
-/* Ambient enchant aura around the book */
+/* Ambient dual-pole enchant aura */
 .book-shell::before {
   content: "";
   position: absolute;
-  inset: -12% -6%;
+  inset: -14% -8%;
   background:
-    radial-gradient(circle at 50% 50%, rgba(199, 125, 255, 0.22), transparent 58%),
-    radial-gradient(circle at 30% 40%, rgba(124, 240, 255, 0.1), transparent 45%);
-  filter: blur(8px);
+    radial-gradient(circle at 28% 45%, rgba(155, 92, 255, 0.32), transparent 52%),
+    radial-gradient(circle at 72% 50%, rgba(47, 107, 255, 0.28), transparent 50%);
+  filter: blur(10px);
   pointer-events: none;
   z-index: 0;
-  animation: auraPulse 4.5s ease-in-out infinite;
+  animation: auraPulse 4.2s ease-in-out infinite;
 }
 @keyframes auraPulse {
-  0%, 100% { opacity: 0.65; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1.03); }
+  0%, 100% { opacity: 0.7; transform: scale(0.97); }
+  50% { opacity: 1; transform: scale(1.04); }
 }
 
+.book-shell.is-pulse-next::before {
+  animation: pulseFlashNext 0.55s ease-out;
+}
+.book-shell.is-pulse-prev::before {
+  animation: pulseFlashPrev 0.55s ease-out;
+}
+@keyframes pulseFlashNext {
+  0% { opacity: 1; filter: blur(6px); }
+  40% { opacity: 1; filter: blur(2px); transform: scale(1.08); }
+  100% { opacity: 0.75; filter: blur(10px); }
+}
+@keyframes pulseFlashPrev {
+  0% { opacity: 1; filter: blur(6px); }
+  40% { opacity: 1; filter: blur(2px); transform: scale(1.08); }
+  100% { opacity: 0.75; filter: blur(10px); }
+}
+
+.book-shell.is-shake {
+  animation: bookShake 0.4s ease;
+}
+@keyframes bookShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ===== Book geometry ===== */
 .book {
   position: relative;
   z-index: 1;
   width: 100%;
   aspect-ratio: 1.55 / 1;
-  min-height: 320px;
-  perspective: 2200px;
+  min-height: 340px;
+  cursor: grab;
+  touch-action: pan-y;
+  opacity: 0;
+  transform: translateY(22px) scale(0.94);
+  transition: opacity 0.7s var(--flip-ease), transform 0.7s var(--flip-ease);
+}
+.book.is-ready {
+  opacity: 1;
+  transform: none;
+}
+.book.is-dragging {
+  cursor: grabbing;
+}
+.book.is-turning-forward,
+.book.is-turning-back {
+  cursor: grabbing;
+}
+
+.book__fx {
+  position: absolute;
+  inset: -8% -4%;
+  width: 108%;
+  height: 116%;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Perspective lives alone — never combine with filter/opacity tricks on this node */
+.book__scene {
+  position: absolute;
+  inset: 0;
+  perspective: 1200px;
+  perspective-origin: 50% 48%;
+}
+
+/* Desk-camera tilt on an inner node so page rotateY keeps real depth */
+.book__tilt {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(12deg);
   transform-style: preserve-3d;
 }
 
-.book__spread {
+/* Left block / thickness when closed */
+.book__block {
+  position: absolute;
+  left: 0;
+  top: 2%;
+  bottom: 2%;
+  width: 50%;
+  border-radius: 0.35rem 0 0 0.35rem;
+  background:
+    linear-gradient(90deg, #1a0c2c 0%, #2a1848 40%, #1e1236 100%);
+  box-shadow:
+    inset -8px 0 20px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(155, 92, 255, 0.25),
+    0 22px 48px rgba(0, 0, 0, 0.55);
+  transform: translateZ(-12px);
+  pointer-events: none;
+}
+.book__block::before {
+  content: "";
+  position: absolute;
+  inset: 8% auto 8% 0;
+  width: 14px;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(235, 224, 200, 0.55) 0 2px,
+    rgba(155, 92, 255, 0.2) 2px 4px,
+    rgba(47, 107, 255, 0.15) 4px 6px,
+    transparent 6px 9px
+  );
+  opacity: 0.85;
+  border-radius: 2px 0 0 2px;
+}
+.book[data-open="0"] .book__block {
+  opacity: 1;
+}
+.book:not([data-open="0"]) .book__block {
+  opacity: 0.55;
+  transition: opacity 0.5s ease;
+}
+
+.book__stack {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(12px) scale(0.985);
-  transition:
-    opacity 0.45s var(--ease),
-    transform 0.45s var(--ease);
-  filter: drop-shadow(0 0 28px rgba(199, 125, 255, 0.28)) drop-shadow(0 28px 40px rgba(0, 0, 0, 0.55));
-}
-.book__spread.is-active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: none;
-  z-index: 2;
-}
-.book__spread.is-behind {
-  opacity: 0;
-  z-index: 1;
-}
-.book__spread.is-exiting-left {
-  animation: spreadOutLeft 0.52s var(--ease) forwards;
-}
-.book__spread.is-exiting-right {
-  animation: spreadOutRight 0.52s var(--ease) forwards;
+  transform-style: preserve-3d;
 }
 
-@keyframes spreadOutLeft {
-  to {
-    opacity: 0;
-    transform: rotateY(-18deg) translateX(-8%) scale(0.96);
-  }
-}
-@keyframes spreadOutRight {
-  to {
-    opacity: 0;
-    transform: rotateY(18deg) translateX(8%) scale(0.96);
-  }
-}
-
-.book.flip-forward .book__spread.is-active {
+/* ===== Individual sheets (right half, flip around spine) ===== */
+.sheet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
   transform-origin: left center;
+  transform-style: preserve-3d;
+  /* transform is driven by JS (one sheet at a time) */
+  will-change: transform;
+  pointer-events: none;
 }
-.book.flip-back .book__spread.is-active {
-  transform-origin: right center;
+.sheet.is-top,
+.sheet.is-turning,
+.sheet.is-peeling {
+  pointer-events: auto;
 }
 
-.book__leaf {
-  background: linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
-  color: var(--paper-ink);
-  padding: clamp(1rem, 2.5vw, 1.75rem);
+.sheet__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
+  padding: clamp(1rem, 2.4vw, 1.7rem);
+  color: var(--paper-ink);
+  background: linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
   border: 1px solid rgba(90, 40, 120, 0.18);
 }
+.sheet__face .sheet__content,
+.sheet__face .book__cover-inner,
+.sheet__face .book__plate {
+  overflow: hidden;
+  max-height: 100%;
+}
 
-/* Runic margin glyphs */
-.book__leaf:not(.book__leaf--blank)::before {
+.sheet__face--front {
+  border-radius: 0 0.35rem 0.35rem 0;
+  box-shadow:
+    inset 14px 0 28px rgba(80, 30, 120, 0.07),
+    0 0 0 1px rgba(155, 92, 255, 0.08);
+  background-image:
+    linear-gradient(270deg, rgba(80, 30, 120, 0.07), transparent 18%),
+    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
+  transform: rotateY(0deg);
+}
+
+.sheet__face--back {
+  border-radius: 0.35rem 0 0 0.35rem;
+  box-shadow:
+    inset -14px 0 28px rgba(80, 30, 120, 0.08),
+    0 0 0 1px rgba(155, 92, 255, 0.08);
+  background-image:
+    linear-gradient(90deg, rgba(80, 30, 120, 0.08), transparent 18%),
+    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
+  /* Pre-rotated so when the sheet hits -180°, this face reads upright on the left */
+  transform: rotateY(180deg);
+}
+
+/* Hard guarantee past the halfway point (Chrome can glitch backface mid-turn) */
+.sheet.is-past-half .sheet__face--front {
+  visibility: hidden;
+}
+.sheet:not(.is-past-half) .sheet__face--back {
+  /* keep in DOM for 3D, but if backface glitches early, front still wins */
+}
+
+/* Soft paper curl shadow while the ONE active sheet turns */
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.45) 0%,
+    transparent 22%,
+    transparent 78%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 5;
+  transform: translateZ(1.5px);
+  border-radius: 0 0.35rem 0.35rem 0;
+}
+.sheet.is-turning::after,
+.sheet.is-peeling::after {
+  opacity: 1;
+}
+
+/* Runic header glyphs */
+.sheet__face:not(.sheet__face--cover):not(.sheet__face--blank):not(.sheet__face--visual)::before {
   content: "ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ";
   position: absolute;
   top: 0.55rem;
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.45em;
-  color: rgba(140, 70, 190, 0.35);
+  color: rgba(140, 70, 190, 0.38);
   pointer-events: none;
   animation: runeFlicker 3.2s steps(2) infinite;
 }
 @keyframes runeFlicker {
   0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.7; text-shadow: 0 0 8px rgba(199, 125, 255, 0.5); }
+  50% { opacity: 0.75; text-shadow: 0 0 8px rgba(155, 92, 255, 0.55); }
 }
 
-.book__leaf--left {
-  border-radius: 0.2rem 0 0 0.2rem;
-  box-shadow: inset -12px 0 28px rgba(80, 30, 120, 0.08);
-  background-image:
-    linear-gradient(90deg, rgba(80, 30, 120, 0.08), transparent 18%),
-    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
+.sheet__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
-.book__leaf--right {
-  border-radius: 0 0.2rem 0.2rem 0;
-  box-shadow: inset 12px 0 28px rgba(80, 30, 120, 0.07);
-  background-image:
-    linear-gradient(270deg, rgba(80, 30, 120, 0.07), transparent 18%),
-    linear-gradient(180deg, #f3ead4 0%, var(--paper) 100%);
+.sheet__content--center {
+  align-items: center;
+  text-align: center;
 }
-.book__leaf--blank {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-.book__leaf--blank::before { content: none !important; }
 
-.book__leaf h3 {
+.sheet__face h3 {
   font-family: "Libre Baskerville", Georgia, serif;
-  font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+  font-size: clamp(1.1rem, 2.3vw, 1.5rem);
   margin-bottom: 0.45rem;
   line-height: 1.25;
   color: #2a1540;
 }
-.book__leaf p {
-  font-size: clamp(0.85rem, 1.5vw, 0.98rem);
+.sheet__face p {
+  font-size: clamp(0.84rem, 1.45vw, 0.96rem);
   line-height: 1.55;
   color: var(--paper-muted);
 }
@@ -210,7 +348,7 @@
   text-transform: uppercase;
   color: #8a5cb0;
   margin-bottom: 0.85rem;
-  text-shadow: 0 0 10px rgba(199, 125, 255, 0.25);
+  text-shadow: 0 0 10px rgba(155, 92, 255, 0.25);
 }
 .book__kicker {
   font-family: var(--font-display);
@@ -220,48 +358,42 @@
   color: #6b3d9a !important;
   margin-bottom: 0.65rem !important;
 }
-.book__leaf--colophon .btn {
-  margin-top: 1.25rem;
-  align-self: flex-start;
-  background: linear-gradient(120deg, #9b59ff, #7cf0ff);
-  color: #12081f;
-}
 
-/* Leather cover + enchant glint (Minecraft-inspired) */
-.book__cover {
+/* Cover face */
+.sheet__face--cover {
   background:
-    linear-gradient(135deg, rgba(199, 125, 255, 0.18), transparent 40%),
+    linear-gradient(135deg, rgba(155, 92, 255, 0.22), transparent 42%),
+    linear-gradient(225deg, rgba(47, 107, 255, 0.18), transparent 45%),
     linear-gradient(160deg, var(--leather) 0%, var(--leather-deep) 55%, #1a0a2e 100%) !important;
   color: #f5e9ff !important;
-  border: 2px solid rgba(199, 125, 255, 0.55) !important;
+  border: 2px solid transparent !important;
+  border-image: linear-gradient(135deg, var(--enchant), var(--enchant-blue)) 1;
   box-shadow:
     inset 0 0 0 3px rgba(18, 8, 31, 0.65),
-    inset 0 0 40px rgba(199, 125, 255, 0.15),
-    0 0 40px rgba(199, 125, 255, 0.35) !important;
-  overflow: hidden;
+    inset 0 0 40px rgba(155, 92, 255, 0.18),
+    0 0 36px rgba(155, 92, 255, 0.35),
+    0 0 48px rgba(47, 107, 255, 0.22) !important;
 }
-.book__cover::before { content: none !important; }
-
-/* Enchanted item glint sweep */
-.book__cover::after {
+.sheet__face--cover::before { content: none !important; }
+.sheet__face--cover::after {
   content: "";
   position: absolute;
-  inset: -40%;
+  inset: -45%;
   background: linear-gradient(
     115deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.08) 42%,
-    rgba(233, 179, 255, 0.55) 50%,
-    rgba(124, 240, 255, 0.35) 54%,
+    transparent 34%,
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(201, 160, 255, 0.55) 49%,
+    rgba(47, 107, 255, 0.4) 54%,
     transparent 62%
   );
   mix-blend-mode: screen;
-  animation: enchantGlint 2.8s linear infinite;
+  animation: enchantGlint 2.6s linear infinite;
   pointer-events: none;
 }
 @keyframes enchantGlint {
-  0% { transform: translateX(-30%) translateY(10%) rotate(0.001deg); }
-  100% { transform: translateX(30%) translateY(-10%) rotate(0.001deg); }
+  0% { transform: translateX(-32%) translateY(12%); }
+  100% { transform: translateX(32%) translateY(-12%); }
 }
 
 .book__cover-inner {
@@ -271,6 +403,7 @@
   place-items: center;
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 .book__cover-mark {
   font-family: var(--font-display);
@@ -278,21 +411,23 @@
   letter-spacing: 0.28em;
   color: var(--enchant-hot);
   text-indent: 0.28em;
-  text-shadow: 0 0 18px rgba(199, 125, 255, 0.8);
+  text-shadow: 0 0 18px rgba(155, 92, 255, 0.85);
 }
 .book__cover-runes {
   font-size: 0.85rem;
   letter-spacing: 0.35em;
   color: var(--enchant-cyan);
-  text-shadow: 0 0 12px rgba(124, 240, 255, 0.7);
+  text-shadow: 0 0 12px rgba(47, 107, 255, 0.75);
   animation: runeFlicker 2.4s steps(2) infinite;
 }
-.book__cover h2 {
+.sheet__face--cover h2 {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4.5vw, 2.7rem);
+  font-size: clamp(1.7rem, 4.2vw, 2.55rem);
   font-weight: 800;
   color: #fff;
-  text-shadow: 0 0 22px rgba(199, 125, 255, 0.65);
+  text-shadow:
+    0 0 18px rgba(155, 92, 255, 0.7),
+    0 0 28px rgba(47, 107, 255, 0.45);
 }
 .book__cover-hint {
   margin-top: 1rem;
@@ -302,20 +437,27 @@
   color: rgba(245, 233, 255, 0.65) !important;
 }
 
-.book__leaf--visual {
-  padding: clamp(0.75rem, 2vw, 1.25rem);
+.sheet__face--visual {
+  padding: clamp(0.75rem, 2vw, 1.2rem);
 }
+.sheet__face--visual::before { content: none !important; }
+
 .book__plate {
   flex: 1;
   display: grid;
   place-content: center;
   gap: 0.35rem;
   text-align: center;
-  border: 1px solid rgba(140, 70, 190, 0.28);
+  border: 1px solid rgba(155, 92, 255, 0.35);
   min-height: 70%;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 30px rgba(199, 125, 255, 0.12);
+  box-shadow: inset 0 0 30px rgba(155, 92, 255, 0.14);
+  background:
+    radial-gradient(circle at 28% 28%, rgba(155, 92, 255, 0.32), transparent 55%),
+    radial-gradient(circle at 78% 70%, rgba(47, 107, 255, 0.28), transparent 50%),
+    linear-gradient(160deg, #3a2458, #1a0f2c);
+  color: #f0e4ff;
 }
 .book__plate::after {
   content: "";
@@ -324,10 +466,11 @@
   background: linear-gradient(
     120deg,
     transparent 40%,
-    rgba(233, 179, 255, 0.35) 50%,
-    transparent 60%
+    rgba(201, 160, 255, 0.35) 48%,
+    rgba(47, 107, 255, 0.28) 54%,
+    transparent 62%
   );
-  animation: enchantGlint 3.4s linear infinite;
+  animation: enchantGlint 3.2s linear infinite;
   pointer-events: none;
 }
 .book__plate span {
@@ -340,77 +483,157 @@
 }
 .book__plate strong {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(1.35rem, 3vw, 1.95rem);
   font-weight: 800;
   position: relative;
   z-index: 1;
 }
-.book__plate[data-tone="mint"],
-.book__plate[data-tone="amber"],
-.book__plate[data-tone="steel"],
-.book__plate[data-tone="ink"] {
+
+.sheet__face--colophon .btn {
+  margin-top: 1.25rem;
+  align-self: flex-start;
+  background: linear-gradient(120deg, var(--enchant), var(--enchant-blue));
+  color: #12081f;
+}
+
+.sheet__face--end {
   background:
-    radial-gradient(circle at 30% 30%, rgba(199, 125, 255, 0.28), transparent 55%),
-    linear-gradient(160deg, #3a2458, #1a0f2c);
-  color: #f0e4ff;
-  border-color: rgba(199, 125, 255, 0.4);
+    radial-gradient(circle at 50% 40%, rgba(155, 92, 255, 0.18), transparent 60%),
+    linear-gradient(180deg, #f0e6d2, #e4d6bc) !important;
+}
+.sheet__face--blank {
+  background: linear-gradient(180deg, #e8dcc4, #dccfb4) !important;
+}
+.sheet__face--blank::before { content: none !important; }
+
+/* Depth stacking — right pile top = lowest unflipped index;
+   left pile top = highest flipped index */
+.sheet[data-sheet="0"] { z-index: 16; }
+.sheet[data-sheet="1"] { z-index: 15; }
+.sheet[data-sheet="2"] { z-index: 14; }
+.sheet[data-sheet="3"] { z-index: 13; }
+.sheet[data-sheet="4"] { z-index: 12; }
+.sheet[data-sheet="5"] { z-index: 11; }
+
+.sheet.is-flipped[data-sheet="0"] { z-index: 1; }
+.sheet.is-flipped[data-sheet="1"] { z-index: 2; }
+.sheet.is-flipped[data-sheet="2"] { z-index: 3; }
+.sheet.is-flipped[data-sheet="3"] { z-index: 4; }
+.sheet.is-flipped[data-sheet="4"] { z-index: 5; }
+.sheet.is-flipped[data-sheet="5"] { z-index: 6; }
+
+/* Only the turning leaf lifts above the stack */
+.sheet.is-turning,
+.sheet.is-peeling {
+  z-index: 40 !important;
+  filter:
+    drop-shadow(-14px 8px 22px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 26px rgba(155, 92, 255, 0.4));
+}
+
+.sheet.is-turning .sheet__face--front,
+.sheet.is-turning .sheet__face--back,
+.sheet.is-peeling .sheet__face--front,
+.sheet.is-peeling .sheet__face--back {
+  box-shadow:
+    inset 0 0 40px rgba(155, 92, 255, 0.14),
+    0 0 28px rgba(47, 107, 255, 0.28);
+}
+
+/* Spine highlight while a page is mid-turn */
+.book.is-turning-forward .book__stack::before,
+.book.is-turning-back .book__stack::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  bottom: 2%;
+  width: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(155, 92, 255, 0.7),
+    rgba(47, 107, 255, 0.7),
+    transparent
+  );
+  box-shadow: 0 0 18px rgba(155, 92, 255, 0.55);
+  z-index: 35;
+  pointer-events: none;
+  animation: spineFlash 0.9s ease-out;
+}
+@keyframes spineFlash {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  100% { opacity: 0.35; }
 }
 
 .book-nav {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 0.2rem;
-  border: 1px solid rgba(199, 125, 255, 0.45);
-  background: rgba(30, 12, 48, 0.75);
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(155, 92, 255, 0.5);
+  background: linear-gradient(135deg, rgba(40, 16, 64, 0.9), rgba(16, 24, 64, 0.85));
   color: var(--enchant-hot);
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 0 0 16px rgba(199, 125, 255, 0.2);
+  box-shadow: 0 0 16px rgba(155, 92, 255, 0.22);
   transition: border-color 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
   position: relative;
   z-index: 2;
 }
 .book-nav:hover:not(:disabled) {
-  border-color: var(--enchant-cyan);
-  color: var(--enchant-cyan);
-  transform: scale(1.06);
-  box-shadow: 0 0 22px rgba(124, 240, 255, 0.35);
+  border-color: var(--enchant-blue);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 0 24px rgba(47, 107, 255, 0.4);
+}
+.book-nav:active:not(:disabled) {
+  transform: scale(0.96);
 }
 .book-nav:disabled {
-  opacity: 0.3;
+  opacity: 0.28;
   cursor: default;
 }
 
 .book-progress {
   width: min(100%, 420px);
   height: 3px;
-  background: rgba(199, 125, 255, 0.15);
+  background: rgba(155, 92, 255, 0.15);
   border-radius: 999px;
   overflow: hidden;
-  box-shadow: 0 0 12px rgba(199, 125, 255, 0.2);
+  box-shadow: 0 0 12px rgba(155, 92, 255, 0.2);
 }
 .book-progress__bar {
   height: 100%;
-  width: 16%;
-  background: linear-gradient(90deg, var(--enchant), var(--enchant-cyan));
-  box-shadow: 0 0 12px rgba(199, 125, 255, 0.7);
-  transition: width 0.4s var(--ease);
+  width: 0%;
+  background: linear-gradient(90deg, var(--enchant), var(--enchant-blue));
+  box-shadow: 0 0 12px rgba(155, 92, 255, 0.7);
+  transition: width 0.45s var(--flip-ease);
 }
 .book-counter {
   font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(233, 179, 255, 0.7);
+  color: rgba(201, 160, 255, 0.75);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .book-shell::before,
-  .book__cover::after,
+  .sheet__face--cover::after,
   .book__plate::after,
-  .book__leaf:not(.book__leaf--blank)::before,
+  .sheet__face:not(.sheet__face--cover):not(.sheet__face--blank):not(.sheet__face--visual)::before,
   .book__cover-runes {
     animation: none !important;
+  }
+  .sheet {
+    transition-duration: 0.01ms !important;
+  }
+  .book {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -425,30 +648,20 @@
   .book-nav--prev { justify-self: start; }
   .book-nav--next { justify-self: end; margin-top: -3.2rem; }
   .book {
-    aspect-ratio: 0.72 / 1;
+    aspect-ratio: 0.78 / 1;
     max-width: 420px;
   }
-  .book__spread {
-    grid-template-columns: 1fr;
+  .book__scene { perspective: 900px; }
+  .book__tilt { transform: rotateX(8deg); }
+  /* Mobile: full-width sheets (single page view) */
+  .book__block { display: none; }
+  .sheet {
+    width: 100%;
+    right: 0;
+    left: 0;
   }
-  .book__leaf--left {
-    border-radius: 0.2rem 0.2rem 0 0;
-    min-height: 52%;
-  }
-  .book__leaf--right {
-    border-radius: 0 0 0.2rem 0.2rem;
-    min-height: 48%;
-  }
-  .book__leaf--blank { display: none; }
-  .book__cover {
-    grid-column: 1;
-    min-height: 100%;
-    border-radius: 0.2rem !important;
-  }
-  .book__spread[data-spread="0"] {
-    grid-template-columns: 1fr;
-  }
-  .book__spread[data-spread="0"] .book__leaf--blank {
-    display: none;
+  .sheet__face--front,
+  .sheet__face--back {
+    border-radius: 0.35rem;
   }
 }
