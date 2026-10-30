@@ -16,12 +16,12 @@ const IS_SUBTLE = IS_ABOUT || IS_BOOK;
 
 const COLORS = {
   bg: 0x05040c,
-  mint: 0x7c6bff,      // violet only
-  amber: 0x5b8cff,     // blue only
-  steel: 0x8b9cff,     // light blue-violet
+  mint: 0x9b5cff,      // violet pole (distinct)
+  amber: 0x2f6bff,     // blue pole (distinct)
+  steel: 0x5b8cff,
   ink: 0x0c0a18,
-  enchant: 0x7c6bff,
-  enchantCyan: 0x5b8cff,
+  enchant: 0x9b5cff,
+  enchantCyan: 0x2f6bff,
 };
 
 function makeRenderer(canvas, { alpha = true, dprCap = 1.75 } = {}) {

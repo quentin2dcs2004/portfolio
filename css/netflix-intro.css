@@ -6,10 +6,9 @@
     width: 100%;
     height: 100%;
     background:
-    radial-gradient(ellipse at 35% 40%, rgba(88, 60, 180, 0.35) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 60%, rgba(40, 80, 180, 0.28) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 100%, rgba(20, 30, 80, 0.5) 0%, transparent 55%),
-    #03010a;
+      radial-gradient(ellipse 70% 60% at 18% 45%, rgba(155, 92, 255, 0.55) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 82% 50%, rgba(47, 107, 255, 0.5) 0%, transparent 55%),
+      linear-gradient(115deg, #1a0a3a 0%, #05040c 45%, #061436 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,7 +37,7 @@
   animation-fill-mode: forwards;
   background-size: 4000px;
   background-position: -1950px 0;
-  filter: drop-shadow(0 0 28px rgba(124, 107, 255, 0.35));
+  filter: drop-shadow(0 0 22px rgba(155, 92, 255, 0.55)) drop-shadow(0 0 36px rgba(47, 107, 255, 0.4));
 }
 #container netflixintro::before {
   content: "";
@@ -71,7 +70,7 @@
   animation-duration: 2s;
   animation-delay: 0.55s;
   animation-fill-mode: forwards;
-  background-color: rgba(124, 107, 255, 0.5);
+  background-color: rgba(155, 92, 255, 0.5);
 }
 #container netflixintro[letter=Q] .helper-1 .effect-brush {
   animation-name: brush-moving;
@@ -146,10 +145,10 @@
   display: block;
   content: "";
   position: absolute;
-  background-color: #7c6bff;
+  background-color: #9b5cff;
   width: 100%;
   height: 70%;
-  box-shadow: 0px 0px 29px 24px #7c6bff;
+  box-shadow: 0px 0px 29px 24px #9b5cff;
 }
 #container netflixintro [class*=helper-] .effect-brush [class*=fur-] {
   display: block;
@@ -160,157 +159,157 @@
 #container netflixintro [class*=helper-] .effect-brush .fur-1 {
   left: 0%;
   width: 3.8%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 15%, rgba(0, 0, 0, 0) 81%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 15%, rgba(0, 0, 0, 0) 81%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-2 {
   left: 3.8%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 10%, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 10%, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-3 {
   left: 6.6%;
   width: 4.8%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-4 {
   left: 11.4%;
   width: 4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 23%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 23%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-5 {
   left: 15.4%;
   width: 4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 15%, rgba(0, 0, 0, 0) 86%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 15%, rgba(0, 0, 0, 0) 86%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-6 {
   left: 19.4%;
   width: 2.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 27%, rgba(0, 0, 0, 0) 89%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 27%, rgba(0, 0, 0, 0) 89%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-7 {
   left: 21.9%;
   width: 4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 20%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 20%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-8 {
   left: 25.9%;
   width: 2%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 30%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 30%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-9 {
   left: 27.9%;
   width: 4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 35%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 35%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-10 {
   left: 31.9%;
   width: 3.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-11 {
   left: 35.4%;
   width: 2%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 34%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-12 {
   left: 37.4%;
   width: 2.6%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 22%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 22%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-13 {
   left: 40%;
   width: 6%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 47%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 47%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-14 {
   left: 46%;
   width: 2%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 36%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 36%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-15 {
   left: 48%;
   width: 5.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 29%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 29%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-16 {
   left: 53.5%;
   width: 3%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 39%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-17 {
   left: 56.5%;
   width: 4.1%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 45%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 45%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-18 {
   left: 60.6%;
   width: 2.4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 34%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-19 {
   left: 63%;
   width: 4%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 47%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 47%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-20 {
   left: 67%;
   width: 1.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 27%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 27%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-21 {
   left: 68.5%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-22 {
   left: 71.3%;
   width: 2.3%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 9%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 9%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-23 {
   left: 73.6%;
   width: 2.2%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 28%, rgba(0, 0, 0, 0) 92%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 28%, rgba(0, 0, 0, 0) 92%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-24 {
   left: 75.8%;
   width: 1%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-25 {
   left: 76.8%;
   width: 2.1%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 28%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 28%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-26 {
   left: 78.9%;
   width: 4.1%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 34%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 34%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-27 {
   left: 83%;
   width: 2.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 21%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 21%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-28 {
   left: 85.5%;
   width: 4.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 39%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 39%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-29 {
   left: 90%;
   width: 2.8%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 30%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 30%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-30 {
   left: 92.8%;
   width: 3.5%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 19%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 19%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-brush .fur-31 {
   left: 96.3%;
   width: 3.7%;
-  background: linear-gradient(to bottom, #7c6bff 0%, #7c6bff 37%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, #9b5cff 0%, #9b5cff 37%, rgba(0, 0, 0, 0) 100%);
 }
 #container netflixintro [class*=helper-] .effect-lumieres {
   position: absolute;
@@ -326,7 +325,7 @@
   position: absolute;
   display: block;
   height: 100%;
-  box-shadow: 0px 0px 10px 0px rgba(124, 107, 255, 0.75);
+  box-shadow: 0px 0px 10px 0px rgba(155, 92, 255, 0.75);
   background: var(--color);
 }
 #container netflixintro [class*=helper-] .effect-lumieres [class*=lamp-]::before {
@@ -336,10 +335,10 @@
   width: 100%;
   height: 100%;
   background: var(--color);
-  box-shadow: 0px 0px 10px 0px rgba(124, 107, 255, 0.75);
+  box-shadow: 0px 0px 10px 0px rgba(155, 92, 255, 0.75);
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-1 {
-  --color: #7c6bff;
+  --color: #9b5cff;
   z: 6;
   left: 0.7%;
   width: 1%;
@@ -350,7 +349,7 @@
   animation-delay: 1.19s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-2 {
-  --color: #5b8cff;
+  --color: #2f6bff;
   left: 2.2%;
   width: 1.4%;
   animation-delay: 0.69s;
@@ -360,7 +359,7 @@
   animation-delay: 1.54s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-3 {
-  --color: #8b7cff;
+  --color: #a78bfa;
   left: 5.8%;
   width: 2.1%;
   animation-delay: 0.22s;
@@ -370,7 +369,7 @@
   animation-delay: 1.83s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-4 {
-  --color: #4f7cff;
+  --color: #3b82f6;
   left: 10.1%;
   width: 2%;
   animation-delay: 1.19s;
@@ -380,7 +379,7 @@
   animation-delay: 1.75s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-5 {
-  --color: #6ea8ff;
+  --color: #8b5cf6;
   left: 12.9%;
   width: 1.4%;
   animation-delay: 1.16s;
@@ -390,7 +389,7 @@
   animation-delay: 1.13s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-6 {
-  --color: #6b5ce6;
+  --color: #2563eb;
   left: 15.3%;
   width: 2.8%;
   animation-delay: 0.07s;
@@ -400,7 +399,7 @@
   animation-delay: 0.51s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-7 {
-  --color: #3d6bff;
+  --color: #7c3aed;
   left: 21.2%;
   width: 2.5%;
   animation-delay: 1.66s;
@@ -410,7 +409,7 @@
   animation-delay: 0.82s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-8 {
-  --color: #9aa8ff;
+  --color: #1d4ed8;
   left: 25%;
   width: 2.5%;
   animation-delay: 1.23s;
@@ -420,7 +419,7 @@
   animation-delay: 1.63s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-9 {
-  --color: #7c6bff;
+  --color: #9b5cff;
   left: 30.5%;
   width: 3%;
   animation-delay: 0.64s;
@@ -430,7 +429,7 @@
   animation-delay: 1.34s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-10 {
-  --color: #5b8cff;
+  --color: #2f6bff;
   left: 36.3%;
   width: 3%;
   animation-delay: 1.03s;
@@ -440,7 +439,7 @@
   animation-delay: 1.89s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-11 {
-  --color: #8b7cff;
+  --color: #a78bfa;
   left: 41%;
   width: 2.2%;
   animation-delay: 0.07s;
@@ -450,7 +449,7 @@
   animation-delay: 1.11s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-12 {
-  --color: #4f7cff;
+  --color: #3b82f6;
   left: 44.2%;
   width: 2.6%;
   animation-delay: 0.36s;
@@ -460,7 +459,7 @@
   animation-delay: 1.6s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-13 {
-  --color: #6ea8ff;
+  --color: #8b5cf6;
   left: 51.7%;
   width: 0.5%;
   animation-delay: 1.8s;
@@ -470,7 +469,7 @@
   animation-delay: 1.85s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-14 {
-  --color: #6b5ce6;
+  --color: #2563eb;
   left: 52.1%;
   width: 1.8%;
   animation-delay: 0.64s;
@@ -480,7 +479,7 @@
   animation-delay: 1.06s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-15 {
-  --color: #3d6bff;
+  --color: #7c3aed;
   left: 53.8%;
   width: 2.3%;
   animation-delay: 0.07s;
@@ -490,7 +489,7 @@
   animation-delay: 0.08s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-16 {
-  --color: #9aa8ff;
+  --color: #1d4ed8;
   left: 57.2%;
   width: 2%;
   animation-delay: 0.6s;
@@ -500,7 +499,7 @@
   animation-delay: 1.11s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-17 {
-  --color: #7c6bff;
+  --color: #9b5cff;
   left: 62.3%;
   width: 2.9%;
   animation-delay: 0.91s;
@@ -510,7 +509,7 @@
   animation-delay: 1.6s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-18 {
-  --color: #5b8cff;
+  --color: #2f6bff;
   left: 65.8%;
   width: 1.7%;
   animation-delay: 1.61s;
@@ -520,7 +519,7 @@
   animation-delay: 1.72s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-19 {
-  --color: #8b7cff;
+  --color: #a78bfa;
   left: 72.8%;
   width: 0.8%;
   animation-delay: 1.74s;
@@ -530,7 +529,7 @@
   animation-delay: 0.48s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-20 {
-  --color: #4f7cff;
+  --color: #3b82f6;
   left: 74.3%;
   width: 2%;
   animation-delay: 1.44s;
@@ -540,7 +539,7 @@
   animation-delay: 0.07s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-21 {
-  --color: #6ea8ff;
+  --color: #8b5cf6;
   left: 79.8%;
   width: 2%;
   animation-delay: 1.58s;
@@ -550,7 +549,7 @@
   animation-delay: 1.12s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-22 {
-  --color: #6b5ce6;
+  --color: #2563eb;
   left: 78.2%;
   width: 2%;
   animation-delay: 0.28s;
@@ -560,7 +559,7 @@
   animation-delay: 1.93s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-23 {
-  --color: #3d6bff;
+  --color: #7c3aed;
   left: 78.5%;
   width: 2%;
   animation-delay: 0.54s;
@@ -570,7 +569,7 @@
   animation-delay: 0.39s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-24 {
-  --color: #9aa8ff;
+  --color: #1d4ed8;
   left: 85.3%;
   width: 1.1%;
   animation-delay: 1.28s;
@@ -580,7 +579,7 @@
   animation-delay: 1.39s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-25 {
-  --color: #7c6bff;
+  --color: #9b5cff;
   left: 86.9%;
   width: 1.1%;
   animation-delay: 1.81s;
@@ -590,7 +589,7 @@
   animation-delay: 0.19s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-26 {
-  --color: #5b8cff;
+  --color: #2f6bff;
   left: 88.8%;
   width: 2%;
   animation-delay: 0.63s;
@@ -600,7 +599,7 @@
   animation-delay: 0.98s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-27 {
-  --color: #8b7cff;
+  --color: #a78bfa;
   left: 92.4%;
   width: 2.4%;
   animation-delay: 1.72s;
@@ -610,7 +609,7 @@
   animation-delay: 0.3s;
 }
 #container netflixintro [class*=helper-] .effect-lumieres .lamp-28 {
-  --color: #4f7cff;
+  --color: #3b82f6;
   left: 96.2%;
   width: 2.1%;
   animation-delay: 1.08s;
@@ -752,19 +751,37 @@
 }
 @keyframes fading-lumieres-box {
   0% {
-    background-color: rgba(124, 107, 255, 0.5);
+    background-color: rgba(155, 92, 255, 0.5);
   }
   100% {
-    background-color: rgba(124, 107, 255, 0);
+    background-color: rgba(155, 92, 255, 0);
   }
+}
+
+
+/* Q dual-tone: right strokes = blue pole */
+#container netflixintro[letter=Q] .helper-2 .effect-brush::before,
+#container netflixintro[letter=Q] .helper-4 .effect-brush::before {
+  background-color: #2f6bff;
+  box-shadow: 0px 0px 29px 24px #2f6bff;
+}
+#container netflixintro[letter=Q] .helper-2 .effect-brush [class*=fur-],
+#container netflixintro[letter=Q] .helper-4 .effect-brush [class*=fur-] {
+  background: linear-gradient(to bottom, #2f6bff 0%, #2f6bff 28%, rgba(0, 0, 0, 0) 100%) !important;
+}
+#container netflixintro[letter=Q] .helper-1 {
+  background-color: rgba(155, 92, 255, 0.55);
+}
+#container netflixintro[letter=Q] .helper-2 {
+  background-color: rgba(47, 107, 255, 0.45);
 }
 
 /* Premium intro chrome */
 #intro-container {
   background:
-  radial-gradient(ellipse at 30% 35%, rgba(100, 70, 200, 0.32) 0%, transparent 48%),
-  radial-gradient(ellipse at 75% 55%, rgba(50, 90, 190, 0.25) 0%, transparent 42%),
-  #03010a;
+    radial-gradient(ellipse 70% 60% at 18% 45%, rgba(155, 92, 255, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 82% 50%, rgba(47, 107, 255, 0.5) 0%, transparent 55%),
+    linear-gradient(115deg, #1a0a3a 0%, #05040c 45%, #061436 100%);
 }
 #intro-container.is-done {
   opacity: 0;
@@ -790,7 +807,7 @@
   text-indent: 0.42em;
   text-transform: uppercase;
   color: rgba(220, 228, 255, 0.92);
-  text-shadow: 0 0 24px rgba(124, 107, 255, 0.45);
+  text-shadow: 0 0 18px rgba(155, 92, 255, 0.55), 0 0 32px rgba(47, 107, 255, 0.4);
 }
 #intro-container .intro-skip {
   position: absolute;
@@ -810,8 +827,8 @@
 }
 #intro-container .intro-skip:hover {
   color: #fff;
-  border-color: rgba(124, 107, 255, 0.8);
-  background: rgba(124, 107, 255, 0.2);
+  border-color: #2f6bff;
+  background: linear-gradient(120deg, rgba(155, 92, 255, 0.25), rgba(47, 107, 255, 0.25));
 }
 @keyframes introCaptionIn {
   from { opacity: 0; transform: translateY(12px); }
