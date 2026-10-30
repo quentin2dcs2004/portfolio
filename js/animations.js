@@ -134,7 +134,7 @@ function setupReveals() {
 }
 setupReveals();
 
-/* Cinematic intro — logo Q (image) handoff */
+/* Netflix-style intro (letter Q) — cinematic handoff */
 (() => {
   const root = document.getElementById('intro-container');
   if (!root) return;
