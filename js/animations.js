@@ -125,13 +125,43 @@ function setupReveals() {
     el.addEventListener('mouseenter', () => el.classList.add('is-bounce'));
     el.addEventListener('mouseleave', () => el.classList.remove('is-bounce'));
   });
-  if (document.body.classList.contains('intro-complete') || !document.getElementById('intro')) {
+  const hasIntro = document.getElementById('intro-container') || document.getElementById('intro');
+  if (document.body.classList.contains('intro-complete') || !hasIntro) {
     kickHero();
   } else {
     window.addEventListener('portfolio:intro-done', kickHero, { once: true });
   }
 }
 setupReveals();
+
+/* Netflix-style intro (letter Q) — cinematic handoff */
+(() => {
+  const root = document.getElementById('intro-container');
+  if (!root) return;
+  const skipBtn = document.getElementById('intro-skip');
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let done = false;
+
+  const endIntro = () => {
+    if (done) return;
+    done = true;
+    root.classList.add('is-done');
+    document.body.classList.add('intro-complete');
+    window.dispatchEvent(new CustomEvent('portfolio:intro-done'));
+    window.setTimeout(() => root.remove(), 900);
+  };
+
+  skipBtn?.addEventListener('click', endIntro);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      endIntro();
+    }
+  }, { once: true });
+
+  // Full Netflix timing ≈ 4s then fade
+  window.setTimeout(endIntro, REDUCED_MOTION ? 400 : 4200);
+})();
 
 /* Typing roles */
 const roles = [

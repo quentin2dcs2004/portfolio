@@ -49,6 +49,7 @@ function fit(renderer, camera, canvas) {
 /* 1. Intro scene                                                      */
 /* ------------------------------------------------------------------ */
 function createIntroScene() {
+  // Netflix CSS intro owns #intro-container; Three.js intro only if canvas present
   const root = document.getElementById('intro');
   const canvas = document.getElementById('intro-canvas');
   if (!root || !canvas) return { skip: () => {} };
