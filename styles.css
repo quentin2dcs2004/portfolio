@@ -172,7 +172,7 @@ body.intro-complete .hero-glow {
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--bg);
-  background: linear-gradient(135deg, var(--mint), var(--steel));
+  background: var(--galaxy);
   clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
 }
 .brand__text {
