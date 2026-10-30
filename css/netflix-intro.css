@@ -11,10 +11,6 @@
     justify-content: center;
     z-index: 9999;
 }
-#main-content {
-    display: none;
-
-}
 #container {
   display: flex;
   flex-direction: column;
@@ -28,16 +24,17 @@
 #container netflixintro {
   display: block;
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: min(72vw, 360px);
+  height: min(72vw, 360px);
   overflow: hidden;
   animation-name: zoom-in;
-  animation-delay: 0.5s;
-  animation-duration: 3.5s;
-  animation-timing-function: ease-in;
+  animation-delay: 0.45s;
+  animation-duration: 3.6s;
+  animation-timing-function: cubic-bezier(0.33, 0, 0.2, 1);
   animation-fill-mode: forwards;
   background-size: 4000px;
   background-position: -1950px 0;
+  filter: drop-shadow(0 0 28px rgba(228, 9, 19, 0.35));
 }
 #container netflixintro::before {
   content: "";
@@ -55,81 +52,81 @@
   background-position: -1950px 0;
 }
 
-/* Letter Q — oval + tail (Netflix brush system) */
+/* Letter Q — bowl + tail (Netflix brush / lumières) */
 #container netflixintro[letter=Q] {
-  transform-origin: center center;
+  transform-origin: 48% center;
 }
 #container netflixintro[letter=Q] .helper-1 {
-  width: 18%;
-  height: 78%;
-  left: 22%;
-  top: 8%;
-  transform: rotate(198deg);
-  border-radius: 40% 40% 40% 40%;
+  width: 19%;
+  height: 86%;
+  left: 24%;
+  top: 4%;
+  transform: rotate(188deg);
   overflow: hidden;
   animation-name: fading-lumieres-box;
   animation-duration: 2s;
   animation-delay: 0.55s;
   animation-fill-mode: forwards;
-  background-color: rgba(228, 9, 19, 0.45);
+  background-color: rgba(228, 9, 19, 0.5);
 }
 #container netflixintro[letter=Q] .helper-1 .effect-brush {
   animation-name: brush-moving;
-  animation-duration: 2.4s;
+  animation-duration: 2.5s;
   animation-fill-mode: forwards;
-  animation-delay: 0.9s;
+  animation-delay: 1s;
 }
 #container netflixintro[letter=Q] .helper-1 .effect-brush [class*=fur-] {
   bottom: 0;
-  height: 42%;
+  height: 40%;
 }
 #container netflixintro[letter=Q] .helper-2 {
-  width: 18%;
-  height: 78%;
-  left: 60%;
-  top: 8%;
-  transform: rotate(18deg);
+  width: 19%;
+  height: 86%;
+  left: 57%;
+  top: 4%;
+  transform: rotate(8deg);
   overflow: hidden;
-  background-color: rgba(228, 9, 19, 0.35);
+  box-shadow: 0px 0px 35px -12px rgba(0, 0, 0, 0.4);
 }
 #container netflixintro[letter=Q] .helper-2 .effect-brush {
   animation-name: brush-moving;
-  animation-duration: 2.2s;
+  animation-duration: 2.3s;
   animation-fill-mode: forwards;
-  animation-delay: 0.75s;
+  animation-delay: 0.85s;
 }
 #container netflixintro[letter=Q] .helper-3 {
-  width: 46%;
-  height: 18%;
-  left: 27%;
-  top: 10%;
-  transform: rotate(0deg);
+  width: 48%;
+  height: 19%;
+  left: 26%;
+  top: 6%;
+  transform: rotate(-2deg);
   overflow: hidden;
-  border-radius: 50%;
 }
 #container netflixintro[letter=Q] .helper-3 .effect-brush {
   animation-name: brush-moving;
   animation-duration: 2s;
   animation-fill-mode: forwards;
-  animation-delay: 0.55s;
+  animation-delay: 0.6s;
 }
 #container netflixintro[letter=Q] .helper-4 {
-  width: 42%;
+  /* Tail of the Q */
+  width: 38%;
   height: 18%;
-  left: 36%;
-  top: 72%;
-  transform: rotate(-28deg);
+  left: 48%;
+  top: 70%;
+  transform: rotate(-38deg);
   overflow: hidden;
   box-shadow: 0px 0px 35px -12px rgba(0, 0, 0, 0.45);
+  animation-name: fading-out;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-delay: 1.15s;
 }
 #container netflixintro[letter=Q] .helper-4 .effect-brush {
   animation-name: brush-moving;
-  animation-duration: 1.9s;
+  animation-duration: 1.85s;
   animation-fill-mode: forwards;
   animation-delay: 1.05s;
-}
-#container netflixintro[letter=Q] .helper-4 .effect-lumieres {
-  display: none;
 }
 #container netflixintro [class*=helper-] {
   position: absolute;
