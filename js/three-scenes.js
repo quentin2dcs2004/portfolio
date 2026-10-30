@@ -11,6 +11,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const IS_MOBILE = window.matchMedia('(max-width: 768px)').matches;
 const IS_ABOUT = document.body.classList.contains('page-about');
 const IS_BOOK = document.body.classList.contains('page-book');
+const IS_HOME = !IS_ABOUT && !IS_BOOK && !!document.getElementById('accueil');
 const IS_SUBTLE = IS_ABOUT || IS_BOOK;
 
 const COLORS = {
@@ -175,14 +176,14 @@ function createHeroBackground() {
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(IS_BOOK ? 0x0a0414 : COLORS.bg, IS_SUBTLE ? 0.08 : 0.028);
 
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 120);
-  camera.position.set(0, 0.2, IS_SUBTLE ? 7.5 : 6.2);
+  const camera = new THREE.PerspectiveCamera(IS_HOME ? 48 : 50, 1, 0.1, 120);
+  camera.position.set(0, 0.2, IS_SUBTLE ? 7.5 : (IS_HOME ? 5.6 : 6.2));
 
   scene.add(new THREE.AmbientLight(IS_BOOK ? 0x2a1040 : 0x1a2430, 1.2));
-  const key = new THREE.PointLight(IS_BOOK ? COLORS.enchant : COLORS.mint, 2.4, 40);
+  const key = new THREE.PointLight(IS_BOOK ? COLORS.enchant : COLORS.mint, IS_HOME ? 3.1 : 2.4, 40);
   key.position.set(4, 3, 5);
   scene.add(key);
-  const fill = new THREE.PointLight(IS_BOOK ? COLORS.enchantCyan : COLORS.amber, 1.6, 36);
+  const fill = new THREE.PointLight(IS_BOOK ? COLORS.enchantCyan : COLORS.amber, IS_HOME ? 2.1 : 1.6, 36);
   fill.position.set(-5, -2, 3);
   scene.add(fill);
   const rim = new THREE.DirectionalLight(IS_BOOK ? COLORS.enchant : COLORS.steel, 0.7);
@@ -193,30 +194,30 @@ function createHeroBackground() {
   scene.add(group);
 
   const knot = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.05, 0.28, IS_MOBILE ? 100 : 180, IS_MOBILE ? 12 : 24),
+    new THREE.TorusKnotGeometry(IS_HOME ? 1.25 : 1.05, IS_HOME ? 0.32 : 0.28, IS_MOBILE ? 100 : 200, IS_MOBILE ? 12 : 28),
     new THREE.MeshStandardMaterial({
       color: 0x152028,
       metalness: 0.72,
       roughness: 0.28,
       emissive: 0x0a2a24,
-      emissiveIntensity: 0.35,
+      emissiveIntensity: IS_HOME ? 0.5 : 0.35,
     })
   );
   group.add(knot);
 
   const wire = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.08, 0.3, IS_MOBILE ? 80 : 140, IS_MOBILE ? 10 : 18),
+    new THREE.TorusKnotGeometry(IS_HOME ? 1.3 : 1.08, IS_HOME ? 0.34 : 0.3, IS_MOBILE ? 80 : 160, IS_MOBILE ? 10 : 20),
     new THREE.MeshBasicMaterial({
       color: COLORS.mint,
       wireframe: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: IS_HOME ? 0.32 : 0.22,
     })
   );
   group.add(wire);
 
   const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(2.35, 0.015, 16, IS_MOBILE ? 64 : 120),
+    new THREE.TorusGeometry(IS_HOME ? 2.7 : 2.35, 0.015, 16, IS_MOBILE ? 64 : 140),
     new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.45 })
   );
   ring.rotation.x = Math.PI / 2.4;
@@ -230,9 +231,25 @@ function createHeroBackground() {
   ring2.material.opacity = 0.28;
   group.add(ring2);
 
+  // Home: second outer ring + denser accents to wrap the portrait
+  let ring3 = null;
+  if (IS_HOME) {
+    ring3 = new THREE.Mesh(
+      new THREE.TorusGeometry(3.35, 0.01, 12, IS_MOBILE ? 48 : 100),
+      new THREE.MeshBasicMaterial({ color: COLORS.mint, transparent: true, opacity: 0.18 })
+    );
+    ring3.rotation.x = Math.PI / 3.2;
+    ring3.rotation.y = 0.4;
+    group.add(ring3);
+  }
+
   if (IS_SUBTLE) {
     group.scale.setScalar(IS_BOOK ? 0.85 : 0.72);
     group.position.set(IS_BOOK ? 0 : 1.4, 0.1, IS_BOOK ? -0.6 : -1.2);
+  } else if (IS_HOME) {
+    // Classic home: 3D sculpture frames the circular portrait from behind/right
+    group.position.set(IS_MOBILE ? 0 : 0.35, 0.05, -1.1);
+    group.scale.setScalar(IS_MOBILE ? 1.05 : 1.35);
   }
 
   if (IS_BOOK) {
@@ -244,7 +261,9 @@ function createHeroBackground() {
     ring2.material.color = new THREE.Color(COLORS.enchantCyan);
   }
 
-  const pCount = IS_SUBTLE ? (IS_MOBILE ? 400 : 900) : (IS_MOBILE ? 800 : 2400);
+  const pCount = IS_SUBTLE
+    ? (IS_MOBILE ? 400 : 900)
+    : (IS_HOME ? (IS_MOBILE ? 1200 : 3600) : (IS_MOBILE ? 800 : 2400));
   const pPos = new Float32Array(pCount * 3);
   for (let i = 0; i < pCount; i++) {
     pPos[i * 3] = (Math.random() - 0.5) * 28;
@@ -266,25 +285,31 @@ function createHeroBackground() {
 
   // Floating icosa “filament” accents
   const accents = [];
-  for (let i = 0; i < (IS_MOBILE ? 3 : 5); i++) {
+  const accentCount = IS_HOME ? (IS_MOBILE ? 6 : 12) : (IS_MOBILE ? 3 : 5);
+  for (let i = 0; i < accentCount; i++) {
     const m = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.12 + Math.random() * 0.1, 0),
+      new THREE.IcosahedronGeometry(0.1 + Math.random() * (IS_HOME ? 0.16 : 0.1), 0),
       new THREE.MeshStandardMaterial({
         color: i % 2 ? COLORS.amber : COLORS.mint,
         metalness: 0.4,
         roughness: 0.35,
         emissive: i % 2 ? COLORS.amber : COLORS.mint,
-        emissiveIntensity: 0.25,
+        emissiveIntensity: IS_HOME ? 0.4 : 0.25,
       })
     );
     m.position.set(
-      (Math.random() - 0.5) * 6,
-      (Math.random() - 0.5) * 3.5,
-      (Math.random() - 0.5) * 4
+      (Math.random() - 0.5) * (IS_HOME ? 8 : 6),
+      (Math.random() - 0.5) * (IS_HOME ? 4.5 : 3.5),
+      (Math.random() - 0.5) * (IS_HOME ? 5 : 4)
     );
     group.add(m);
     accents.push({ mesh: m, speed: 0.4 + Math.random() * 0.8, phase: 0.2 + Math.random() * 0.4 });
   }
+
+  let introBoost = IS_HOME ? 1 : 0;
+  window.addEventListener('portfolio:intro-done', () => {
+    introBoost = 1.35;
+  }, { once: true });
 
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   window.addEventListener('pointermove', (e) => {
@@ -317,14 +342,17 @@ function createHeroBackground() {
 
     const scrollNorm = scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1);
 
-    group.rotation.y = t * 0.18 * damp + pointer.x * 0.45;
-    group.rotation.x = t * 0.08 * damp + pointer.y * 0.28;
+    introBoost += (1 - introBoost) * 0.02;
+
+    group.rotation.y = t * (IS_HOME ? 0.22 : 0.18) * damp + pointer.x * (IS_HOME ? 0.55 : 0.45);
+    group.rotation.x = t * 0.08 * damp + pointer.y * (IS_HOME ? 0.34 : 0.28);
     ring.rotation.z = t * 0.25 * damp;
     ring2.rotation.z = -t * 0.18 * damp;
     wire.rotation.x = -t * 0.12 * damp;
+    if (ring3) ring3.rotation.z = t * 0.12 * damp;
 
     accents.forEach((a, i) => {
-      a.mesh.position.y += Math.sin(t * a.speed + i) * 0.002 * damp;
+      a.mesh.position.y += Math.sin(t * a.speed + i) * 0.0025 * damp;
       a.mesh.rotation.x = t * a.speed;
       a.mesh.rotation.y = t * a.phase;
     });
@@ -332,12 +360,13 @@ function createHeroBackground() {
     field.rotation.y = t * 0.02 * damp + scrollNorm * 0.4;
     field.position.y = -scrollNorm * 2.5;
 
-    camera.position.x = pointer.x * 0.35;
-    camera.position.y = 0.2 + pointer.y * 0.2 - scrollNorm * (IS_SUBTLE ? 0.4 : 1.1);
-    camera.position.z = (IS_SUBTLE ? 7.5 : 6.2) - scrollNorm * (IS_SUBTLE ? 0.6 : 1.8);
+    const baseZ = IS_SUBTLE ? 7.5 : (IS_HOME ? 6.4 : 6.2);
+    camera.position.x = pointer.x * (IS_HOME ? 0.4 : 0.35);
+    camera.position.y = 0.15 + pointer.y * 0.18 - scrollNorm * (IS_SUBTLE ? 0.4 : 1.1);
+    camera.position.z = (baseZ / introBoost) - scrollNorm * (IS_SUBTLE ? 0.6 : (IS_HOME ? 2.0 : 1.8));
     camera.lookAt(0, 0, 0);
 
-    key.intensity = 2.1 + Math.sin(t * 1.4) * 0.35;
+    key.intensity = (IS_HOME ? 2.6 : 2.1) + Math.sin(t * 1.4) * 0.4;
     renderer.render(scene, camera);
   }
   animate();

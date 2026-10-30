@@ -105,10 +105,26 @@ function setupReveals() {
   });
 
   const kickHero = () => {
-    document.querySelectorAll('.hero [data-reveal], .about-hero [data-reveal]').forEach((n) => {
+    document.querySelectorAll('.hero [data-reveal], .home [data-reveal], .about-hero [data-reveal]').forEach((n) => {
       n.classList.add('is-visible');
     });
   };
+
+  /* Soft parallax on home portrait */
+  const parallaxPhoto = document.querySelector('.home-img');
+  if (parallaxPhoto && !REDUCED && !window.matchMedia('(pointer: coarse)').matches) {
+    window.addEventListener('pointermove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      parallaxPhoto.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }, { passive: true });
+  }
+
+  /* Bounce hover like classic portfolio socials */
+  document.querySelectorAll('.hover-bounce').forEach((el) => {
+    el.addEventListener('mouseenter', () => el.classList.add('is-bounce'));
+    el.addEventListener('mouseleave', () => el.classList.remove('is-bounce'));
+  });
   if (document.body.classList.contains('intro-complete') || !document.getElementById('intro')) {
     kickHero();
   } else {
@@ -119,11 +135,11 @@ setupReveals();
 
 /* Typing roles */
 const roles = [
-  'Web Developer',
-  'Graphiste',
-  'Web Designer',
-  'Modélisateur 3D',
-  'Imprimeur 3D',
+  'développeur web',
+  'graphiste',
+  'web designer',
+  'modélisateur 3D',
+  'imprimeur 3D',
 ];
 const typingEl = document.getElementById('typing-effect');
 async function runTyping() {

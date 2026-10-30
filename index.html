@@ -14,18 +14,20 @@
 <body>
   <div id="page-transition" aria-hidden="true"></div>
 
-  <!-- Intro: brand reveal over Three.js -->
+  <!-- Intro courte perso → handoff vers le hero -->
   <div id="intro" class="intro" role="dialog" aria-label="Introduction">
     <canvas id="intro-canvas" aria-hidden="true"></canvas>
     <div class="intro__veil"></div>
     <div class="intro__content">
+      <p class="intro__hello">Salut</p>
       <p class="intro__mark">QDCS</p>
       <p class="intro__name">Quentin DA COSTA SOARES</p>
-      <button type="button" class="intro__skip" id="intro-skip">Passer l’intro</button>
+      <button type="button" class="intro__skip" id="intro-skip">Entrer</button>
     </div>
   </div>
 
   <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
 
   <header class="site-header" id="site-header">
     <a href="index.html" class="brand" data-magnetic>
@@ -38,7 +40,7 @@
     <nav class="site-nav" id="site-nav" aria-label="Navigation principale">
       <a href="#accueil" class="is-active">Accueil</a>
       <a href="projets.html">Projets</a>
-      <a href="cyber.html">Stories</a>
+      <a href="cyber.html">Cyber</a>
       <a href="#apropos">À propos</a>
       <a href="#contact">Contact</a>
       <a href="about.html" class="nav-story">Mon histoire</a>
@@ -46,37 +48,39 @@
   </header>
 
   <main>
-    <!-- Hero perso: photo + intro courte, Three.js full-bleed derrière -->
-    <section class="hero hero--persona" id="accueil">
-      <div class="hero__persona">
-        <div class="hero__photo reveal" data-reveal>
+    <!-- Accueil type réf YouTube (-u3vE84Wo_U) : portrait + présentation courte FR + Three.js -->
+    <section class="hero hero--home" id="accueil">
+      <div class="home">
+        <div class="home-img reveal" data-reveal>
           <img
             src="image/placeholder-portrait.svg"
             alt="Placeholder — photo de Quentin à venir"
-            width="720"
-            height="900"
+            width="520"
+            height="520"
             fetchpriority="high">
-          <span class="hero__photo-tag placeholder-tag">Placeholder — vraies photos plus tard (bureau)</span>
+          <span class="home-img__tag placeholder-tag">Placeholder photo</span>
         </div>
-        <div class="hero__copy">
-          <p class="hero__brand reveal" data-reveal>Quentin DA COSTA SOARES</p>
-          <h1 class="hero__title reveal" data-reveal>
-            Salut, c’est&nbsp;Quentin
+        <div class="home-content">
+          <h1 class="reveal" data-reveal style="--reveal-delay:80ms">
+            Salut, c’est <span>Quentin</span>
           </h1>
-          <p class="hero__lead reveal" data-reveal>
-            Graphiste, modélisateur 3D et imprimeur 3D.
-            Intro courte : je donne forme aux idées — du pixel à la pièce.
-          </p>
-          <p class="hero__roles reveal" data-reveal aria-live="polite">
+          <h3 class="typing-text reveal" data-reveal style="--reveal-delay:160ms" aria-live="polite">
             Je suis <span id="typing-effect" class="typing"></span>
+          </h3>
+          <p class="reveal" data-reveal style="--reveal-delay:240ms">
+            Passionné par la créativité, je suis graphiste, modélisateur 3D et imprimeur 3D.
+            Je donne vie aux idées — du dessin à la pièce imprimée.
           </p>
-          <div class="hero__cta reveal" data-reveal>
-            <a href="projets.html" class="btn btn--primary" data-magnetic>Ouvrir le livre</a>
-            <a href="cyber.html" class="btn btn--ghost" data-magnetic>Stories cyber</a>
+          <div class="social-icons reveal" data-reveal style="--reveal-delay:320ms">
+            <a href="https://fr.linkedin.com/in/quentin-da-costa-soares-443b7b290" aria-label="LinkedIn" class="hover-bounce"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=100010545675950" aria-label="Facebook" class="hover-bounce"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/luminart2dcs" aria-label="Instagram Luminart" class="hover-bounce"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.instagram.com/quentin_da_costa_soares/" aria-label="Instagram" class="hover-bounce"><i class="fa-brands fa-instagram"></i></a>
           </div>
+          <a href="#apropos" class="btn btn--primary reveal hover-bounce" data-reveal style="--reveal-delay:400ms">En savoir plus</a>
         </div>
       </div>
-      <p class="hero__hint reveal" data-reveal>
+      <p class="hero__hint reveal" data-reveal style="--reveal-delay:520ms">
         <span class="hero__hint-dot"></span>
         Bougez le curseur · Scrollez pour explorer
       </p>
@@ -85,7 +89,7 @@
     <section class="section section--story" id="apropos">
       <div class="section__inner">
         <p class="eyebrow reveal" data-reveal>À propos</p>
-        <h2 class="section__title reveal" data-reveal>My story</h2>
+        <h2 class="section__title reveal" data-reveal>Mon histoire</h2>
         <p class="section__text reveal" data-reveal>
           Passionné par la créativité, je suis un jeune professionnel en quête de nouvelles aventures
           dans le monde numérique et industriel. Que ce soit à travers le dessin, la photographie ou le design,
