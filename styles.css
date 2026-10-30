@@ -7,12 +7,13 @@
   --ink: #e8ecff;
   --muted: #9aa3c7;
   /* Accents = soft nebula (kept as --mint/--amber names for compatibility) */
-  --mint: #8b7cff;
-  --mint-dim: rgba(139, 124, 255, 0.16);
-  --amber: #6ea8ff;
-  --amber-dim: rgba(110, 168, 255, 0.16);
-  --steel: #a78bfa;
-  --line: rgba(180, 190, 255, 0.12);
+  /* Violet + bleu uniquement */
+  --mint: #7c6bff;              /* violet */
+  --mint-dim: rgba(124, 107, 255, 0.16);
+  --amber: #5b8cff;             /* bleu */
+  --amber-dim: rgba(91, 140, 255, 0.16);
+  --steel: #8b9cff;             /* bleu-violet clair */
+  --line: rgba(140, 160, 255, 0.14);
   --nebula-a: rgba(100, 70, 200, 0.28);
   --nebula-b: rgba(40, 90, 180, 0.22);
   --font-display: "Syne", sans-serif;
@@ -264,9 +265,9 @@ main {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(55% 50% at 30% 45%, rgba(120, 90, 220, 0.2), transparent 58%),
-    radial-gradient(45% 40% at 75% 35%, rgba(60, 120, 220, 0.16), transparent 55%),
-    radial-gradient(40% 35% at 55% 75%, rgba(160, 100, 255, 0.1), transparent 50%);
+    radial-gradient(55% 50% at 30% 45%, rgba(110, 80, 220, 0.22), transparent 58%),
+    radial-gradient(45% 40% at 75% 35%, rgba(60, 120, 230, 0.18), transparent 55%),
+    radial-gradient(40% 35% at 55% 75%, rgba(90, 70, 210, 0.12), transparent 50%);
   mix-blend-mode: screen;
   opacity: 0.85;
   animation: glowDrift 14s ease-in-out infinite alternate;
@@ -316,18 +317,18 @@ main {
   border-radius: 50%;
   border: 0.35rem solid var(--mint);
   box-shadow:
-    0 0 0 0.55rem rgba(139, 124, 255, 0.12),
-    0 0 42px rgba(139, 124, 255, 0.35),
-    0 0 80px rgba(110, 168, 255, 0.18);
+    0 0 0 0.55rem rgba(124, 107, 255, 0.12),
+    0 0 42px rgba(124, 107, 255, 0.35),
+    0 0 80px rgba(91, 140, 255, 0.18);
   cursor: pointer;
   transition: transform 0.35s var(--ease), box-shadow 0.35s;
 }
 .home-img img:hover {
   transform: scale(1.04);
   box-shadow:
-    0 0 0 0.55rem rgba(139, 124, 255, 0.18),
-    0 0 55px rgba(139, 124, 255, 0.5),
-    0 0 90px rgba(110, 168, 255, 0.28);
+    0 0 0 0.55rem rgba(124, 107, 255, 0.18),
+    0 0 55px rgba(124, 107, 255, 0.5),
+    0 0 90px rgba(91, 140, 255, 0.28);
 }
 .home-img__tag {
   position: absolute;
@@ -355,7 +356,7 @@ main {
 }
 .home-content h1 span {
   color: var(--mint);
-  text-shadow: 0 0 28px rgba(139, 124, 255, 0.35);
+  text-shadow: 0 0 28px rgba(124, 107, 255, 0.35);
 }
 .home-content .typing-text {
   font-family: var(--font-display);
@@ -396,7 +397,7 @@ main {
   background: var(--mint);
   color: var(--bg);
   transform: scale(1.15) translateY(-4px);
-  box-shadow: 0 0 22px rgba(139, 124, 255, 0.45);
+  box-shadow: 0 0 22px rgba(124, 107, 255, 0.45);
 }
 
 .home-content .btn {
@@ -469,7 +470,7 @@ main {
   transition: transform 0.25s var(--ease), background 0.25s, color 0.25s, border-color 0.25s;
 }
 .btn--primary {
-  background: linear-gradient(120deg, #6ea8ff 0%, #8b7cff 50%, #a78bfa 100%);
+  background: linear-gradient(120deg, #5b8cff 0%, #7c6bff 55%, #6b5ce6 100%);
   color: #0a0818;
 }
 .btn--primary:hover {

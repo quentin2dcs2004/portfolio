@@ -16,12 +16,12 @@ const IS_SUBTLE = IS_ABOUT || IS_BOOK;
 
 const COLORS = {
   bg: 0x05040c,
-  mint: 0x8b7cff,      // nebula violet
-  amber: 0x6ea8ff,     // soft cosmic blue
-  steel: 0xa78bfa,     // lilac starlight
+  mint: 0x7c6bff,      // violet only
+  amber: 0x5b8cff,     // blue only
+  steel: 0x8b9cff,     // light blue-violet
   ink: 0x0c0a18,
-  enchant: 0xb794ff,
-  enchantCyan: 0x7aa2ff,
+  enchant: 0x7c6bff,
+  enchantCyan: 0x5b8cff,
 };
 
 function makeRenderer(canvas, { alpha = true, dprCap = 1.75 } = {}) {
@@ -180,7 +180,7 @@ function createHeroBackground() {
   const camera = new THREE.PerspectiveCamera(IS_HOME ? 48 : 50, 1, 0.1, 120);
   camera.position.set(0, 0.2, IS_SUBTLE ? 7.5 : (IS_HOME ? 5.6 : 6.2));
 
-  scene.add(new THREE.AmbientLight(IS_BOOK ? 0x2a1040 : 0x1a2430, 1.2));
+  scene.add(new THREE.AmbientLight(IS_BOOK ? 0x1a1438 : 0x141428, 1.2));
   const key = new THREE.PointLight(IS_BOOK ? COLORS.enchant : COLORS.mint, IS_HOME ? 3.1 : 2.4, 40);
   key.position.set(4, 3, 5);
   scene.add(key);
@@ -197,10 +197,10 @@ function createHeroBackground() {
   const knot = new THREE.Mesh(
     new THREE.TorusKnotGeometry(IS_HOME ? 1.25 : 1.05, IS_HOME ? 0.32 : 0.28, IS_MOBILE ? 100 : 200, IS_MOBILE ? 12 : 28),
     new THREE.MeshStandardMaterial({
-      color: 0x152028,
+      color: 0x141428,
       metalness: 0.72,
       roughness: 0.28,
-      emissive: 0x0a2a24,
+      emissive: 0x1a1450,
       emissiveIntensity: IS_HOME ? 0.5 : 0.35,
     })
   );
@@ -385,7 +385,7 @@ function createOrbitScene() {
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 40);
   camera.position.set(0, 0.4, 4.2);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+  scene.add(new THREE.AmbientLight(0xb8c4ff, 0.35));
   const light = new THREE.PointLight(COLORS.mint, 2, 20);
   light.position.set(2, 2, 3);
   scene.add(light);
@@ -393,11 +393,11 @@ function createOrbitScene() {
   const ico = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1, 1),
     new THREE.MeshStandardMaterial({
-      color: 0x1a2830,
+      color: 0x181840,
       flatShading: true,
       metalness: 0.55,
       roughness: 0.4,
-      emissive: 0x0c221c,
+      emissive: 0x1a1458,
       emissiveIntensity: 0.4,
     })
   );
