@@ -308,10 +308,16 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--violet), var(--blue));
+  overflow: hidden;
+  background: #05040c;
   box-shadow: 0 0 16px rgba(155, 92, 255, 0.45);
+}
+.phone-chathead__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 .phone-chathead h2 {
   font-family: var(--font-display);
