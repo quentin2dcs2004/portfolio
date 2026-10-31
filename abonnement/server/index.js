@@ -270,7 +270,7 @@ app.get(["/admin", "/back-office"], (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "admin.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Abonnement API + UI on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Meetora API + UI on http://127.0.0.1:${PORT} (0.0.0.0)`);
   console.log(`Admin token: ${ADMIN_TOKEN}`);
 });
