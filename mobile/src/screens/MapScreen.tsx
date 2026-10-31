@@ -73,10 +73,12 @@ export function MapScreen({ onOpenCrush, onLike }: Props) {
           attributionControl: true,
         }).setView([LYON_CENTER.lat, LYON_CENTER.lng], 14);
 
-        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        // Free OSM tiles (no API key). Dark filter via CSS on container.
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 19,
-          attribution: "&copy; OSM &copy; CARTO",
+          attribution: "&copy; OpenStreetMap",
         }).addTo(map);
+        node.style.filter = "invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9)";
 
         CROSSED_PINS.forEach((pin) => {
           const icon = L.divIcon({
