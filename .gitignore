@@ -1,0 +1,11 @@
+node_modules/
+**/node_modules/
+abonnement/data/*.sqlite
+abonnement/data/*.sqlite-*
+.DS_Store
+.env
+.env.*
+*.log
+.expo/
+dist/
+web-build/

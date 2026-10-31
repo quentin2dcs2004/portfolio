@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Meetora",
+    "slug": "meetora",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/meetora-logo.jpg",
+    "splash": {
+      "image": "./assets/meetora-logo.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#0b1210"
+    },
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.quentin.meetora"
+    },
+    "android": {
+      "package": "fr.quentin.meetora",
+      "adaptiveIcon": {
+        "backgroundColor": "#0b1210",
+        "foregroundImage": "./assets/meetora-logo.jpg"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/meetora-logo.jpg",
+      "name": "Meetora"
+    }
+  }
+}

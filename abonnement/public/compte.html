@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meetora — mon compte</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/app.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topnav">
+        <a class="brand" href="/">Meetora</a>
+        <nav class="nav-links">
+          <a href="/">Souscrire</a>
+          <a href="/compte.html" aria-current="page">Mon compte</a>
+          <a href="/admin.html">Admin</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <h1>Gérer mon abonnement</h1>
+        <p>Résilier, prolonger ou changer de formule — sans confondre durée fixe et renouvellement automatique.</p>
+      </section>
+
+      <section class="panel" style="margin-bottom: 1rem">
+        <div class="form-row">
+          <div class="field" style="margin: 0">
+            <label for="email">E-mail du compte</label>
+            <input id="email" type="email" placeholder="vous@exemple.fr" />
+          </div>
+          <div class="field" style="margin: 0; align-self: end">
+            <button type="button" class="btn btn-primary" id="load-btn" style="width: auto">Charger</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="subs" class="admin-grid"></div>
+
+      <section class="panel" style="margin-top: 1rem">
+        <h2 class="section-title">Historique des transactions</h2>
+        <div class="table-wrap">
+          <table class="data" id="tx-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Montant</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/compte.js"></script>
+  </body>
+</html>
