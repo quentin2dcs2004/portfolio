@@ -1,19 +1,17 @@
 import { Platform, StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { colors } from "../theme";
+import { useTheme } from "../theme";
 
-/** iPhone 14-ish frame for Expo web — Try Live must look like a phone app. */
 export const PHONE_WIDTH = 390;
 export const PHONE_HEIGHT = 844;
 
-type Props = {
-  children: React.ReactNode;
-};
+type Props = { children: React.ReactNode };
 
 export function PhoneShell({ children }: Props) {
   const { width, height } = useWindowDimensions();
+  const { colors } = useTheme();
 
   if (Platform.OS !== "web") {
-    return <View style={styles.nativeFill}>{children}</View>;
+    return <View style={{ flex: 1 }}>{children}</View>;
   }
 
   const maxW = Math.min(PHONE_WIDTH, width - 32);
@@ -25,8 +23,13 @@ export function PhoneShell({ children }: Props) {
   const radius = Math.round(40 * scale);
 
   return (
-    <View style={styles.desktop} accessibilityLabel="Aperçu téléphone Meetora">
-      <Text style={styles.caption}>Meetora · aperçu téléphone · {PHONE_WIDTH}×{PHONE_HEIGHT}</Text>
+    <View
+      style={[styles.desktop, { backgroundColor: colors.phoneDesktop }]}
+      accessibilityLabel="Aperçu téléphone Meetora"
+    >
+      <Text style={[styles.caption, { color: colors.muted }]}>
+        Meetora · aperçu téléphone · {PHONE_WIDTH}×{PHONE_HEIGHT}
+      </Text>
       <View
         style={[
           styles.bezel,
@@ -35,6 +38,8 @@ export function PhoneShell({ children }: Props) {
             height: frameH,
             borderRadius: radius,
             padding: pad,
+            borderColor: colors.line,
+            backgroundColor: colors.bgElevated,
           },
         ]}
       >
@@ -50,7 +55,14 @@ export function PhoneShell({ children }: Props) {
             ]}
           />
         </View>
-        <View style={[styles.screen, { borderRadius: Math.round(32 * scale) }]}>{children}</View>
+        <View
+          style={[
+            styles.screen,
+            { borderRadius: Math.round(32 * scale), backgroundColor: colors.bg },
+          ]}
+        >
+          {children}
+        </View>
         <View style={styles.homeRow} pointerEvents="none">
           <View
             style={[
@@ -69,31 +81,22 @@ export function PhoneShell({ children }: Props) {
 }
 
 const styles = StyleSheet.create({
-  nativeFill: { flex: 1 },
   desktop: {
     flex: 1,
     width: "100%",
     minHeight: 900,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#050807",
     paddingVertical: 16,
     gap: 12,
   },
-  caption: {
-    color: "rgba(232, 242, 236, 0.55)",
-    fontSize: 13,
-    fontWeight: "600",
-    letterSpacing: 0.3,
-  },
+  caption: { fontSize: 13, fontWeight: "600", letterSpacing: 0.3 },
   bezel: {
-    backgroundColor: "#141816",
     borderWidth: 2,
-    borderColor: "#2a312e",
     shadowColor: "#000",
-    shadowOpacity: 0.6,
-    shadowRadius: 30,
-    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.55,
+    shadowRadius: 28,
+    shadowOffset: { width: 0, height: 18 },
     overflow: "hidden",
   },
   islandRow: {
@@ -104,14 +107,8 @@ const styles = StyleSheet.create({
     zIndex: 30,
     alignItems: "center",
   },
-  island: {
-    backgroundColor: "#050607",
-  },
-  screen: {
-    flex: 1,
-    overflow: "hidden",
-    backgroundColor: colors.bg,
-  },
+  island: { backgroundColor: "#050607" },
+  screen: { flex: 1, overflow: "hidden" },
   homeRow: {
     position: "absolute",
     bottom: 10,
@@ -120,7 +117,5 @@ const styles = StyleSheet.create({
     zIndex: 30,
     alignItems: "center",
   },
-  homeBar: {
-    backgroundColor: "rgba(255,255,255,0.4)",
-  },
+  homeBar: { backgroundColor: "rgba(255,255,255,0.4)" },
 });

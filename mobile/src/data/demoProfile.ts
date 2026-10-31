@@ -8,14 +8,14 @@ export type MeetoraProfile = {
   bio: string;
   city: string;
   country: string;
-  /** Distance label style Happn, e.g. "À 1,2 km" */
   distanceLabel: string;
   membership: MembershipTier;
   joinedAt: string;
   email: string;
-  /** Full-bleed carousel photos (remote demo URLs) */
   photos: string[];
   interests: string[];
+  /** Fruitz-like emoji intention ids */
+  intentionIds: string[];
   stats: {
     connections: number;
     events: number;
@@ -23,10 +23,6 @@ export type MeetoraProfile = {
   };
 };
 
-/**
- * Profil démo Quentin, présenté comme une carte Happn
- * (photos stock — placeholders jusqu’aux vraies photos).
- */
 export const DEMO_PROFILE: MeetoraProfile = {
   id: "usr_demo_quentin",
   displayName: "Quentin",
@@ -45,6 +41,7 @@ export const DEMO_PROFILE: MeetoraProfile = {
     "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=900&h=1200&fit=crop&q=80",
   ],
   interests: ["Design", "Café", "Photo", "Startups", "Voyage", "Musique"],
+  intentionIds: ["serious", "spark", "creative"],
   stats: {
     connections: 128,
     events: 14,

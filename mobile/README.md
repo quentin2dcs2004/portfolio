@@ -1,6 +1,6 @@
-# Abonnement — app mobile (Expo / React Native)
+# Meetora — app mobile (Expo / React Native)
 
-Client **téléphone** pour souscrire à Plus / Premium / Elite avec durées flexibles.
+Client **téléphone** Meetora pour souscrire à Plus / Premium / Elite avec durées flexibles.
 Les tarifs et durées viennent de l’API `../abonnement` (jamais hardcodés dans l’UI).
 
 ## Prérequis
