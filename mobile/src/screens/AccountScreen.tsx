@@ -16,7 +16,7 @@ import { formatDate, money } from "../format";
 import { colors, spacing } from "../theme";
 import type { Catalog, Subscription, Transaction } from "../types";
 
-const EMAIL_KEY = "abonnement.email";
+const EMAIL_KEY = "meetora.email";
 
 type Props = {
   initialEmail?: string;
@@ -93,7 +93,7 @@ export function AccountScreen({ initialEmail = "" }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <Text style={styles.title}>Mon compte</Text>
+        <Text style={styles.title}>Compte Meetora</Text>
         <Text style={styles.lead}>
           Gérer résiliation, prolongation et changement de formule.
         </Text>

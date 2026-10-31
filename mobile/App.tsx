@@ -44,7 +44,7 @@ export default function App() {
           <Stack.Screen
             name="Subscribe"
             options={({ navigation }) => ({
-              title: "Souscrire",
+              title: "Meetora",
               headerRight: () => (
                 <Pressable onPress={() => navigation.navigate("Account", { email: accountEmail })}>
                   <Text style={{ color: colors.accent, fontWeight: "700" }}>Compte</Text>
@@ -61,7 +61,7 @@ export default function App() {
               />
             )}
           </Stack.Screen>
-          <Stack.Screen name="Account" options={{ title: "Mon compte" }}>
+          <Stack.Screen name="Account" options={{ title: "Meetora · Compte" }}>
             {({ route }) => <AccountScreen initialEmail={route.params?.email || accountEmail} />}
           </Stack.Screen>
         </Stack.Navigator>

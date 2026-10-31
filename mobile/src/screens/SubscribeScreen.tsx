@@ -17,7 +17,7 @@ import { colors, spacing } from "../theme";
 import type { Catalog, Quote } from "../types";
 import { API_URL } from "../config";
 
-const EMAIL_KEY = "abonnement.email";
+const EMAIL_KEY = "meetora.email";
 
 type Props = {
   onSubscribed: (email: string) => void;
@@ -123,7 +123,7 @@ export function SubscribeScreen({ onSubscribed }: Props) {
         promo_code: promo.trim() || undefined,
       });
       await AsyncStorage.setItem(EMAIL_KEY, email.trim());
-      Alert.alert("Abonnement activé", "Votre période commence immédiatement (simulation).");
+      Alert.alert("Meetora activé", "Votre période commence immédiatement (simulation).");
       onSubscribed(email.trim());
     } catch (e) {
       Alert.alert("Échec", e instanceof Error ? e.message : "Souscription impossible");
@@ -162,10 +162,10 @@ export function SubscribeScreen({ onSubscribed }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-        <Text style={styles.brand}>Abonnement.</Text>
+        <Text style={styles.brand}>Meetora</Text>
         <Text style={styles.title}>Choisissez votre durée</Text>
         <Text style={styles.lead}>
-          Plus, Premium ou Elite — tarifs chargés dynamiquement, jamais figés dans l’app.
+          Plus, Premium ou Elite — tarifs Meetora chargés dynamiquement, jamais figés dans l’app.
         </Text>
 
         <Text style={styles.sectionLabel}>Formule</Text>

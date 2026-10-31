@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Abonnement",
-    "slug": "abonnement-flexible",
+    "name": "Meetora",
+    "slug": "meetora",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "fr.quentin.abonnement"
+      "bundleIdentifier": "fr.quentin.meetora"
     },
     "android": {
-      "package": "fr.quentin.abonnement",
+      "package": "fr.quentin.meetora",
       "adaptiveIcon": {
         "backgroundColor": "#0b1210",
         "foregroundImage": "./assets/android-icon-foreground.png",
