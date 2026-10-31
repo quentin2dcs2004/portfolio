@@ -12,6 +12,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { PhoneShell } from "./src/components/PhoneShell";
 import { ThemeProvider, useTheme } from "./src/theme";
 import { DiscoverScreen } from "./src/screens/DiscoverScreen";
+import { MapScreen } from "./src/screens/MapScreen";
 import { LikesScreen } from "./src/screens/LikesScreen";
 import { MessagesScreen } from "./src/screens/MessagesScreen";
 import { MyProfileTab } from "./src/screens/MyProfileTab";
@@ -32,6 +33,7 @@ export type RootStackParamList = {
 
 export type MainTabParamList = {
   Decouvrir: undefined;
+  Carte: undefined;
   Likes: undefined;
   Messages: undefined;
   Profil: undefined;
@@ -43,6 +45,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 function TabIcon({ label, focused, color }: { label: string; focused: boolean; color: string }) {
   const map: Record<string, string> = {
     Decouvrir: "◎",
+    Carte: "⌖",
     Likes: "♥",
     Messages: "✉",
     Profil: "☺",
@@ -69,6 +72,7 @@ function MainTabs({
 
   return (
     <Tab.Navigator
+      initialRouteName="Carte"
       screenOptions={({ route }) => ({
         headerStyle: { backgroundColor: colors.bgElevated },
         headerTintColor: colors.text,
@@ -91,7 +95,7 @@ function MainTabs({
         },
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.muted,
-        tabBarLabelStyle: { fontSize: 11, fontWeight: "700" },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: "700" },
         tabBarIcon: ({ color, focused }) => (
           <TabIcon label={route.name} focused={focused} color={color} />
         ),
@@ -99,6 +103,14 @@ function MainTabs({
     >
       <Tab.Screen name="Decouvrir" options={{ title: "Découvrir", tabBarLabel: "Découvrir" }}>
         {() => <DiscoverScreen onCrushNote={() => openCrush()} />}
+      </Tab.Screen>
+      <Tab.Screen name="Carte" options={{ title: "Carte", tabBarLabel: "Carte" }}>
+        {() => (
+          <MapScreen
+            onOpenCrush={() => openCrush()}
+            onLike={() => Alert.alert("Like", "Like enregistré (démo).")}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name="Likes" options={{ tabBarLabel: "Likes" }}>
         {() => <LikesScreen onOpenCrush={openCrush} />}
