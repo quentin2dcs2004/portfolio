@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -162,7 +163,14 @@ export function SubscribeScreen({ onSubscribed }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-        <Text style={styles.brand}>Meetora</Text>
+        <View style={styles.brandRow} accessibilityRole="header">
+          <Image
+            source={require("../../assets/meetora-logo.jpg")}
+            style={styles.logo}
+            accessibilityLabel="Logo Meetora"
+          />
+          <Text style={styles.brand}>Meetora</Text>
+        </View>
         <Text style={styles.title}>Choisissez votre durée</Text>
         <Text style={styles.lead}>
           Plus, Premium ou Elite — tarifs Meetora chargés dynamiquement, jamais figés dans l’app.
@@ -378,18 +386,28 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
   scroll: { padding: spacing.md, paddingBottom: 48 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", padding: spacing.lg },
+  brandRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: spacing.md,
+  },
+  logo: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+  },
   brand: {
     color: colors.accent,
-    fontSize: 22,
+    fontSize: 36,
     fontWeight: "800",
-    letterSpacing: -0.5,
-    marginBottom: spacing.sm,
+    letterSpacing: -1.2,
   },
   title: {
     color: colors.text,
-    fontSize: 30,
-    fontWeight: "800",
-    letterSpacing: -0.8,
+    fontSize: 24,
+    fontWeight: "700",
+    letterSpacing: -0.5,
     marginBottom: spacing.xs,
   },
   lead: { color: colors.muted, fontSize: 16, lineHeight: 22, marginBottom: spacing.lg },
