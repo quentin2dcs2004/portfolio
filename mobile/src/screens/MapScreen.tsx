@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Image,
   Platform,
@@ -121,8 +121,12 @@ export function MapScreen({ onOpenCrush, onLike }: Props) {
     <View style={styles.root}>
       <View style={styles.mapWrap}>
         {Platform.OS === "web" ? (
-          // @ts-expect-error web div host for Leaflet
-          <div id="meetora-map" style={{ width: "100%", height: "100%" }} />
+          <View style={{ flex: 1, minHeight: 400 }}>
+            {React.createElement("div", {
+              id: "meetora-map",
+              style: { width: "100%", height: "100%", minHeight: 400 },
+            })}
+          </View>
         ) : (
           <FallbackMap colors={colors} onSelect={setSelected} />
         )}
@@ -242,7 +246,11 @@ function make(colors: ReturnType<typeof useTheme>["colors"]) {
     root: { flex: 1, backgroundColor: colors.bg },
     mapWrap: { flex: 1, overflow: "hidden" },
     loading: {
-      ...StyleSheet.absoluteFillObject,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "rgba(0,0,0,0.35)",
