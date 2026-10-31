@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Souscrire — durées flexibles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/app.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topnav">
+        <a class="brand" href="/">Abonnement<span>.</span></a>
+        <nav class="nav-links">
+          <a href="/" aria-current="page">Souscrire</a>
+          <a href="/compte.html">Mon compte</a>
+          <a href="/admin.html">Admin</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <h1>Choisissez la durée qui vous convient</h1>
+        <p>
+          Plus, Premium ou Elite — de 1 à 24 mois. Prix dynamiques, réductions
+          progressives, renouvellement automatique ou durée fixe clairement séparés.
+        </p>
+      </section>
+
+      <div id="plans" class="plans" aria-label="Formules"></div>
+
+      <div class="config">
+        <section class="panel">
+          <h2 class="section-title">Configurer votre offre</h2>
+          <p class="section-sub">Les tarifs sont chargés depuis le catalogue admin — rien n’est figé dans la page.</p>
+
+          <div>
+            <div class="muted" style="margin-bottom: 0.35rem">Durée</div>
+            <div id="durations" class="duration-grid" role="group" aria-label="Durées"></div>
+          </div>
+
+          <div>
+            <div class="muted">Mode d’engagement</div>
+            <div class="model-toggle">
+              <button type="button" class="model" data-model="fixed_term" aria-pressed="true">
+                <strong>Durée fixe</strong>
+                <span>Période achetée, aucun renouvellement automatique. L’accès s’arrête à la date de fin.</span>
+              </button>
+              <button type="button" class="model" data-model="auto_renew" aria-pressed="false">
+                <strong>Renouvellement auto</strong>
+                <span>Paiement périodique. Renouvelé à la même durée sauf résiliation depuis le compte.</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required />
+          </div>
+          <div class="field">
+            <label for="promo">Code promo (optionnel)</label>
+            <input id="promo" type="text" placeholder="ex. BIENVENUE20" />
+          </div>
+          <div id="active-promos" class="muted" style="font-size: 0.9rem"></div>
+        </section>
+
+        <aside class="panel summary" id="summary">
+          <div id="commitment-badge"></div>
+          <p class="muted" id="summary-plan" style="margin: 0.5rem 0 0">—</p>
+          <p class="price-total" id="price-total">—</p>
+          <p class="price-monthly" id="price-monthly">—</p>
+          <div class="savings" id="savings" hidden></div>
+          <ul class="meta-list">
+            <li><strong>Fin de période</strong> <span id="end-at">—</span></li>
+            <li><strong>Renouvellement</strong> <span id="renewal-at">—</span></li>
+            <li><strong>Réduction durée</strong> <span id="duration-discount">—</span></li>
+          </ul>
+          <p class="legal-note" id="renewal-terms"></p>
+          <button type="button" class="btn btn-primary" id="subscribe-btn">Souscrire</button>
+          <p class="legal-note">
+            Prix TTC indicatifs (simulation). Avant paiement réel, les conditions de renouvellement
+            et de résiliation vous sont présentées de façon transparente.
+          </p>
+        </aside>
+      </div>
+
+      <section class="panel compare">
+        <h2 class="section-title">Comparatif des fonctionnalités</h2>
+        <p class="section-sub">Une seule grille pour comparer Plus, Premium et Elite.</p>
+        <div class="table-wrap">
+          <table id="compare-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/subscribe.js"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "abonnement",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flexible subscription durations — Plus / Premium / Elite",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "seed": "node server/seed.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Abonnement",
+    "slug": "abonnement-flexible",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.quentin.abonnement"
+    },
+    "android": {
+      "package": "fr.quentin.abonnement",
+      "adaptiveIcon": {
+        "backgroundColor": "#0b1210",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
