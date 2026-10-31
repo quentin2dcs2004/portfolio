@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Image, Pressable, Text, View } from "react-native";
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
-import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PhoneShell } from "./src/components/PhoneShell";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { SubscribeScreen } from "./src/screens/SubscribeScreen";
 import { AccountScreen } from "./src/screens/AccountScreen";
@@ -15,10 +15,10 @@ function MeetoraHeaderTitle() {
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
       <Image
         source={require("./assets/meetora-logo.jpg")}
-        style={{ width: 28, height: 28, borderRadius: 7 }}
+        style={{ width: 26, height: 26, borderRadius: 7 }}
         accessibilityLabel="Meetora"
       />
-      <Text style={{ color: colors.text, fontWeight: "800", fontSize: 17 }}>Meetora</Text>
+      <Text style={{ color: colors.text, fontWeight: "800", fontSize: 16 }}>Meetora</Text>
     </View>
   );
 }
@@ -47,65 +47,78 @@ export default function App() {
   const [accountEmail, setAccountEmail] = useState<string>("");
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer theme={navTheme}>
-        <StatusBar style="light" />
-        <Stack.Navigator
-          initialRouteName="Profile"
-          screenOptions={{
-            headerStyle: { backgroundColor: colors.bgElevated },
-            headerTintColor: colors.text,
-            contentStyle: { backgroundColor: colors.bg },
-          }}
-        >
-          <Stack.Screen
-            name="Profile"
-            options={({ navigation }) => ({
-              headerTitle: () => <MeetoraHeaderTitle />,
-              headerRight: () => (
-                <Pressable onPress={() => navigation.navigate("Subscribe")}>
-                  <Text style={{ color: colors.accent, fontWeight: "700" }}>Formules</Text>
-                </Pressable>
-              ),
-            })}
+    <PhoneShell>
+      <SafeAreaProvider>
+        <NavigationContainer theme={navTheme}>
+          <StatusBar style="light" />
+          <Stack.Navigator
+            initialRouteName="Profile"
+            screenOptions={{
+              headerStyle: { backgroundColor: colors.bgElevated },
+              headerTintColor: colors.text,
+              contentStyle: { backgroundColor: colors.bg },
+              headerShadowVisible: false,
+            }}
           >
-            {({ navigation }) => (
-              <ProfileScreen
-                onEditPress={() =>
-                  Alert.alert(
-                    "Modifier le profil",
-                    "Bientôt : photo, bio, ville et préférences. Placeholder pour la critique."
-                  )
-                }
-                onSubscribePress={() => navigation.navigate("Subscribe")}
-              />
-            )}
-          </Stack.Screen>
-          <Stack.Screen
-            name="Subscribe"
-            options={({ navigation }) => ({
-              headerTitle: () => <MeetoraHeaderTitle />,
-              headerRight: () => (
-                <Pressable onPress={() => navigation.navigate("Account", { email: accountEmail })}>
-                  <Text style={{ color: colors.accent, fontWeight: "700" }}>Compte</Text>
-                </Pressable>
-              ),
-            })}
-          >
-            {({ navigation }) => (
-              <SubscribeScreen
-                onSubscribed={(email) => {
-                  setAccountEmail(email);
-                  navigation.navigate("Account", { email });
-                }}
-              />
-            )}
-          </Stack.Screen>
-          <Stack.Screen name="Account" options={{ title: "Meetora · Compte" }}>
-            {({ route }) => <AccountScreen initialEmail={route.params?.email || accountEmail} />}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+            <Stack.Screen
+              name="Profile"
+              options={({ navigation }) => ({
+                headerTitle: () => <MeetoraHeaderTitle />,
+                headerRight: () => (
+                  <Pressable
+                    onPress={() => navigation.navigate("Subscribe")}
+                    hitSlop={12}
+                    style={{ paddingVertical: 8, paddingHorizontal: 4 }}
+                  >
+                    <Text style={{ color: colors.accent, fontWeight: "700" }}>Formules</Text>
+                  </Pressable>
+                ),
+              })}
+            >
+              {({ navigation }) => (
+                <ProfileScreen
+                  onEditPress={() =>
+                    Alert.alert(
+                      "Modifier le profil",
+                      "Bientôt : photo, bio, ville et préférences. Placeholder pour la critique."
+                    )
+                  }
+                  onSubscribePress={() => navigation.navigate("Subscribe")}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Subscribe"
+              options={({ navigation }) => ({
+                headerTitle: () => <MeetoraHeaderTitle />,
+                headerRight: () => (
+                  <Pressable
+                    onPress={() => navigation.navigate("Account", { email: accountEmail })}
+                    hitSlop={12}
+                    style={{ paddingVertical: 8, paddingHorizontal: 4 }}
+                  >
+                    <Text style={{ color: colors.accent, fontWeight: "700" }}>Compte</Text>
+                  </Pressable>
+                ),
+              })}
+            >
+              {({ navigation }) => (
+                <SubscribeScreen
+                  onSubscribed={(email) => {
+                    setAccountEmail(email);
+                    navigation.navigate("Account", { email });
+                  }}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Account" options={{ title: "Compte" }}>
+              {({ route }) => (
+                <AccountScreen initialEmail={route.params?.email || accountEmail} />
+              )}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </PhoneShell>
   );
 }
