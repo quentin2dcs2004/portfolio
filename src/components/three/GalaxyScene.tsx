@@ -10,10 +10,15 @@ function Particles({ count = 900 }: { count?: number }) {
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3)
+    let seed = count * 9973 + 42
+    const rnd = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0
+      return seed / 0xffffffff
+    }
     for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 18
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 10
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 14
+      arr[i * 3] = (rnd() - 0.5) * 18
+      arr[i * 3 + 1] = (rnd() - 0.5) * 10
+      arr[i * 3 + 2] = (rnd() - 0.5) * 14
     }
     return arr
   }, [count])
