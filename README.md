@@ -1,13 +1,10 @@
-# Quentin — Create Your Own Universe
+# Portfolio Quentin
 
-Portfolio créatif immersif (React · TypeScript · Vite · Three.js · GSAP · Framer Motion).
+Site internet portfolio classique (React · Vite · TypeScript · Tailwind).
 
-## Expérience 3D
+## Pages
 
-- `GalaxyScene` — univers spatial WebGL (particules, étoiles, nébuleuses, planètes)
-- `LogoQ3D` — logo Q métallique interactif
-- `Intro3D` — introduction cinématique Netflix-like
-- Fallback automatique si WebGL indisponible
+Accueil, À propos, Compétences, Story, Projets, Portfolio, Matériel, Parcours, Passions, Contact.
 
 ## Lancer
 
@@ -16,6 +13,4 @@ npm install
 npm run dev
 ```
 
-## Contenu
-
-`src/data/site.ts` · photo `public/images/quentin.jpg`
+Contenu : `src/data/site.ts` · Photo : `public/images/quentin.jpg`

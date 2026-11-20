@@ -22,40 +22,27 @@ export function Contact() {
   }
 
   return (
-    <div className="wrap pt-28 pb-24">
-      <p className="font-display text-xs tracking-[0.4em] text-cyan uppercase">Contact</p>
-      <h1 className="font-display mt-4 text-4xl md:text-6xl">Entrons en contact</h1>
-      <div className="mt-14 grid gap-12 lg:grid-cols-2">
-        <div className="space-y-5 text-mist">
+    <div className="wrap py-16 md:py-24">
+      <p className="text-sm font-semibold tracking-wide text-accent uppercase">Contact</p>
+      <h1 className="font-display mt-3 text-4xl font-semibold md:text-5xl">Entrons en contact</h1>
+      <div className="mt-12 grid gap-12 lg:grid-cols-2">
+        <div className="space-y-4 text-muted">
           <p>
-            <span className="block text-sm text-snow">E-mail</span>
-            <a href={`mailto:${site.email}`} className="hover:text-cyan">
-              {site.email}
-            </a>
+            <span className="block text-sm font-semibold text-ink">E-mail</span>
+            <a href={`mailto:${site.email}`} className="hover:text-accent">{site.email}</a>
           </p>
           <p>
-            <span className="block text-sm text-snow">Téléphone</span>
-            <a href={`tel:+33${site.phone.replace(/\s/g, '').slice(1)}`} className="hover:text-cyan">
+            <span className="block text-sm font-semibold text-ink">Téléphone</span>
+            <a href={`tel:+33${site.phone.replace(/\s/g, '').slice(1)}`} className="hover:text-accent">
               {site.phone}
             </a>
           </p>
           <p>
-            <span className="block text-sm text-snow">Localisation</span>
+            <span className="block text-sm font-semibold text-ink">Localisation</span>
             {site.location}
           </p>
-          <div className="flex gap-4 pt-2 text-sm">
-            <a href={site.socials.linkedin} target="_blank" rel="noreferrer" className="hover:text-cyan">
-              LinkedIn
-            </a>
-            <a href={site.socials.instagram} target="_blank" rel="noreferrer" className="hover:text-cyan">
-              Instagram
-            </a>
-            <a href={site.socials.facebook} target="_blank" rel="noreferrer" className="hover:text-cyan">
-              Facebook
-            </a>
-          </div>
         </div>
-        <form onSubmit={submit} className="space-y-5" noValidate>
+        <form onSubmit={submit} className="space-y-4" noValidate>
           {(
             [
               ['name', 'Nom'],
@@ -64,38 +51,35 @@ export function Contact() {
             ] as const
           ).map(([key, label]) => (
             <label key={key} className="block">
-              <span className="mb-2 block text-sm">{label}</span>
+              <span className="mb-1 block text-sm font-medium">{label}</span>
               <input
                 value={form[key]}
                 onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-                className={`w-full border-0 border-b bg-transparent py-3 outline-none ${
-                  errors[key] ? 'border-red-400' : 'border-white/20 focus:border-cyan'
+                className={`w-full border px-3 py-2.5 outline-none focus:border-accent ${
+                  errors[key] ? 'border-red-400' : 'border-line'
                 }`}
               />
-              {errors[key] ? <span className="mt-1 block text-xs text-red-300">{errors[key]}</span> : null}
+              {errors[key] ? <span className="mt-1 block text-xs text-red-600">{errors[key]}</span> : null}
             </label>
           ))}
           <label className="block">
-            <span className="mb-2 block text-sm">Message</span>
+            <span className="mb-1 block text-sm font-medium">Message</span>
             <textarea
-              rows={4}
+              rows={5}
               value={form.message}
               onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-              className={`w-full resize-y border-0 border-b bg-transparent py-3 outline-none ${
-                errors.message ? 'border-red-400' : 'border-white/20 focus:border-cyan'
+              className={`w-full border px-3 py-2.5 outline-none focus:border-accent ${
+                errors.message ? 'border-red-400' : 'border-line'
               }`}
             />
             {errors.message ? (
-              <span className="mt-1 block text-xs text-red-300">{errors.message}</span>
+              <span className="mt-1 block text-xs text-red-600">{errors.message}</span>
             ) : null}
           </label>
-          <button
-            type="submit"
-            className="rounded-full bg-gradient-to-r from-electric to-violet px-6 py-3 text-sm font-semibold"
-          >
+          <button type="submit" className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white">
             Envoyer
           </button>
-          {ok ? <p className="text-sm text-cyan">Client mail prêt pour l’envoi.</p> : null}
+          {ok ? <p className="text-sm text-accent">Ton client mail va s’ouvrir.</p> : null}
         </form>
       </div>
     </div>

@@ -1,11 +1,5 @@
-import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
-import { useIntro } from '@/hooks/useIntro'
-
-const Intro3D = lazy(() =>
-  import('@/components/intro/Intro3D').then((m) => ({ default: m.Intro3D })),
-)
 import { Home } from '@/pages/Home'
 import { APropos } from '@/pages/APropos'
 import { Competences } from '@/pages/Competences'
@@ -18,15 +12,8 @@ import { Passions } from '@/pages/Passions'
 import { Contact } from '@/pages/Contact'
 
 export default function App() {
-  const { showIntro, finish } = useIntro()
-
   return (
     <BrowserRouter>
-      {showIntro ? (
-        <Suspense fallback={<div className="fixed inset-0 z-[100] bg-black" />}>
-          <Intro3D onComplete={finish} />
-        </Suspense>
-      ) : null}
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />

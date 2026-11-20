@@ -1,120 +1,49 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowDownRight } from 'lucide-react'
 import { site } from '@/data/site'
 
-const GalaxyScene = lazy(() =>
-  import('@/components/three/GalaxyScene').then((m) => ({ default: m.GalaxyScene })),
-)
-
 export function HomeHero() {
-  const [roleIndex, setRoleIndex] = useState(0)
+  const [role, setRole] = useState(0)
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setRoleIndex((i) => (i + 1) % site.roles.length)
-    }, 2200)
+      setRole((i) => (i + 1) % site.roles.length)
+    }, 2400)
     return () => clearInterval(id)
   }, [])
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      <Suspense fallback={<div className="absolute inset-0 bg-void" />}>
-        <GalaxyScene />
-      </Suspense>
+    <section className="relative min-h-[100svh]">
+      <img
+        src={site.photo}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover object-top"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/25" />
 
-      <div className="wrap relative z-10 grid min-h-screen items-center gap-10 pt-24 pb-16 lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-display text-xs tracking-[0.45em] text-cyan uppercase"
-          >
-            Create your own universe
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="font-display mt-5 text-5xl leading-[1.05] font-bold tracking-tight md:text-7xl"
-          >
-            <span className="text-gradient text-glow">{site.name}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6 text-xl text-snow md:text-2xl"
-          >
-            {site.greeting}
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-4 max-w-xl text-base leading-relaxed text-mist md:text-lg"
-          >
-            {site.tagline}
-          </motion.p>
-
-          <p className="mt-6 text-lg text-snow">
-            Je suis{' '}
-            <span className="relative inline-grid min-w-[14ch] align-bottom">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={site.roles[roleIndex]}
-                  initial={{ y: 18, opacity: 0, filter: 'blur(8px)' }}
-                  animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                  exit={{ y: -18, opacity: 0, filter: 'blur(8px)' }}
-                  transition={{ duration: 0.4 }}
-                  className="col-start-1 row-start-1 font-semibold text-cyan"
-                >
-                  {site.roles[roleIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
+      <div className="wrap relative flex min-h-[100svh] items-end pb-16 pt-28 md:items-center md:pb-20">
+        <div className="max-w-2xl text-white">
+          <p className="font-display text-5xl font-bold tracking-tight md:text-7xl">{site.name}</p>
+          <h1 className="mt-5 text-xl text-white/90 md:text-2xl">{site.greeting}</h1>
+          <p className="mt-4 max-w-xl text-base text-white/75 md:text-lg">{site.tagline}</p>
+          <p className="mt-5 text-lg">
+            Je suis <span className="font-semibold text-white">{site.roles[role]}</span>
           </p>
-
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/projets"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-electric via-cyan to-violet px-6 py-3 text-sm font-semibold text-void"
+              className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink hover:bg-white/90"
             >
-              Découvrir mes projets <ArrowDownRight size={16} />
+              Voir mes projets
             </Link>
             <Link
-              to="/a-propos"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-snow hover:border-cyan/50 hover:text-cyan"
+              to="/contact"
+              className="rounded-full border border-white/50 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
             >
-              Mon univers
+              Me contacter
             </Link>
           </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.25, duration: 0.7 }}
-          className="relative mx-auto w-full max-w-md"
-        >
-          <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-electric/30 via-transparent to-violet/30 blur-2xl" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/15">
-            <img
-              src={site.photo}
-              alt={`Portrait de ${site.fullName}`}
-              className="aspect-[3/4] w-full object-cover object-top"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent" />
-            <div className="absolute right-5 bottom-5 left-5">
-              <p className="font-display text-xs tracking-[0.3em] text-cyan uppercase">Créatif polyvalent</p>
-              <p className="mt-1 text-sm text-snow">{site.fullName}</p>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   )
