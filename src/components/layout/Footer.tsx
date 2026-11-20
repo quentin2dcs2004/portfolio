@@ -3,35 +3,23 @@ import { site } from '@/data/site'
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-night/60">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-6">
+    <footer className="mt-20 border-t border-line bg-surface">
+      <div className="container-page flex flex-col gap-4 py-10 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="font-display text-sm tracking-[0.25em] text-cyan uppercase">
-            {site.name}
-          </p>
-          <p className="mt-2 max-w-md text-sm text-mist">{site.signature}</p>
+          <p className="font-display font-semibold text-ink">{site.fullName}</p>
+          <p className="mt-1 text-sm text-muted">{site.location}</p>
         </div>
-        <div className="flex flex-wrap gap-4 text-sm text-mist">
-          <a href={`mailto:${site.email}`} className="hover:text-cyan">
+        <div className="flex flex-wrap gap-4 text-sm text-muted">
+          <a href={`mailto:${site.email}`} className="hover:text-accent">
             {site.email}
           </a>
-          <a
-            href={site.socials.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-cyan"
-          >
+          <a href={site.socials.linkedin} target="_blank" rel="noreferrer" className="hover:text-accent">
             LinkedIn
           </a>
-          <a
-            href={site.socials.instagram}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-cyan"
-          >
+          <a href={site.socials.instagram} target="_blank" rel="noreferrer" className="hover:text-accent">
             Instagram
           </a>
-          <Link to="/contact" className="hover:text-cyan">
+          <Link to="/contact" className="hover:text-accent">
             Contact
           </Link>
         </div>

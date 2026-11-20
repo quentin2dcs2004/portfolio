@@ -1,13 +1,6 @@
 import { useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { X } from 'lucide-react'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import {
-  projectCategories,
-  projects,
-  type Project,
-  type ProjectCategory,
-} from '@/data/site'
+import { projectCategories, projects, type Project } from '@/data/site'
 
 export function Projets() {
   const [filter, setFilter] = useState<(typeof projectCategories)[number]>('Tous')
@@ -19,11 +12,11 @@ export function Projets() {
   }, [filter])
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-28 pb-20 md:px-6">
+    <div className="container-page py-16">
       <SectionHeading
         eyebrow="Projets"
         title="Mes réalisations"
-        description="Filtres interactifs et aperçus immersifs. Les fiches marquées « à compléter » sont des emplacements modifiables."
+        description="Filtre par catégorie. Les fiches « à compléter » sont des emplacements modifiables."
       />
 
       <div className="mb-8 flex flex-wrap gap-2">
@@ -32,10 +25,10 @@ export function Projets() {
             key={cat}
             type="button"
             onClick={() => setFilter(cat)}
-            className={`rounded-full px-4 py-2 text-xs tracking-wide transition ${
+            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               filter === cat
-                ? 'bg-electric/25 text-cyan neon-border'
-                : 'border border-white/10 text-mist hover:text-snow'
+                ? 'bg-accent text-white'
+                : 'border border-line bg-surface text-muted hover:text-ink'
             }`}
           >
             {cat}
@@ -43,97 +36,74 @@ export function Projets() {
         ))}
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((project, i) => (
-          <motion.button
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((project) => (
+          <button
             key={project.id}
             type="button"
-            layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
             onClick={() => setSelected(project)}
-            className="group overflow-hidden rounded-3xl border border-white/10 text-left transition hover:border-cyan/40"
-            data-cursor
+            className="overflow-hidden rounded-2xl border border-line bg-surface text-left transition hover:border-accent/40"
           >
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <img
-                src={project.image}
-                alt=""
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-80" />
-              {project.placeholder ? (
-                <span className="absolute top-3 left-3 rounded-full bg-violet/30 px-2 py-1 text-[10px] tracking-wider text-snow uppercase">
-                  Emplacement
-                </span>
-              ) : null}
-            </div>
-            <div className="p-4">
-              <p className="text-[11px] tracking-widest text-cyan uppercase">
-                {project.category as ProjectCategory}
+            <img
+              src={project.image}
+              alt=""
+              className="aspect-[4/3] w-full object-cover"
+              loading="lazy"
+            />
+            <div className="p-5">
+              <p className="text-xs font-semibold tracking-wide text-accent uppercase">
+                {project.category}
               </p>
-              <h3 className="mt-1 font-display text-base text-snow">{project.title}</h3>
-              <p className="mt-2 line-clamp-2 text-sm text-mist">{project.summary}</p>
-              <p className="mt-3 text-xs text-mist/70">{project.date}</p>
+              <h3 className="font-display mt-2 text-lg font-semibold">{project.title}</h3>
+              <p className="mt-2 line-clamp-2 text-sm text-muted">{project.summary}</p>
+              <p className="mt-3 text-xs text-muted">{project.date}</p>
             </div>
-          </motion.button>
+          </button>
         ))}
       </div>
 
-      <AnimatePresence>
-        {selected ? (
-          <motion.div
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-void/80 p-4 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
+      {selected ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
+          onClick={() => setSelected(null)}
+          role="presentation"
+        >
+          <div
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-surface shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={selected.title}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="glass relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] neon-border"
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-              aria-label={selected.title}
-            >
+            <img src={selected.image} alt="" className="aspect-video w-full object-cover" />
+            <div className="p-6">
+              <p className="text-xs font-semibold tracking-wide text-accent uppercase">
+                {selected.category}
+              </p>
+              <h3 className="font-display mt-2 text-2xl font-semibold">{selected.title}</h3>
+              <p className="mt-1 text-sm text-muted">{selected.date}</p>
+              <p className="mt-4 text-muted">{selected.description}</p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {selected.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full border border-line px-3 py-1 text-xs text-muted"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
               <button
                 type="button"
-                className="absolute top-4 right-4 z-10 rounded-full bg-void/60 p-2 text-snow"
+                className="mt-6 rounded-xl border border-line px-4 py-2 text-sm font-semibold"
                 onClick={() => setSelected(null)}
-                aria-label="Fermer"
               >
-                <X size={18} />
+                Fermer
               </button>
-              <img
-                src={selected.image}
-                alt=""
-                className="aspect-video w-full object-cover"
-              />
-              <div className="p-6 md:p-8">
-                <p className="text-xs tracking-widest text-cyan uppercase">{selected.category}</p>
-                <h3 className="font-display mt-2 text-2xl text-snow">{selected.title}</h3>
-                <p className="mt-2 text-sm text-mist">{selected.date}</p>
-                <p className="mt-5 leading-relaxed text-snow/90">{selected.description}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {selected.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-white/15 px-3 py-1 text-xs text-mist"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }
