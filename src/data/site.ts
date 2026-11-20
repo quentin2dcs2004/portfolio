@@ -1,9 +1,10 @@
 export const site = {
   name: 'Quentin',
   fullName: 'Quentin Da Costa Soares',
-  tagline:
-    'Créatif polyvalent passionné par le graphisme, l’impression, la modélisation 3D, le développement numérique et la relation client.',
+  signature: 'QUENTIN – CREATE YOUR OWN UNIVERSE.',
   greeting: 'Bonjour, je m’appelle Quentin.',
+  tagline:
+    'Je suis un créatif polyvalent passionné par le graphisme, l’impression, la modélisation 3D, l’impression 3D, le développement et la relation client.',
   photo: '/images/quentin.jpg',
   email: 'quentindacostaso@gmail.com',
   phone: '07 86 73 77 92',
@@ -26,196 +27,279 @@ export const site = {
 } as const
 
 export const navLinks = [
-  { href: '#accueil', label: 'Accueil' },
-  { href: '#apropos', label: 'À propos' },
-  { href: '#competences', label: 'Compétences' },
-  { href: '#projets', label: 'Projets' },
-  { href: '#parcours', label: 'Parcours' },
-  { href: '#contact', label: 'Contact' },
+  { to: '/', label: 'Accueil' },
+  { to: '/a-propos', label: 'À propos' },
+  { to: '/competences', label: 'Compétences' },
+  { to: '/story', label: 'Story' },
+  { to: '/projets', label: 'Projets' },
+  { to: '/portfolio', label: 'Portfolio' },
+  { to: '/materiel', label: 'Matériel' },
+  { to: '/parcours', label: 'Parcours' },
+  { to: '/passions', label: 'Passions' },
+  { to: '/contact', label: 'Contact' },
 ] as const
 
-export interface SkillSection {
-  id: string
-  title: string
-  description: string
-  items: string[]
-  softwares: string[]
-}
-
-export const skills: SkillSection[] = [
+export const skills = [
   {
     id: 'graphisme',
     title: 'Graphisme',
-    description: 'Identités visuelles et supports de communication.',
-    items: ['Logos', 'Identité visuelle', 'Affiches', 'Flyers', 'Supports imprimés'],
+    description: 'Identités visuelles, affiches, flyers et supports imprimés.',
+    items: ['Logos', 'Identité visuelle', 'Affiches', 'Flyers', 'Communication visuelle'],
     softwares: ['Photoshop', 'Illustrator', 'InDesign', 'Canva', 'GIMP'],
   },
   {
     id: 'impression',
     title: 'Impression',
-    description: 'Préparation de fichiers et production imprimée.',
-    items: ['Impression numérique', 'Grand format', 'Sérigraphie', 'Gestion des couleurs', 'Façonnage'],
+    description: 'Chaîne graphique, couleurs et production.',
+    items: ['Numérique', 'Grand format', 'Sérigraphie', 'Gestion des couleurs', 'Façonnage'],
     softwares: ['Photoshop', 'Illustrator'],
   },
   {
     id: 'modelisation',
     title: 'Modélisation 3D',
-    description: 'Conception d’objets techniques ou artistiques.',
-    items: ['Modélisation', 'Conception technique', 'Texturing', 'Rendu 3D'],
+    description: 'Objets techniques et artistiques, texturing et rendu.',
+    items: ['Modélisation', 'Conception technique', 'Texturing', 'Rendu'],
     softwares: ['Blender', 'Fusion 360', 'FreeCAD', 'SolidWorks'],
   },
   {
     id: 'impression3d',
     title: 'Impression 3D',
-    description: 'Prototypage et optimisation d’impressions.',
-    items: ['Fichiers STL', 'Tranchage', 'Calibration', 'Prototypage'],
+    description: 'Du fichier STL au prototype physique.',
+    items: ['STL', 'Tranchage', 'Calibration', 'Prototypage'],
     softwares: ['Cura', 'Simplify3D'],
   },
   {
     id: 'developpement',
     title: 'Développement',
-    description: 'Sites web et interfaces numériques.',
-    items: ['HTML', 'CSS', 'JavaScript', 'Intégration web', 'UI'],
-    softwares: ['Visual Studio Code', 'GitHub', 'Figma'],
+    description: 'Sites web, interfaces et intégration.',
+    items: ['HTML', 'CSS', 'JavaScript', 'UI', 'Intégration'],
+    softwares: ['VS Code', 'GitHub', 'Figma'],
   },
   {
-    id: 'vente-conseil',
+    id: 'vente',
     title: 'Vente & conseil',
-    description: 'Accueil client et accompagnement commercial.',
-    items: ['Accueil', 'Conseil', 'Argumentation', 'Fidélisation', 'Suivi client'],
+    description: 'Relation client, conseil et accompagnement.',
+    items: ['Accueil', 'Conseil', 'Argumentation', 'Fidélisation'],
     softwares: [],
   },
-]
+] as const
 
-export type ProjectCategory =
-  | 'Graphisme'
-  | 'Impression'
-  | 'Modélisation 3D'
-  | 'Impression 3D'
-  | 'Développement web'
-  | 'Projets personnels'
-
-export interface Project {
-  id: string
-  title: string
-  category: ProjectCategory
-  date: string
-  summary: string
-  technologies: string[]
-  image: string
-  placeholder?: boolean
-}
-
-export const projects: Project[] = [
+export const projects = [
   {
-    id: 'identite-visuelle',
+    id: 'p1',
     title: 'Identité visuelle — à compléter',
     category: 'Graphisme',
     date: 'À renseigner',
-    summary: 'Création d’une identité visuelle (logo, charte, déclinaisons).',
+    summary: 'Logo, charte et déclinaisons.',
+    description: 'Ajoute ici le brief, le process et les livrables.',
     technologies: ['Illustrator', 'Photoshop'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
   {
-    id: 'piece-3d',
+    id: 'p2',
     title: 'Pièce 3D — à compléter',
     category: 'Modélisation 3D',
     date: 'À renseigner',
-    summary: 'Modélisation d’une pièce pour visualisation ou impression.',
+    summary: 'Modélisation pour visualisation ou fabrication.',
+    description: 'Détaille logiciels, contraintes et résultat.',
     technologies: ['Blender', 'Fusion 360'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
   {
-    id: 'prototype-impression',
+    id: 'p3',
     title: 'Prototype imprimé — à compléter',
     category: 'Impression 3D',
     date: 'À renseigner',
-    summary: 'Prototypage d’un objet via impression 3D.',
+    summary: 'Prototypage via impression 3D.',
+    description: 'Paramètres, filament et itérations.',
     technologies: ['Cura', 'STL'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
   {
-    id: 'site-web',
+    id: 'p4',
     title: 'Site web — à compléter',
-    category: 'Développement web',
+    category: 'Développement',
     date: 'À renseigner',
-    summary: 'Conception et intégration d’une interface web.',
+    summary: 'Interface et intégration web.',
+    description: 'Stack, pages et points forts UX.',
     technologies: ['HTML', 'CSS', 'JavaScript'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
   {
-    id: 'support-imprime',
+    id: 'p5',
     title: 'Support imprimé — à compléter',
     category: 'Impression',
     date: 'À renseigner',
-    summary: 'Préparation et impression d’un support publicitaire.',
-    technologies: ['InDesign', 'Impression numérique'],
+    summary: 'Préparation et impression publicitaire.',
+    description: 'Format, type d’impression et finitions.',
+    technologies: ['InDesign'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
   {
-    id: 'projet-personnel',
+    id: 'p6',
     title: 'Projet personnel — à compléter',
-    category: 'Projets personnels',
+    category: 'Personnel',
     date: 'À renseigner',
-    summary: 'Expérimentation créative libre.',
+    summary: 'Exploration créative libre.',
+    description: 'Documente une exploration personnelle.',
     technologies: ['Création'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
-]
+] as const
 
-export interface TimelineEvent {
-  id: string
-  year: string
-  title: string
-  type: string
-  summary: string
-  details: string
-  verified: boolean
-}
-
-export const timeline: TimelineEvent[] = [
+export const storyThreads = [
   {
-    id: 'bac-pro',
+    id: 'qui',
+    contact: 'Qui es-tu ?',
+    q: 'Quentin, tu peux te présenter ?',
+    a: 'Je suis une personne créative et polyvalente. J’aime apprendre, découvrir de nouveaux domaines et transformer mes idées en projets concrets.',
+  },
+  {
+    id: 'graphisme',
+    contact: 'Graphisme',
+    q: 'Pourquoi avoir choisi le graphisme ?',
+    a: 'Parce que j’aime donner vie aux idées, travailler les couleurs, les formes et créer des identités visuelles.',
+  },
+  {
+    id: '3d',
+    contact: 'La 3D',
+    q: 'Tu fais aussi de la modélisation 3D ?',
+    a: 'Oui. J’aime concevoir des objets en 3D et découvrir les possibilités de la fabrication numérique.',
+  },
+  {
+    id: 'passions',
+    contact: 'Passions',
+    q: 'Qu’est-ce que tu aimes faire ?',
+    a: 'La photographie, le dessin, les jeux vidéo, l’automobile, la création, la 3D et les nouvelles technologies.',
+  },
+  {
+    id: 'avenir',
+    contact: 'Avenir',
+    q: 'Quels sont tes objectifs ?',
+    a: 'Continuer à apprendre, développer mes compétences et construire des projets professionnels ambitieux.',
+  },
+  {
+    id: 'parcours',
+    contact: 'Parcours',
+    q: 'Tu as suivi quelle formation ?',
+    a: 'Je suis diplômé d’un Bac Pro RPIP. Aujourd’hui je poursuis une formation de testeur de jeux vidéo.',
+  },
+] as const
+
+export const timeline = [
+  {
+    id: 'bac',
     year: 'Diplôme',
     title: 'Bac Pro RPIP',
-    type: 'Diplôme',
     summary: 'Réalisation de Produits Imprimés et Plurimédia.',
-    details:
-      'Formation orientée numérique et impression, base pour le graphisme et les supports imprimés.',
+    details: 'Base solide en numérique, graphisme et impression.',
     verified: true,
   },
   {
-    id: 'testeur',
+    id: 'jv',
     year: 'En cours',
     title: 'Formation testeur de jeux vidéo',
-    type: 'Formation',
-    summary: 'Allier passion du jeu et compétences analytiques.',
-    details: 'Parcours orienté qualité logicielle et test de jeux vidéo.',
+    summary: 'Allier passion du jeu et analyse qualité.',
+    details: 'Parcours orienté test et qualité logicielle.',
     verified: true,
   },
   {
-    id: 'exp-placeholder',
+    id: 'exp',
     year: 'À renseigner',
-    title: 'Expérience professionnelle — à compléter',
-    type: 'Expérience',
-    summary: 'Ajoute ici tes expériences, stages et missions.',
-    details: 'Emplacement modifiable : poste, entreprise, missions.',
+    title: 'Expérience — à compléter',
+    summary: 'Ajoute ici tes expériences et stages.',
+    details: 'Emplacement modifiable.',
     verified: false,
   },
   {
-    id: '3d-ambition',
-    year: 'Objectif',
-    title: 'Développement en impression 3D',
-    type: 'Évolution',
-    summary: 'Devenir polyvalent dans la fabrication numérique.',
-    details:
-      'Objectifs : matières recyclables, design, pièces techniques, et à terme créer une activité.',
+    id: '3d',
+    year: 'Ambition',
+    title: 'Impression 3D & création d’activité',
+    summary: 'Devenir polyvalent en fabrication numérique.',
+    details: 'Matières recyclables, design, pièces techniques, entrepreneuriat.',
     verified: true,
   },
-]
+] as const
+
+export const passions = [
+  { id: 'photo', title: 'Photographie', text: 'Capturer ambiances et détails.' },
+  { id: 'dessin', title: 'Dessin & manga', text: 'Le trait et la narration visuelle.' },
+  { id: 'jeux', title: 'Jeux vidéo', text: 'Univers interactifs et design.' },
+  { id: 'auto', title: 'Automobile', text: 'Design et esthétique mécanique.' },
+  { id: 'i3d', title: 'Impression 3D', text: 'De l’idée à l’objet.' },
+  { id: 'tech', title: 'Technologies', text: 'Outils du futur créatif.' },
+  { id: 'crea', title: 'Création', text: 'Exploration libre.' },
+  { id: 'voyage', title: 'Voyages', text: 'Inspiration des lieux.' },
+] as const
+
+export const gear = [
+  {
+    id: 'pc',
+    category: 'Ordinateurs',
+    name: 'Station de travail — à compléter',
+    usage: 'Création, 3D et développement.',
+    specs: ['CPU : à renseigner', 'GPU : à renseigner', 'RAM : à renseigner'],
+  },
+  {
+    id: 'p3d',
+    category: 'Impression 3D',
+    name: 'Imprimante 3D — à compléter',
+    usage: 'Prototypage et fabrication.',
+    specs: ['Technologie : à renseigner', 'Volume : à renseigner'],
+  },
+  {
+    id: 'cam',
+    category: 'Photo',
+    name: 'Appareil photo — à compléter',
+    usage: 'Captation visuelle.',
+    specs: ['Modèle : à renseigner'],
+  },
+  {
+    id: 'soft',
+    category: 'Logiciels',
+    name: 'Suite créative',
+    usage: 'Outils du quotidien.',
+    specs: ['Adobe / GIMP / Canva', 'Blender / Fusion / FreeCAD', 'Cura', 'VS Code / Figma'],
+  },
+] as const
+
+export const bookPages = [
+  {
+    id: 'cover',
+    title: 'Quentin – Creative Portfolio',
+    body: 'Create your own universe',
+  },
+  {
+    id: '1',
+    title: 'Projet 01 — à compléter',
+    date: 'À renseigner',
+    softwares: 'Illustrator, Photoshop',
+    objectives: 'Objectif à renseigner.',
+    challenges: 'Difficultés à renseigner.',
+    result: 'Résultat à renseigner.',
+  },
+  {
+    id: '2',
+    title: 'Projet 02 — à compléter',
+    date: 'À renseigner',
+    softwares: 'Blender',
+    objectives: 'Objectif à renseigner.',
+    challenges: 'Difficultés à renseigner.',
+    result: 'Résultat à renseigner.',
+  },
+  {
+    id: '3',
+    title: 'Projet 03 — à compléter',
+    date: 'À renseigner',
+    softwares: 'HTML, CSS, JS',
+    objectives: 'Objectif à renseigner.',
+    challenges: 'Difficultés à renseigner.',
+    result: 'Résultat à renseigner.',
+  },
+] as const

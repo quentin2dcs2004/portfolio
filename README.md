@@ -1,15 +1,13 @@
-# Portfolio Quentin
+# Quentin — Create Your Own Universe
 
-Site one-page plein écran, clean et complet.
+Portfolio créatif immersif (React · TypeScript · Vite · Three.js · GSAP · Framer Motion).
 
-## Sections
+## Expérience 3D
 
-- Accueil (hero plein écran)
-- À propos
-- Compétences
-- Projets
-- Parcours
-- Contact
+- `GalaxyScene` — univers spatial WebGL (particules, étoiles, nébuleuses, planètes)
+- `LogoQ3D` — logo Q métallique interactif
+- `Intro3D` — introduction cinématique Netflix-like
+- Fallback automatique si WebGL indisponible
 
 ## Lancer
 
@@ -20,5 +18,4 @@ npm run dev
 
 ## Contenu
 
-- Textes : `src/data/site.ts`
-- Photo : `public/images/quentin.jpg`
+`src/data/site.ts` · photo `public/images/quentin.jpg`
