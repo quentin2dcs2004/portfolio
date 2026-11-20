@@ -23,6 +23,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
@@ -31,7 +32,7 @@
     background: var(--color-void);
     color: var(--color-snow);
     font-family: var(--font-body);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   ::selection {
