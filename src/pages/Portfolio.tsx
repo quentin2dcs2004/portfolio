@@ -28,6 +28,7 @@ export function Portfolio() {
         <motion.button
           type="button"
           onClick={() => setOpened(true)}
+          aria-label="Ouvrir le livre Creative Portfolio"
           className="relative mx-auto flex min-h-[420px] w-full max-w-md flex-col items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/15 bg-gradient-to-br from-night via-void to-night p-8 text-center neon-border"
           whileHover={{ scale: 1.02 }}
           data-cursor

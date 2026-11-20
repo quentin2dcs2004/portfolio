@@ -34,12 +34,6 @@
     overflow-x: hidden;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    body {
-      cursor: none;
-    }
-  }
-
   ::selection {
     background: color-mix(in oklab, var(--color-electric) 55%, transparent);
     color: white;
