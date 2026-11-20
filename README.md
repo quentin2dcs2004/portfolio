@@ -1,23 +1,24 @@
 # Portfolio Quentin
 
-Site portfolio classique (React · TypeScript · Vite · Tailwind).
+Site one-page plein écran, clean et complet.
 
-## Pages
+## Sections
 
-- Accueil
+- Accueil (hero plein écran)
+- À propos
 - Compétences
 - Projets
 - Parcours
 - Contact
 
-## Démarrage
+## Lancer
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Contenu modifiable
+## Contenu
 
-- Texte et données : `src/data/site.ts`
+- Textes : `src/data/site.ts`
 - Photo : `public/images/quentin.jpg`

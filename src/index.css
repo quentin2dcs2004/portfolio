@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #15202b;
-  --color-muted: #5b6775;
-  --color-paper: #f7f8fa;
-  --color-surface: #ffffff;
-  --color-line: #e5e9ef;
-  --color-accent: #1a66ff;
-  --color-accent-soft: #e8f0ff;
+  --color-ink: #111827;
+  --color-muted: #4b5563;
+  --color-paper: #ffffff;
+  --color-soft: #f3f5f8;
+  --color-line: #e5e7eb;
+  --color-accent: #2563eb;
   --font-display: "Sora", sans-serif;
   --font-body: "Manrope", sans-serif;
 }
@@ -27,7 +26,7 @@
     background: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-body);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
   a {
@@ -37,8 +36,7 @@
 
   button,
   input,
-  textarea,
-  select {
+  textarea {
     font: inherit;
   }
 
@@ -58,12 +56,12 @@
     font-family: var(--font-display);
   }
 
-  .font-body {
-    font-family: var(--font-body);
+  .wrap {
+    width: min(1180px, calc(100% - 3rem));
+    margin-inline: auto;
   }
 
-  .container-page {
-    width: min(1120px, calc(100% - 2rem));
-    margin-inline: auto;
+  .section {
+    padding-block: clamp(4.5rem, 10vw, 7.5rem);
   }
 }

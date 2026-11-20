@@ -26,11 +26,12 @@ export const site = {
 } as const
 
 export const navLinks = [
-  { to: '/', label: 'Accueil' },
-  { to: '/competences', label: 'Compétences' },
-  { to: '/projets', label: 'Projets' },
-  { to: '/parcours', label: 'Parcours' },
-  { to: '/contact', label: 'Contact' },
+  { href: '#accueil', label: 'Accueil' },
+  { href: '#apropos', label: 'À propos' },
+  { href: '#competences', label: 'Compétences' },
+  { href: '#projets', label: 'Projets' },
+  { href: '#parcours', label: 'Parcours' },
+  { href: '#contact', label: 'Contact' },
 ] as const
 
 export interface SkillSection {
@@ -45,73 +46,43 @@ export const skills: SkillSection[] = [
   {
     id: 'graphisme',
     title: 'Graphisme',
-    description:
-      'Création d’identités visuelles et de supports de communication.',
-    items: [
-      'Logos',
-      'Identité visuelle',
-      'Affiches',
-      'Flyers',
-      'Supports imprimés',
-      'Design graphique',
-    ],
+    description: 'Identités visuelles et supports de communication.',
+    items: ['Logos', 'Identité visuelle', 'Affiches', 'Flyers', 'Supports imprimés'],
     softwares: ['Photoshop', 'Illustrator', 'InDesign', 'Canva', 'GIMP'],
   },
   {
     id: 'impression',
     title: 'Impression',
-    description: 'Préparation de fichiers et suivi de production imprimée.',
-    items: [
-      'Impression numérique',
-      'Grand format',
-      'Sérigraphie',
-      'Gestion des couleurs',
-      'Façonnage',
-    ],
+    description: 'Préparation de fichiers et production imprimée.',
+    items: ['Impression numérique', 'Grand format', 'Sérigraphie', 'Gestion des couleurs', 'Façonnage'],
     softwares: ['Photoshop', 'Illustrator'],
   },
   {
     id: 'modelisation',
     title: 'Modélisation 3D',
-    description: 'Conception d’objets techniques ou artistiques en 3D.',
-    items: [
-      'Modélisation',
-      'Conception technique',
-      'Texturing',
-      'Rendu 3D',
-    ],
+    description: 'Conception d’objets techniques ou artistiques.',
+    items: ['Modélisation', 'Conception technique', 'Texturing', 'Rendu 3D'],
     softwares: ['Blender', 'Fusion 360', 'FreeCAD', 'SolidWorks'],
   },
   {
     id: 'impression3d',
     title: 'Impression 3D',
-    description: 'Prototypage et optimisation d’impressions 3D.',
-    items: [
-      'Fichiers STL',
-      'Tranchage',
-      'Calibration',
-      'Prototypage',
-    ],
+    description: 'Prototypage et optimisation d’impressions.',
+    items: ['Fichiers STL', 'Tranchage', 'Calibration', 'Prototypage'],
     softwares: ['Cura', 'Simplify3D'],
   },
   {
     id: 'developpement',
     title: 'Développement',
-    description: 'Création et intégration de sites et interfaces web.',
+    description: 'Sites web et interfaces numériques.',
     items: ['HTML', 'CSS', 'JavaScript', 'Intégration web', 'UI'],
     softwares: ['Visual Studio Code', 'GitHub', 'Figma'],
   },
   {
     id: 'vente-conseil',
     title: 'Vente & conseil',
-    description: 'Accueil client, conseil commercial et accompagnement.',
-    items: [
-      'Accueil',
-      'Conseil',
-      'Argumentation',
-      'Fidélisation',
-      'Suivi client',
-    ],
+    description: 'Accueil client et accompagnement commercial.',
+    items: ['Accueil', 'Conseil', 'Argumentation', 'Fidélisation', 'Suivi client'],
     softwares: [],
   },
 ]
@@ -130,7 +101,6 @@ export interface Project {
   category: ProjectCategory
   date: string
   summary: string
-  description: string
   technologies: string[]
   image: string
   placeholder?: boolean
@@ -143,8 +113,6 @@ export const projects: Project[] = [
     category: 'Graphisme',
     date: 'À renseigner',
     summary: 'Création d’une identité visuelle (logo, charte, déclinaisons).',
-    description:
-      'Ajoute ici la description complète du projet : brief, process et livrables.',
     technologies: ['Illustrator', 'Photoshop'],
     image: '/images/quentin.jpg',
     placeholder: true,
@@ -155,7 +123,6 @@ export const projects: Project[] = [
     category: 'Modélisation 3D',
     date: 'À renseigner',
     summary: 'Modélisation d’une pièce pour visualisation ou impression.',
-    description: 'Détaille le logiciel utilisé, les contraintes et le résultat.',
     technologies: ['Blender', 'Fusion 360'],
     image: '/images/quentin.jpg',
     placeholder: true,
@@ -166,7 +133,6 @@ export const projects: Project[] = [
     category: 'Impression 3D',
     date: 'À renseigner',
     summary: 'Prototypage d’un objet via impression 3D.',
-    description: 'Indique les paramètres d’impression et les itérations.',
     technologies: ['Cura', 'STL'],
     image: '/images/quentin.jpg',
     placeholder: true,
@@ -177,7 +143,6 @@ export const projects: Project[] = [
     category: 'Développement web',
     date: 'À renseigner',
     summary: 'Conception et intégration d’une interface web.',
-    description: 'Ajoute la stack et les pages réalisées.',
     technologies: ['HTML', 'CSS', 'JavaScript'],
     image: '/images/quentin.jpg',
     placeholder: true,
@@ -188,7 +153,6 @@ export const projects: Project[] = [
     category: 'Impression',
     date: 'À renseigner',
     summary: 'Préparation et impression d’un support publicitaire.',
-    description: 'Précise le format, le type d’impression et les finitions.',
     technologies: ['InDesign', 'Impression numérique'],
     image: '/images/quentin.jpg',
     placeholder: true,
@@ -199,21 +163,10 @@ export const projects: Project[] = [
     category: 'Projets personnels',
     date: 'À renseigner',
     summary: 'Expérimentation créative libre.',
-    description: 'Documente ici une exploration personnelle.',
     technologies: ['Création'],
     image: '/images/quentin.jpg',
     placeholder: true,
   },
-]
-
-export const projectCategories: Array<ProjectCategory | 'Tous'> = [
-  'Tous',
-  'Graphisme',
-  'Impression',
-  'Modélisation 3D',
-  'Impression 3D',
-  'Développement web',
-  'Projets personnels',
 ]
 
 export interface TimelineEvent {
