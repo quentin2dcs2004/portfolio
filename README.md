@@ -1,47 +1,32 @@
 # Quentin — Create Your Own Universe
 
-Portfolio immersif (React · TypeScript · Vite · Tailwind · Three.js · Framer Motion).
-
-## Signature
+Portfolio immersif (React · TypeScript · Vite · Tailwind · Three.js · GSAP · Framer Motion).
 
 **QUENTIN – CREATE YOUR OWN UNIVERSE.**
 
-## Lancer en local
+## Lancer
 
 ```bash
 npm install
 npm run dev
 ```
 
-Ouvre l’URL Vite affichée (souvent http://localhost:5173).
+## Points forts
 
-```bash
-npm run build
-npm run preview
-```
+- Intro Netflix lettre **Q** (logo clean style Luminart) + skip
+- Typing rôles : écrit / efface
+- Story Instagram : catégories + chatbot Q&R préparées
+- Projets : galerie jouable façon tableau (Mario 64)
+- Portfolio : livre avec flip de pages
+- Arène 3D jouable
+- Contact + consentement RGPD
+- Mentions légales / Confidentialité / Cookies + bannière
 
-## Rubriques
+## Contenu
 
-| Route | Page |
-|-------|------|
-| `/` | Accueil + intro Netflix Q + galaxie Three.js |
-| `/apprendre` | Compétences (graphisme → conseil) |
-| `/story` | Messagerie type Instagram DM |
-| `/projets` | Galerie filtrable + modal immersive |
-| `/portfolio` | Livre numérique interactif |
-| `/materiel` | Fiches équipement |
-| `/parcours` | Timeline |
-| `/passions` | Galerie passions |
-| `/laboratoire` | Expérimentations |
-| `/contact` | Formulaire validé (mailto) |
+- Éditorial : `src/data/site.ts`
+- Story Q&R : `src/data/story.ts`
+- Légal : `src/data/legal.ts`
+- Photo : `public/images/quentin.jpg`
 
-## Contenu modifiable
-
-Tout le contenu éditorial : `src/data/site.ts`  
-Photo : `public/images/quentin.jpg`
-
-Les projets / matériel / pages livre marqués « à compléter » ou Placeholder sont des emplacements volontaires — ne pas inventer d’expériences.
-
-## Intro
-
-L’intro cinématique Q se joue une fois par session (`sessionStorage`). Bouton **Passer l’intro** toujours disponible. Respect de `prefers-reduced-motion`.
+Complète l’hébergeur dans `src/data/legal.ts` avant une mise en ligne publique.

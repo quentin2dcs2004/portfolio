@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion'
 import { PageHero } from '@/components/ui/PageHero'
+import { PageTransition } from '@/components/ui/PageTransition'
 import { skills } from '@/data/site'
 
 export function Apprendre() {
   return (
+    <PageTransition>
     <div className="page-pad wrap">
       <PageHero
         eyebrow="Apprendre"
@@ -20,6 +22,7 @@ export function Apprendre() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.45, delay: Math.min(i * 0.05, 0.25) }}
+            whileHover={{ y: -4 }}
             className="glass overflow-hidden rounded-3xl"
           >
             <div
@@ -70,5 +73,6 @@ export function Apprendre() {
         ))}
       </div>
     </div>
+    </PageTransition>
   )
 }

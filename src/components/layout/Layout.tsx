@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { Footer } from './Footer'
 import { Navigation } from './Navigation'
+import { AmbientUniverse } from '@/components/three/AmbientUniverse'
 import { useEffect } from 'react'
 
 export function Layout() {
@@ -12,6 +13,7 @@ export function Layout() {
 
   return (
     <div className="relative min-h-screen">
+      <AmbientUniverse />
       <Navigation />
       <main>
         <Outlet />

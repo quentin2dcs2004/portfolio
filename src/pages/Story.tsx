@@ -1,150 +1,216 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCheck } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { CheckCheck, Send } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { PageHero } from '@/components/ui/PageHero'
-import { storyThreads } from '@/data/site'
+import { PageTransition } from '@/components/ui/PageTransition'
+import { site } from '@/data/site'
+import { storyCategories, storyQA, type StoryCategory, type StoryQA } from '@/data/story'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 
+type ChatMsg = { id: string; from: 'me' | 'quentin'; text: string; time: string }
+
+function nowLabel() {
+  const d = new Date()
+  return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+}
+
 export function Story() {
-  const [activeId, setActiveId] = useState<string>(storyThreads[0]?.id ?? 'qui')
-  const [visibleCount, setVisibleCount] = useState(0)
-  const [typing, setTyping] = useState(false)
   const reduced = usePrefersReducedMotion()
-  const active = storyThreads.find((t) => t.id === activeId) ?? storyThreads[0]
+  const [category, setCategory] = useState<StoryCategory | 'Toutes'>('Toutes')
+  const [messages, setMessages] = useState<ChatMsg[]>([
+    {
+      id: 'welcome',
+      from: 'quentin',
+      text: 'Salut ! Choisis une catégorie puis une question — je réponds comme en MP. (Contacts & fils = exemples illustratifs.)',
+      time: nowLabel(),
+    },
+  ])
+  const [typing, setTyping] = useState(false)
+  const [pendingId, setPendingId] = useState<string | null>(null)
+  const endRef = useRef<HTMLDivElement>(null)
+
+  const filtered = useMemo(
+    () => (category === 'Toutes' ? storyQA : storyQA.filter((q) => q.category === category)),
+    [category],
+  )
 
   useEffect(() => {
-    if (!active) return
-    setVisibleCount(0)
-    setTyping(false)
-    if (reduced) {
-      setVisibleCount(active.messages.length)
-      return
-    }
+    endRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
+  }, [messages, typing, reduced])
 
-    let step = 0
-    let timer: number
-    const run = () => {
-      if (step >= active.messages.length) {
-        setTyping(false)
-        return
-      }
-      const msg = active.messages[step]
-      if (msg?.from === 'me' && step > 0) {
-        setTyping(true)
-        timer = window.setTimeout(() => {
-          setTyping(false)
-          setVisibleCount((c) => c + 1)
-          step += 1
-          timer = window.setTimeout(run, 420)
-        }, 700)
-      } else {
-        setVisibleCount((c) => c + 1)
-        step += 1
-        timer = window.setTimeout(run, 380)
-      }
+  const ask = (qa: StoryQA) => {
+    if (typing || pendingId) return
+    setPendingId(qa.id)
+    const qMsg: ChatMsg = {
+      id: `q-${qa.id}-${Date.now()}`,
+      from: 'me',
+      text: qa.question,
+      time: nowLabel(),
     }
-    timer = window.setTimeout(run, 250)
-    return () => window.clearTimeout(timer)
-  }, [active, reduced])
+    setMessages((m) => [...m, qMsg])
+    setTyping(true)
 
-  if (!active) return null
+    const delay = reduced ? 200 : 900 + Math.min(qa.answer.length * 8, 1600)
+    window.setTimeout(() => {
+      setTyping(false)
+      setMessages((m) => [
+        ...m,
+        {
+          id: `a-${qa.id}-${Date.now()}`,
+          from: 'quentin',
+          text: qa.answer,
+          time: nowLabel(),
+        },
+      ])
+      setPendingId(null)
+    }, delay)
+  }
 
   return (
-    <div className="page-pad wrap">
-      <PageHero
-        eyebrow="Story"
-        title="Messagerie personnelle"
-        lead="Interface inspirée d’Instagram DM. Les contacts sont des exemples fictifs pour découvrir Quentin en questions / réponses."
-      />
+    <PageTransition>
+      <div className="page-pad wrap">
+        <PageHero
+          eyebrow="Story"
+          title="Instagram · Messagerie"
+          lead="Interface type Instagram : catégories, questions au choix, réponses préparées (chatbot local, sans backend). Les fils sont des exemples."
+        />
 
-      <div className="glass grid min-h-[560px] overflow-hidden rounded-3xl lg:grid-cols-[280px_1fr]">
-        <aside className="border-b border-white/8 lg:border-r lg:border-b-0">
-          <div className="border-b border-white/8 px-4 py-3">
-            <p className="font-display text-sm font-semibold">Conversations</p>
-            <p className="text-xs text-muted">Exemples illustratifs</p>
-          </div>
-          <ul className="max-h-[320px] overflow-y-auto lg:max-h-none">
-            {storyThreads.map((thread) => {
-              const selected = thread.id === active.id
-              return (
-                <li key={thread.id}>
-                  <button
-                    type="button"
-                    onClick={() => setActiveId(thread.id)}
-                    className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${
-                      selected ? 'bg-white/10' : 'hover:bg-white/5'
-                    }`}
-                  >
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-electric to-violet text-xs font-semibold">
-                      {thread.avatar}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center justify-between gap-2">
-                        <span className="truncate text-sm font-medium">{thread.contact}</span>
-                        <span className="text-[10px] text-muted">{thread.time}</span>
-                      </span>
-                      <span className="block truncate text-xs text-muted">{thread.preview}</span>
-                    </span>
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
-        </aside>
-
-        <section className="flex flex-col bg-void/35">
-          <header className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-cyan to-violet text-xs font-semibold text-void">
-              {active.avatar}
-            </span>
-            <div>
-              <p className="text-sm font-semibold">{active.contact}</p>
-              <p className="text-xs text-muted">Conversation exemple</p>
-            </div>
-          </header>
-
-          <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
-            <AnimatePresence initial={false}>
-              {active.messages.slice(0, visibleCount).map((msg, idx) => (
-                <motion.div
-                  key={`${active.id}-${idx}`}
-                  initial={reduced ? false : { opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  className={`max-w-[85%] ${msg.from === 'me' ? 'self-end' : 'self-start'}`}
-                >
-                  <div
-                    className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                      msg.from === 'me'
-                        ? 'rounded-br-md bg-gradient-to-br from-electric to-violet text-white'
-                        : 'rounded-bl-md border border-white/10 bg-white/8 text-snow'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                  <p
-                    className={`mt-1 flex items-center gap-1 text-[10px] text-muted ${
-                      msg.from === 'me' ? 'justify-end' : ''
-                    }`}
-                  >
-                    {msg.time}
-                    {msg.from === 'me' ? <CheckCheck size={12} className="text-cyan" /> : null}
-                  </p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
-            {typing ? (
-              <div className="self-start rounded-2xl rounded-bl-md border border-white/10 bg-white/8 px-4 py-3">
-                <span className="inline-flex gap-1">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.2s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.1s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted" />
-                </span>
+        <div className="glass grid min-h-[640px] overflow-hidden rounded-3xl lg:grid-cols-[300px_1fr]">
+          {/* Sidebar — Instagram-like */}
+          <aside className="flex flex-col border-b border-white/8 lg:border-r lg:border-b-0">
+            <div className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
+              <img
+                src={site.photo}
+                alt=""
+                className="h-11 w-11 rounded-full object-cover ring-2 ring-cyan/40"
+              />
+              <div>
+                <p className="text-sm font-semibold">{site.name}</p>
+                <p className="text-xs text-muted">Portfolio · MP démo</p>
               </div>
-            ) : null}
-          </div>
-        </section>
+            </div>
+
+            <div className="border-b border-white/8 px-3 py-3">
+              <p className="mb-2 text-[10px] tracking-[0.2em] text-cyan uppercase">Catégories</p>
+              <div className="flex flex-wrap gap-1.5">
+                <CatChip active={category === 'Toutes'} onClick={() => setCategory('Toutes')}>
+                  Toutes
+                </CatChip>
+                {storyCategories.map((c) => (
+                  <CatChip key={c} active={category === c} onClick={() => setCategory(c)}>
+                    {c}
+                  </CatChip>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-2">
+              <p className="px-2 py-1 text-[10px] tracking-wide text-muted uppercase">
+                Questions ({filtered.length})
+              </p>
+              <ul className="space-y-1">
+                {filtered.map((qa) => (
+                  <li key={qa.id}>
+                    <button
+                      type="button"
+                      disabled={typing}
+                      onClick={() => ask(qa)}
+                      className="w-full rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-white/8 disabled:opacity-50"
+                    >
+                      <span className="block text-[10px] text-cyan">{qa.category}</span>
+                      <span className="line-clamp-2 text-snow/90">{qa.question}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+
+          {/* Chat thread */}
+          <section className="flex min-h-[420px] flex-col bg-void/40">
+            <header className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
+              <img src={site.photo} alt="" className="h-9 w-9 rounded-full object-cover" />
+              <div>
+                <p className="text-sm font-semibold">{site.fullName}</p>
+                <p className="text-xs text-muted">Réponses automatiques · démo</p>
+              </div>
+            </header>
+
+            <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+              <AnimatePresence initial={false}>
+                {messages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={reduced ? false : { opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`max-w-[85%] ${msg.from === 'me' ? 'self-end' : 'self-start'}`}
+                  >
+                    <div
+                      className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                        msg.from === 'me'
+                          ? 'rounded-br-md bg-gradient-to-br from-electric to-violet text-white'
+                          : 'rounded-bl-md border border-white/10 bg-white/8'
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                    <p
+                      className={`mt-1 flex items-center gap-1 text-[10px] text-muted ${
+                        msg.from === 'me' ? 'justify-end' : ''
+                      }`}
+                    >
+                      {msg.time}
+                      {msg.from === 'me' ? <CheckCheck size={12} className="text-cyan" /> : null}
+                    </p>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {typing ? (
+                <div className="self-start rounded-2xl border border-white/10 bg-white/8 px-4 py-3">
+                  <span className="inline-flex gap-1">
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.2s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.1s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted" />
+                  </span>
+                </div>
+              ) : null}
+              <div ref={endRef} />
+            </div>
+
+            <div className="border-t border-white/8 px-4 py-3">
+              <p className="flex items-center gap-2 text-xs text-muted">
+                <Send size={14} className="text-cyan" />
+                Sélectionne une question à gauche — pas de saisie libre (réponses préparées, RGPD-friendly).
+              </p>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </PageTransition>
+  )
+}
+
+function CatChip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-full px-2.5 py-1 text-[11px] transition ${
+        active
+          ? 'bg-gradient-to-r from-electric to-violet text-white'
+          : 'border border-white/15 text-muted hover:text-snow'
+      }`}
+    >
+      {children}
+    </button>
   )
 }

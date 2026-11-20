@@ -1,6 +1,7 @@
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { LogoQ } from '@/components/brand/LogoQ'
 import { navLinks, site } from '@/data/site'
 
 export function Navigation() {
@@ -10,22 +11,20 @@ export function Navigation() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-void/70 backdrop-blur-xl">
       <div className="wrap flex h-16 items-center justify-between gap-4">
         <NavLink to="/" className="group flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="grid h-9 w-9 place-items-center rounded-lg border border-cyan/30 bg-night font-display text-lg font-bold text-cyan shadow-[0_0_20px_rgba(0,229,255,0.2)]">
-            Q
-          </span>
-          <span className="hidden font-display text-sm font-semibold tracking-wide sm:inline">
+          <LogoQ size={36} />
+          <span className="hidden font-display text-sm font-semibold tracking-[0.18em] uppercase sm:inline">
             {site.name}
           </span>
         </NavLink>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Navigation principale">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               end={link.to === '/'}
               className={({ isActive }) =>
-                `rounded-md px-2.5 py-1.5 text-xs tracking-wide transition ${
+                `rounded-md px-2 py-1.5 text-[11px] tracking-wide transition ${
                   isActive
                     ? 'bg-white/8 text-cyan'
                     : 'text-muted hover:bg-white/5 hover:text-snow'
@@ -39,7 +38,7 @@ export function Navigation() {
 
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-md border border-white/10 text-snow lg:hidden"
+          className="grid h-10 w-10 place-items-center rounded-md border border-white/10 text-snow xl:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
@@ -52,7 +51,7 @@ export function Navigation() {
       {open ? (
         <nav
           id="mobile-nav"
-          className="border-t border-white/5 bg-void/95 px-4 py-3 lg:hidden"
+          className="max-h-[70vh] overflow-y-auto border-t border-white/5 bg-void/95 px-4 py-3 xl:hidden"
           aria-label="Navigation mobile"
         >
           <ul className="grid gap-1">
