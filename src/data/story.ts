@@ -4,184 +4,347 @@ export type StoryCategory =
   | 'Parcours'
   | 'Passions'
   | 'Projets'
+  | 'Luminart'
   | 'Travail'
   | 'Futur'
+
+export type StoryPersona = 'quentin' | 'luminart'
 
 export type StoryQA = {
   id: string
   category: StoryCategory
+  persona: StoryPersona
   question: string
   answer: string
 }
 
-/** Contacts fictifs clairement marqués — Q&R préparées, pas d’IA backend. */
-export const storyCategories: StoryCategory[] = [
-  'Identité',
-  'Compétences',
-  'Parcours',
-  'Passions',
-  'Projets',
-  'Travail',
-  'Futur',
+export const storyCategories: { id: StoryCategory | 'Tous'; label: string; color: string }[] = [
+  { id: 'Tous', label: 'Tous', color: '#ffffff' },
+  { id: 'Identité', label: 'Identité', color: '#FF46A2' },
+  { id: 'Compétences', label: 'Compétences', color: '#00F5D4' },
+  { id: 'Parcours', label: 'Parcours', color: '#7C5CFF' },
+  { id: 'Passions', label: 'Passions', color: '#FFB020' },
+  { id: 'Projets', label: 'Projets', color: '#4CC9F0' },
+  { id: 'Luminart', label: 'Luminart', color: '#FF46A2' },
+  { id: 'Travail', label: 'Travail', color: '#00F5D4' },
+  { id: 'Futur', label: 'Futur', color: '#7C5CFF' },
 ]
 
 export const storyQA: StoryQA[] = [
+  // Identité
   {
     id: 'id-1',
     category: 'Identité',
+    persona: 'quentin',
     question: 'Quentin, tu peux te présenter ?',
     answer:
-      'Je suis Quentin Da Costa Soares, créatif polyvalent. J’aime apprendre, relier le graphisme, la 3D, l’impression et le numérique, et transformer des idées en projets concrets.',
+      'Je suis Quentin Da Costa Soares, créatif polyvalent basé à Marseille. J’aime relier graphisme, 3D, impression et numérique pour donner forme à des idées.',
   },
   {
     id: 'id-2',
     category: 'Identité',
-    question: 'D’où viens-tu ?',
-    answer: 'Je suis basé à Marseille. C’est aussi là que je développe mes projets et mon univers créatif.',
+    persona: 'quentin',
+    question: 'C’est quoi ton style ?',
+    answer:
+      'Propre, lumineux, immersif. J’aime les univers soignés — un peu galaxy, un peu premium — sans surcharge inutile.',
   },
   {
     id: 'id-3',
     category: 'Identité',
-    question: 'C’est quoi Luminart ?',
+    persona: 'quentin',
+    question: 'Tu travailles comment au quotidien ?',
     answer:
-      'Luminart est mon univers / marque créative (Instagram @luminart2dcs). Le logo Q de ce site s’inspire d’un style propre, lumineux et professionnel — dans le même esprit.',
+      'Brief → exploration → prototype → itérations → livraison. Je communique clairement et je documente ce qui compte.',
   },
   {
     id: 'id-4',
     category: 'Identité',
-    question: 'Comment tu travailles au quotidien ?',
+    persona: 'quentin',
+    question: 'Tu es plutôt solo ou en équipe ?',
     answer:
-      'Je commence par comprendre le besoin, puis j’explore, je prototype et j’affine jusqu’à un rendu clair. Méthode + curiosité.',
+      'Les deux. Je sais avancer en autonomie, et j’apprécie collaborer quand le projet gagne en richesse à plusieurs.',
   },
+  // Compétences
   {
     id: 'cp-1',
     category: 'Compétences',
-    question: 'Pourquoi le graphisme ?',
+    persona: 'quentin',
+    question: 'Quelles sont tes spécialités ?',
     answer:
-      'Parce que j’aime donner vie aux idées, travailler les couleurs, les formes et construire des identités visuelles.',
+      'Graphisme, impression, modélisation 3D, impression 3D, développement web, vente et conseil client.',
   },
   {
     id: 'cp-2',
     category: 'Compétences',
-    question: 'Tu fais de la modélisation 3D ?',
+    persona: 'quentin',
+    question: 'Quels logiciels maîtrises-tu ?',
     answer:
-      'Oui. Je conçois des objets en 3D et j’explore la fabrication numérique — Blender, Fusion 360, FreeCAD, SolidWorks selon le besoin.',
+      'Photoshop, Illustrator, InDesign, Canva, GIMP, Blender, Fusion 360, FreeCAD, SolidWorks, Cura, VS Code, Figma, GitHub…',
   },
   {
     id: 'cp-3',
     category: 'Compétences',
-    question: 'Et l’impression 3D ?',
+    persona: 'quentin',
+    question: 'Tu codes aussi ?',
     answer:
-      'Je prépare les STL, je tranche, je calibres et j’optimise les impressions pour prototyper rapidement (Cura, Simplify3D).',
+      'Oui : HTML, CSS, JavaScript, bases d’interfaces modernes (React) et expériences 3D avec Three.js.',
   },
   {
     id: 'cp-4',
     category: 'Compétences',
-    question: 'Tu codes aussi ?',
+    persona: 'quentin',
+    question: 'Tu gères la chaîne print de A à Z ?',
     answer:
-      'Oui : HTML, CSS, JavaScript, intégration web et interfaces. Ce portfolio est un exemple d’expérience interactive.',
+      'Oui : préparation fichier, gestion des couleurs, façonnage, grand format, sérigraphie selon le besoin.',
   },
   {
     id: 'cp-5',
     category: 'Compétences',
-    question: 'Quels logiciels maîtrises-tu ?',
+    persona: 'quentin',
+    question: 'Niveau 3D / impression 3D ?',
     answer:
-      'Côté image : Photoshop, Illustrator, InDesign, Canva, GIMP. Côté 3D : Blender, Fusion, FreeCAD, SolidWorks, Cura. Côté web : VS Code, GitHub, Figma.',
+      'Modélisation d’objets, texturing, rendu, préparation STL, tranchage, calibration et prototypage.',
   },
-  {
-    id: 'cp-6',
-    category: 'Compétences',
-    question: 'Tu as une expérience vente / conseil ?',
-    answer:
-      'Oui : accueil, écoute du besoin, argumentation, fidélisation et suivi — autant en vente qu’en conseil.',
-  },
+  // Parcours
   {
     id: 'pc-1',
     category: 'Parcours',
-    question: 'Quelle formation as-tu suivie ?',
-    answer: 'Je suis diplômé d’un Bac Pro RPIP (Réalisation de Produits Imprimés et Plurimédia).',
+    persona: 'quentin',
+    question: 'Quelle formation as-tu ?',
+    answer: 'Bac Pro RPIP — Réalisation de Produits Imprimés et Plurimédia.',
   },
   {
     id: 'pc-2',
     category: 'Parcours',
+    persona: 'quentin',
     question: 'Tu étudies encore ?',
     answer:
-      'Oui, je poursuis une formation de testeur de jeux vidéo — allier passion du jeu et exigence qualité.',
+      'Oui, une formation de testeur de jeux vidéo : qualité, bugs, UX et passion du jeu.',
   },
   {
     id: 'pc-3',
     category: 'Parcours',
-    question: 'Qu’est-ce que le Bac Pro RPIP t’a apporté ?',
+    persona: 'quentin',
+    question: 'Qu’est-ce que le RPIP t’a apporté ?',
     answer:
-      'Une base solide en chaîne graphique, couleurs, supports imprimés et plurimédia — très utile pour la création et la production.',
+      'Une base solide en numérique, couleurs, supports et production — très utile pour créer et livrer.',
   },
+  {
+    id: 'pc-4',
+    category: 'Parcours',
+    persona: 'quentin',
+    question: 'Tu as des stages / expériences ?',
+    answer:
+      'Certaines expériences sont encore à documenter sur le site (emplacements prévus dans Parcours).',
+  },
+  // Passions
   {
     id: 'ps-1',
     category: 'Passions',
-    question: 'Qu’est-ce que tu aimes faire ?',
+    persona: 'quentin',
+    question: 'Tes passions ?',
     answer:
-      'La photographie, le dessin et le manga, les jeux vidéo, l’automobile, la création, la 3D et les nouvelles technologies.',
+      'Photo, dessin & manga, jeux vidéo, automobile, impression 3D, tech, création, voyages.',
   },
   {
     id: 'ps-2',
     category: 'Passions',
+    persona: 'quentin',
     question: 'Pourquoi les jeux vidéo ?',
     answer:
-      'Pour les univers, le level design, l’interactivité… et maintenant aussi pour le métier de testeur (qualité, bugs, UX).',
+      'Univers, level design, interaction… et maintenant aussi le métier de testeur (qualité & UX).',
   },
   {
     id: 'ps-3',
     category: 'Passions',
-    question: 'L’automobile, c’est quoi pour toi ?',
-    answer: 'Le design, les lignes, la mécanique esthétique — une source d’inspiration visuelle permanente.',
+    persona: 'quentin',
+    question: 'L’automobile t’inspire comment ?',
+    answer: 'Les lignes, les matériaux, le design mécanique — une école visuelle permanente.',
   },
+  // Projets
   {
     id: 'pj-1',
     category: 'Projets',
-    question: 'Où voir tes réalisations ?',
+    persona: 'quentin',
+    question: 'Où voir tes projets ?',
     answer:
-      'Sur ce site : Projets (galerie jouable), Portfolio (livre) et Laboratoire. Beaucoup d’emplacements sont prêts à recevoir tes vrais fichiers.',
+      'Sur Projets (manoir jouable), Livre (portfolio) et Laboratoire. Beaucoup d’emplacements attendent tes vrais fichiers.',
   },
   {
     id: 'pj-2',
     category: 'Projets',
-    question: 'Tu travailles sur commande ?',
-    answer:
-      'Oui, selon le brief : identité, supports, 3D, web… Le plus simple est de m’écrire via Contact.',
+    persona: 'quentin',
+    question: 'Tu prends des commandes ?',
+    answer: 'Oui selon le brief : identité, print, 3D, web… Le plus simple est Contact.',
   },
+  {
+    id: 'pj-3',
+    category: 'Projets',
+    persona: 'quentin',
+    question: 'Tu as un projet phare ?',
+    answer:
+      'Ce portfolio immersif en est un : intro, 3D, story, livre, jeu — un univers complet à faire évoluer.',
+  },
+  // Luminart persona
+  {
+    id: 'lu-1',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'C’est quoi Luminart ?',
+    answer:
+      'Luminart, c’est l’univers créatif de Quentin — lumière, identité visuelle, ambiance premium. On parle design qui brille sans crier.',
+  },
+  {
+    id: 'lu-2',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Quel est le style Luminart ?',
+    answer:
+      'Clean, lumineux, contrasté. Cyan / violet / accents rose, typo soignée, motion utile. Moins de bruit, plus de présence.',
+  },
+  {
+    id: 'lu-3',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Luminart fait quoi concrètement ?',
+    answer:
+      'Identités, supports, explorations graphiques et expériences digitales. Instagram : @luminart2dcs.',
+  },
+  {
+    id: 'lu-4',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Le logo Q vient de où ?',
+    answer:
+      'Le Q est le symbole personnel de Quentin, dessiné dans l’esprit Luminart : géométrie nette + glow maîtrisé.',
+  },
+  {
+    id: 'lu-5',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Vous travaillez sur ce portfolio ?',
+    answer:
+      'Oui — ce site est un terrain de jeu Luminart : intro Netflix, story immersive, livre, manoir, jeu 3D.',
+  },
+  {
+    id: 'lu-6',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Comment collabore-t-on avec Luminart ?',
+    answer:
+      'Envoie un brief clair via Contact. On cadre le besoin, on propose une direction, on itère jusqu’au rendu.',
+  },
+  {
+    id: 'lu-7',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Tu peux parler de ce portfolio immersif ?',
+    answer:
+      'Oui. Accueil galaxy + portrait orbital, Story type DM (couleurs GTA VI), manoir des cadres, livre à flips, jeu Nebula Whiskers — un seul univers cohérent.',
+  },
+  {
+    id: 'lu-8',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'Quelles technos derrière le site ?',
+    answer:
+      'React, Vite, Tailwind, Framer Motion, Three.js / React Three Fiber. Motion utile, pas du bruit.',
+  },
+  {
+    id: 'lu-9',
+    category: 'Luminart',
+    persona: 'luminart',
+    question: 'C’est quoi la signature Luminart ?',
+    answer:
+      '« Create your own universe. » Chaque projet a ses règles, sa lumière, son identité — on les rend visibles.',
+  },
+  {
+    id: 'lu-10',
+    category: 'Projets',
+    persona: 'luminart',
+    question: 'Quels projets Luminart met en avant ?',
+    answer:
+      'Identités, print, proto 3D, expériences web. Les emplacements du manoir et du livre sont prêts à recevoir tes vrais livrables.',
+  },
+  {
+    id: 'id-5',
+    category: 'Identité',
+    persona: 'quentin',
+    question: 'Où es-tu basé ?',
+    answer: 'Marseille, France. Dispo pour collabs en remote ou sur place selon le projet.',
+  },
+  {
+    id: 'cp-6',
+    category: 'Compétences',
+    persona: 'quentin',
+    question: 'Tu fais de la QA jeux vidéo ?',
+    answer:
+      'Oui, en formation : rapports de bugs, cas de test, regard critique UX / gameplay.',
+  },
+  {
+    id: 'ps-4',
+    category: 'Passions',
+    persona: 'quentin',
+    question: 'Tu fais de la photo ?',
+    answer:
+      'Oui — portrait, produit, lumière. Ça nourrit le graphisme et le portfolio.',
+  },
+  {
+    id: 'ft-4',
+    category: 'Futur',
+    persona: 'luminart',
+    question: 'Luminart, prochaine étape ?',
+    answer:
+      'Monter encore en immersion, documenter de vrais projets, et pousser la fabrication numérique.',
+  },
+  // Travail
   {
     id: 'tr-1',
     category: 'Travail',
-    question: 'Comment se passe une collaboration avec toi ?',
+    persona: 'quentin',
+    question: 'Comment se passe une collab ?',
     answer:
-      'Brief clair → proposition → itérations → livraison soignée. Je communique régulièrement et je reste transparent sur les délais.',
+      'Brief → proposition → itérations → livraison. Transparence sur délais et contraintes.',
   },
   {
     id: 'tr-2',
     category: 'Travail',
-    question: 'Tu préfères quelle mission ?',
+    persona: 'quentin',
+    question: 'Tu fais aussi de la vente / conseil ?',
     answer:
-      'Les projets où création et technique se croisent : identité + print, proto 3D, ou expérience web immersive.',
+      'Oui : accueil, écoute du besoin, argumentation, fidélisation et suivi client.',
   },
+  {
+    id: 'tr-3',
+    category: 'Travail',
+    persona: 'quentin',
+    question: 'Tu préfères quel type de mission ?',
+    answer:
+      'Là où création et technique se croisent : identité + print, proto 3D, ou expérience web immersive.',
+  },
+  // Futur
   {
     id: 'ft-1',
     category: 'Futur',
-    question: 'Quels sont tes objectifs ?',
+    persona: 'quentin',
+    question: 'Tes objectifs ?',
     answer:
-      'Continuer à apprendre, monter en compétences et construire des projets professionnels ambitieux — notamment autour de la fabrication numérique.',
+      'Continuer à apprendre, monter en compétences et bâtir des projets ambitieux — notamment fabrication numérique.',
   },
   {
     id: 'ft-2',
     category: 'Futur',
-    question: 'Tu veux créer une activité ?',
+    persona: 'quentin',
+    question: 'Pourquoi « Create your own universe » ?',
     answer:
-      'Oui, l’ambition d’être polyvalent en impression 3D / création d’activité fait partie de mon horizon (design, pièces, matières, entrepreneuriat).',
+      'Parce que chaque projet est un univers : règles, ambiance, identité. Mon rôle : le rendre visible et vivant.',
   },
   {
     id: 'ft-3',
     category: 'Futur',
-    question: 'Pourquoi « Create your own universe » ?',
+    persona: 'quentin',
+    question: 'Tu veux créer une activité ?',
     answer:
-      'Parce que chaque projet est un univers : une identité, des règles, une ambiance. Mon rôle est de le rendre visible et vivant.',
+      'Oui — polyvalence impression 3D / création d’activité fait partie de mon horizon.',
   },
 ]

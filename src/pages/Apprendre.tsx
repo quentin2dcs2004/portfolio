@@ -1,78 +1,83 @@
 import { motion } from 'framer-motion'
-import { PageHero } from '@/components/ui/PageHero'
 import { PageTransition } from '@/components/ui/PageTransition'
-import { skills } from '@/data/site'
+import { skillGroups } from '@/data/site'
+
+const LEVEL_LABEL = ['Découverte', 'Bases', 'Opérationnel', 'Solide', 'Avancé'] as const
 
 export function Apprendre() {
   return (
     <PageTransition>
-    <div className="page-pad wrap">
-      <PageHero
-        eyebrow="Apprendre"
-        title="Mes compétences, une par une"
-        lead="Chaque spécialité est une expérience : description, savoir-faire et logiciels. Contenu modifiable dans src/data/site.ts."
-      />
+      <div className="relative min-h-[100svh] overflow-hidden pt-24">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              'radial-gradient(ellipse at 10% 0%, rgba(124,92,255,0.22), transparent 45%), radial-gradient(ellipse at 90% 30%, rgba(0,245,212,0.12), transparent 40%), #050509',
+          }}
+        />
 
-      <div className="grid gap-8">
-        {skills.map((skill, i) => (
-          <motion.section
-            key={skill.id}
-            id={skill.id}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.45, delay: Math.min(i * 0.05, 0.25) }}
-            whileHover={{ y: -4 }}
-            className="glass overflow-hidden rounded-3xl"
-          >
-            <div
-              className="h-1.5 w-full"
-              style={{
-                background: `linear-gradient(90deg, ${skill.accent}, transparent)`,
-              }}
-            />
-            <div className="grid gap-6 p-6 md:grid-cols-[0.9fr_1.1fr] md:p-8">
-              <div>
-                <p className="text-xs tracking-[0.25em] text-cyan uppercase">Spécialité</p>
-                <h2 className="mt-2 font-display text-3xl font-bold">{skill.title}</h2>
-                <p className="mt-3 text-muted">{skill.description}</p>
-                {skill.softwares.length > 0 ? (
-                  <div className="mt-5">
-                    <p className="text-xs tracking-wide text-snow/70 uppercase">Logiciels</p>
-                    <ul className="mt-2 flex flex-wrap gap-2">
-                      {skill.softwares.map((s) => (
-                        <li
-                          key={s}
-                          className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-cyan"
-                        >
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
+        <div className="wrap">
+          <p className="text-xs tracking-[0.28em] text-[#7C5CFF] uppercase">Compétences</p>
+          <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Apprendre</h1>
+          <p className="mt-3 max-w-2xl text-sm text-white/65">
+            Cartographie claire de ce que j’ai réellement travaillé — niveau, contexte, et progression.
+            Lecture rapide, signal fort.
+          </p>
+
+          <div className="mt-12 space-y-14">
+            {skillGroups.map((group, gi) => (
+              <section key={group.id}>
+                <div className="mb-6 flex items-end justify-between gap-4 border-b border-white/10 pb-3">
+                  <div>
+                    <h2 className="font-display text-2xl font-semibold">{group.title}</h2>
+                    <p className="mt-1 text-sm text-white/50">{group.blurb}</p>
                   </div>
-                ) : null}
-              </div>
+                  <span className="text-[10px] tracking-[0.2em] text-white/35 uppercase">
+                    {String(gi + 1).padStart(2, '0')}
+                  </span>
+                </div>
 
-              <ul className="grid gap-2 sm:grid-cols-2">
-                {skill.items.map((item) => (
-                  <li
-                    key={item}
-                    className="rounded-xl border border-white/8 bg-void/40 px-4 py-3 text-sm transition hover:border-cyan/35 hover:bg-white/5"
-                  >
-                    <span
-                      className="mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                      style={{ background: skill.accent }}
-                      aria-hidden
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.section>
-        ))}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.skills.map((skill, si) => (
+                    <motion.article
+                      key={skill.name}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ delay: si * 0.04, duration: 0.45 }}
+                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+                    >
+                      <div
+                        className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-40 blur-2xl transition group-hover:opacity-70"
+                        style={{ background: skill.accent }}
+                      />
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-display text-lg font-semibold">{skill.name}</h3>
+                        <span className="shrink-0 text-[10px] tracking-wider text-white/45 uppercase">
+                          {LEVEL_LABEL[skill.level - 1]}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-white/55">{skill.detail}</p>
+                      <div className="mt-4 flex gap-1.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span
+                            key={i}
+                            className="h-1.5 flex-1 rounded-full"
+                            style={{
+                              background:
+                                i < skill.level ? skill.accent : 'rgba(255,255,255,0.08)',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
     </PageTransition>
   )
 }

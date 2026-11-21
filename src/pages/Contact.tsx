@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { PageHero } from '@/components/ui/PageHero'
 import { PageTransition } from '@/components/ui/PageTransition'
+import { LogoQ } from '@/components/brand/LogoQ'
 import { site } from '@/data/site'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
@@ -9,7 +9,6 @@ type Status = 'idle' | 'loading' | 'success' | 'error'
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle')
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [notify, setNotify] = useState(false)
   const [consent, setConsent] = useState(false)
 
   const validate = (data: FormData) => {
@@ -18,11 +17,11 @@ export function Contact() {
     const email = String(data.get('email') ?? '').trim()
     const subject = String(data.get('subject') ?? '').trim()
     const message = String(data.get('message') ?? '').trim()
-    if (!name) next.name = 'Indique ton nom.'
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = 'E-mail invalide.'
-    if (!subject) next.subject = 'Ajoute un objet.'
-    if (message.length < 10) next.message = 'Message trop court (10 caractères min.).'
-    if (!consent) next.consent = 'Merci d’accepter le traitement de tes données pour ce contact.'
+    if (!name) next.name = 'Nom requis'
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = 'E-mail invalide'
+    if (!subject) next.subject = 'Objet requis'
+    if (message.length < 10) next.message = '10 caractères minimum'
+    if (!consent) next.consent = 'Consentement requis'
     return next
   }
 
@@ -30,187 +29,155 @@ export function Contact() {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
-    const nextErrors = validate(data)
-    setErrors(nextErrors)
-    if (Object.keys(nextErrors).length) {
+    const next = validate(data)
+    setErrors(next)
+    if (Object.keys(next).length) {
       setStatus('error')
       return
     }
-
     setStatus('loading')
     window.setTimeout(() => {
       const name = String(data.get('name'))
       const email = String(data.get('email'))
       const subject = String(data.get('subject'))
       const message = String(data.get('message'))
-      const body = encodeURIComponent(
-        `${message}\n\n— ${name}\n(${email})\n\nConsentement contact / RGPD : oui`,
-      )
+      const body = encodeURIComponent(`${message}\n\n— ${name}\n${email}\nConsentement RGPD : oui`)
       window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${body}`
       setStatus('success')
-      setNotify(true)
       form.reset()
       setConsent(false)
-      window.setTimeout(() => setNotify(false), 5000)
-    }, 650)
+    }, 600)
   }
 
   return (
     <PageTransition>
-      <div className="page-pad wrap">
-        <PageHero
-          eyebrow="Contact"
-          title="Écrivons-nous"
-          lead="Formulaire propre, validé, avec consentement RGPD. L’envoi ouvre ton client mail — aucun serveur ne stocke le message pour l’instant."
+      <div className="relative min-h-[100svh] overflow-hidden pt-24">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              'radial-gradient(ellipse at 20% 0%, rgba(0,245,212,0.2), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,70,162,0.18), transparent 45%), #050509',
+          }}
         />
 
-        {notify ? (
-          <div
-            className="mb-6 flex items-center gap-3 rounded-2xl border border-cyan/35 bg-cyan/10 px-4 py-3 text-sm text-cyan"
-            role="status"
-          >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cyan" />
-            Vous avez un message — confirmation prête.
-          </div>
-        ) : null}
+        <div className="wrap mb-8 max-w-2xl">
+          <p className="text-xs tracking-[0.28em] text-[#FF46A2] uppercase">Discutons</p>
+          <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Contact</h1>
+          <p className="mt-3 text-sm text-white/65">
+            Brief clair, retour soigné. Identité, print, 3D ou web — on construit l’univers ensemble.
+          </p>
+        </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <form
-            className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] p-6 shadow-[0_0_50px_rgba(23,107,255,0.12)] backdrop-blur-xl md:p-8"
-            onSubmit={onSubmit}
-            noValidate
-          >
-            <div className="grid gap-5">
-              <Field id="name" label="Nom" error={errors.name}>
-                <input id="name" name="name" autoComplete="name" className="field" placeholder="Ton nom" />
-              </Field>
-              <Field id="email" label="Adresse e-mail" error={errors.email}>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="field"
-                  placeholder="toi@exemple.com"
-                />
-              </Field>
-              <Field id="subject" label="Objet" error={errors.subject}>
-                <input id="subject" name="subject" className="field" placeholder="Sujet du message" />
-              </Field>
-              <Field id="message" label="Message" error={errors.message}>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  className="field resize-y"
-                  placeholder="Ton message…"
-                />
-              </Field>
-
-              <label className="flex items-start gap-3 text-sm text-muted">
-                <input
-                  type="checkbox"
-                  className="mt-1"
-                  checked={consent}
-                  onChange={(e) => setConsent(e.target.checked)}
-                />
-                <span>
-                  J’accepte que mes données soient utilisées uniquement pour me recontacter (voir{' '}
-                  <Link className="text-cyan underline" to="/confidentialite">
-                    Confidentialité
-                  </Link>
-                  ).
-                </span>
-              </label>
-              {errors.consent ? (
-                <p className="text-xs text-red-300" role="alert">
-                  {errors.consent}
-                </p>
-              ) : null}
+        <div className="wrap grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+          <aside className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8">
+            <div
+              className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl"
+              style={{ background: 'rgba(0,245,212,0.25)' }}
+            />
+            <div
+              className="pointer-events-none absolute -bottom-16 -left-8 h-44 w-44 rounded-full blur-3xl"
+              style={{ background: 'rgba(255,70,162,0.2)' }}
+            />
+            <div className="relative">
+              <LogoQ size={56} />
+              <p className="mt-6 font-display text-2xl font-semibold">Luminart × Quentin</p>
+              <p className="mt-3 text-sm text-white/65">
+                Un message clair, un retour soigné. Pas de spam — juste une conversation.
+              </p>
             </div>
-
-            <button
-              type="submit"
-              disabled={status === 'loading'}
-              className="btn-neon mt-6 inline-flex min-w-[180px] items-center justify-center rounded-xl bg-gradient-to-r from-electric to-violet px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
-            >
-              {status === 'loading' ? (
-                <span className="inline-flex items-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Envoi…
-                </span>
-              ) : (
-                'Envoyer'
-              )}
-            </button>
-
-            {status === 'error' ? (
-              <p className="mt-3 text-sm text-red-300" role="alert">
-                Vérifie les champs indiqués.
-              </p>
-            ) : null}
-            {status === 'success' ? (
-              <p className="mt-3 text-sm text-cyan" role="status">
-                Merci — ton client mail va s’ouvrir.
-              </p>
-            ) : null}
-          </form>
-
-          <aside className="rounded-3xl border border-cyan/20 bg-void/50 p-6 md:p-8">
-            <h2 className="font-display text-xl font-semibold">Coordonnées</h2>
-            <ul className="mt-4 space-y-3 text-sm text-muted">
+            <ul className="mt-10 space-y-4 text-sm">
               <li>
-                <span className="text-snow">E-mail · </span>
-                <a className="text-cyan hover:underline" href={`mailto:${site.email}`}>
+                <p className="text-[10px] tracking-[0.25em] text-white/40 uppercase">E-mail</p>
+                <a className="text-[#00F5D4] hover:underline" href={`mailto:${site.email}`}>
                   {site.email}
                 </a>
               </li>
               <li>
-                <span className="text-snow">Téléphone · </span>
-                <a
-                  className="text-cyan hover:underline"
-                  href={`tel:+33${site.phone.replace(/\s/g, '').slice(1)}`}
-                >
+                <p className="text-[10px] tracking-[0.25em] text-white/40 uppercase">Téléphone</p>
+                <a className="text-white hover:text-[#FF46A2]" href={`tel:+33${site.phone.replace(/\s/g, '').slice(1)}`}>
                   {site.phone}
                 </a>
               </li>
               <li>
-                <span className="text-snow">Ville · </span>
-                {site.location}
+                <p className="text-[10px] tracking-[0.25em] text-white/40 uppercase">Réseaux</p>
+                <div className="mt-1 flex flex-wrap gap-3">
+                  <a href={site.socials.instagram} className="text-white/70 hover:text-white" target="_blank" rel="noreferrer">
+                    Instagram
+                  </a>
+                  <a href={site.socials.instagramArt} className="text-[#FF46A2] hover:underline" target="_blank" rel="noreferrer">
+                    Luminart
+                  </a>
+                  <a href={site.socials.linkedin} className="text-white/70 hover:text-white" target="_blank" rel="noreferrer">
+                    LinkedIn
+                  </a>
+                </div>
               </li>
             </ul>
-            <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <a className="text-cyan hover:underline" href={site.socials.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-              <a className="text-cyan hover:underline" href={site.socials.instagram} target="_blank" rel="noreferrer">
-                Instagram
-              </a>
-              <a className="text-cyan hover:underline" href={site.socials.instagramArt} target="_blank" rel="noreferrer">
-                Luminart
-              </a>
-            </div>
-            <p className="mt-8 text-xs leading-relaxed text-muted">
-              En envoyant un message, tu reconnais avoir lu les mentions légales et la politique de
-              confidentialité. Pas de spam, pas de revente de données.
-            </p>
           </aside>
+
+          <form
+            onSubmit={onSubmit}
+            noValidate
+            className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent p-6 md:p-8"
+          >
+            <div className="grid gap-5 md:grid-cols-2">
+              <Field id="name" label="Nom" error={errors.name} className="md:col-span-1">
+                <input id="name" name="name" className="field" autoComplete="name" placeholder="Ton nom" />
+              </Field>
+              <Field id="email" label="E-mail" error={errors.email}>
+                <input id="email" name="email" type="email" className="field" autoComplete="email" placeholder="toi@mail.com" />
+              </Field>
+              <Field id="subject" label="Objet" error={errors.subject} className="md:col-span-2">
+                <input id="subject" name="subject" className="field" placeholder="Sujet" />
+              </Field>
+              <Field id="message" label="Message" error={errors.message} className="md:col-span-2">
+                <textarea id="message" name="message" rows={6} className="field resize-y" placeholder="Parle-moi du projet…" />
+              </Field>
+            </div>
+
+            <label className="mt-5 flex items-start gap-3 text-sm text-white/60">
+              <input type="checkbox" className="mt-1" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+              <span>
+                J’accepte d’être recontacté·e (voir{' '}
+                <Link to="/confidentialite" className="text-[#00F5D4] underline">
+                  confidentialité
+                </Link>
+                ).
+              </span>
+            </label>
+            {errors.consent ? <p className="mt-2 text-xs text-red-300">{errors.consent}</p> : null}
+
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="mt-6 w-full rounded-full bg-gradient-to-r from-[#00F5D4] to-[#FF46A2] py-3.5 text-sm font-semibold text-black disabled:opacity-60 md:w-auto md:px-10"
+            >
+              {status === 'loading' ? 'Ouverture mail…' : 'Envoyer le message'}
+            </button>
+            {status === 'success' ? (
+              <p className="mt-3 text-sm text-[#00F5D4]">Merci — ton client mail va s’ouvrir.</p>
+            ) : null}
+            {status === 'error' ? (
+              <p className="mt-3 text-sm text-red-300">Vérifie les champs.</p>
+            ) : null}
+          </form>
         </div>
 
         <style>{`
           .field {
             width: 100%;
             margin-top: 0.4rem;
-            border-radius: 0.85rem;
             border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(5,5,9,0.55);
-            padding: 0.8rem 1rem;
-            color: #f5f5f5;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.35);
+            padding: 0.85rem 1.1rem;
+            color: white;
           }
+          textarea.field { border-radius: 1.25rem; }
           .field:focus {
             outline: none;
-            border-color: rgba(0,229,255,0.55);
-            box-shadow: 0 0 0 3px rgba(0,229,255,0.12);
+            border-color: rgba(0,245,212,0.55);
+            box-shadow: 0 0 0 3px rgba(0,245,212,0.12);
           }
         `}</style>
       </div>
@@ -223,21 +190,19 @@ function Field({
   label,
   error,
   children,
+  className = '',
 }: {
   id: string
   label: string
   error?: string
   children: ReactNode
+  className?: string
 }) {
   return (
-    <label htmlFor={id} className="block text-sm">
-      <span className="text-snow/90">{label}</span>
-      <div className={error ? '[&_.field]:border-red-400/60' : ''}>{children}</div>
-      {error ? (
-        <span className="mt-1 block text-xs text-red-300" role="alert">
-          {error}
-        </span>
-      ) : null}
+    <label htmlFor={id} className={`block text-sm ${className}`}>
+      <span className="text-white/80">{label}</span>
+      {children}
+      {error ? <span className="mt-1 block text-xs text-red-300">{error}</span> : null}
     </label>
   )
 }

@@ -8,10 +8,9 @@ import { PageTransition } from '@/components/ui/PageTransition'
 import { projects } from '@/data/site'
 
 type Project = (typeof projects)[number]
+type Mode = 'mansion' | 'room'
 
-type Mode = 'gallery' | 'books'
-
-function GalleryScene({
+function MansionScene({
   items,
   onNear,
   onEnter,
@@ -20,7 +19,7 @@ function GalleryScene({
   onNear: (p: Project | null, close: boolean) => void
   onEnter: (p: Project) => void
 }) {
-  const pos = useRef(new THREE.Vector3(0, 0, 3.2))
+  const pos = useRef(new THREE.Vector3(0, 0, 5))
   const facing = useRef(0)
   const walking = useRef(false)
   const keys = useRef<Record<string, boolean>>({})
@@ -29,12 +28,7 @@ function GalleryScene({
   const { camera } = useThree()
 
   const frames = useMemo(
-    () =>
-      items.map((p, i) => ({
-        project: p,
-        x: -5 + i * 2.15,
-        z: -0.2,
-      })),
+    () => items.map((p, i) => ({ project: p, x: -5 + i * 2.1, z: -1.2 })),
     [items],
   )
 
@@ -43,8 +37,7 @@ function GalleryScene({
       keys.current[e.key.toLowerCase()] = true
       if (e.code === 'Space') {
         e.preventDefault()
-        const id = nearId.current
-        const hit = frames.find((f) => f.project.id === id)
+        const hit = frames.find((f) => f.project.id === nearId.current)
         if (hit) onEnter(hit.project)
       }
     }
@@ -60,7 +53,7 @@ function GalleryScene({
   }, [frames, onEnter])
 
   useFrame((_, dt) => {
-    const speed = 3.4 * dt
+    const speed = 3.5 * dt
     let wx = 0
     let wz = 0
     if (keys.current['arrowleft'] || keys.current['a'] || keys.current['q']) wx -= 1
@@ -72,10 +65,10 @@ function GalleryScene({
       const len = Math.hypot(wx, wz) || 1
       pos.current.x += (wx / len) * speed
       pos.current.z += (wz / len) * speed
-      facing.current = Math.atan2(wx, wz === 0 && wx === 0 ? 1 : -wz)
+      facing.current = Math.atan2(wx, -wz)
     }
-    pos.current.x = THREE.MathUtils.clamp(pos.current.x, -6.8, 6.8)
-    pos.current.z = THREE.MathUtils.clamp(pos.current.z, -0.6, 5.2)
+    pos.current.x = THREE.MathUtils.clamp(pos.current.x, -7, 7)
+    pos.current.z = THREE.MathUtils.clamp(pos.current.z, -0.4, 7)
 
     let best: Project | null = null
     let bestD = Infinity
@@ -86,7 +79,7 @@ function GalleryScene({
         best = f.project
       }
     }
-    const close = bestD < 1.35
+    const close = bestD < 1.45
     const nextId = close && best ? best.id : null
     if (nearId.current !== nextId) {
       nearId.current = nextId
@@ -94,40 +87,158 @@ function GalleryScene({
       onNear(best, close)
     }
 
-    camera.position.lerp(new THREE.Vector3(pos.current.x, 4.2, pos.current.z + 5.5), 0.08)
-    camera.lookAt(pos.current.x, 0.4, pos.current.z - 1.2)
+    camera.position.lerp(new THREE.Vector3(pos.current.x, 5.2, pos.current.z + 7.2), 0.07)
+    camera.lookAt(pos.current.x, 1.2, pos.current.z - 1.5)
   })
 
   return (
     <>
-      <color attach="background" args={['#06040c']} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[0, 5, 3]} intensity={1.4} color="#8B5CF6" />
-      <pointLight position={[-4, 3, 2]} intensity={1.1} color="#00E5FF" />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 2]}>
-        <planeGeometry args={[20, 12]} />
-        <meshStandardMaterial color="#10081c" roughness={0.9} />
+      <color attach="background" args={['#2a1f35']} />
+      <fog attach="fog" args={['#2a1f35', 14, 32]} />
+      <ambientLight intensity={0.85} />
+      <hemisphereLight args={['#ffe8c8', '#3a2a4a', 0.55]} />
+      <pointLight position={[0, 5.5, 2]} intensity={2.2} color="#ffe0b0" distance={22} />
+      <pointLight position={[-4, 3.5, 4]} intensity={1.2} color="#ffd6a0" distance={14} />
+      <pointLight position={[4, 3.2, 3]} intensity={1} color="#c4b5fd" distance={14} />
+      <spotLight position={[0, 7, 4]} angle={0.55} penumbra={0.6} intensity={1.4} color="#fff2d8" castShadow />
+
+      {/* Floor marble warm */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 2.5]} receiveShadow>
+        <planeGeometry args={[22, 16]} />
+        <meshStandardMaterial color="#4a3d52" roughness={0.45} metalness={0.12} />
       </mesh>
+      {/* Floor inlays */}
+      {[-4, -2, 0, 2, 4].map((x) => (
+        <mesh key={`tile${x}`} rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.005, 3]}>
+          <planeGeometry args={[1.4, 1.4]} />
+          <meshStandardMaterial color="#5c4d66" roughness={0.5} />
+        </mesh>
+      ))}
+      {/* Carpet runner */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.015, 2.2]}>
+        <planeGeometry args={[2.4, 12]} />
+        <meshStandardMaterial color="#8b3a4a" roughness={0.85} />
+      </mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 2.2]}>
+        <planeGeometry args={[1.6, 11]} />
+        <meshStandardMaterial color="#a8485c" roughness={0.9} />
+      </mesh>
+
+      {/* Ceiling */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 4.4, 2]}>
+        <planeGeometry args={[20, 14]} />
+        <meshStandardMaterial color="#3d3248" roughness={0.9} />
+      </mesh>
+
+      {/* Back wall — wallpaper tone */}
+      <mesh position={[0, 2.2, -2.2]}>
+        <boxGeometry args={[18, 4.5, 0.35]} />
+        <meshStandardMaterial color="#5a4a68" roughness={0.75} />
+      </mesh>
+      {/* Wainscoting */}
+      <mesh position={[0, 0.55, -2.0]}>
+        <boxGeometry args={[17.5, 1.1, 0.12]} />
+        <meshStandardMaterial color="#3e3048" roughness={0.6} />
+      </mesh>
+      {/* Side walls */}
+      <mesh position={[-8.5, 2.2, 2]} rotation={[0, Math.PI / 2, 0]}>
+        <boxGeometry args={[10, 4.5, 0.3]} />
+        <meshStandardMaterial color="#524260" />
+      </mesh>
+      <mesh position={[8.5, 2.2, 2]} rotation={[0, Math.PI / 2, 0]}>
+        <boxGeometry args={[10, 4.5, 0.3]} />
+        <meshStandardMaterial color="#524260" />
+      </mesh>
+
+      {/* Windows with warm light */}
+      {[-5.5, 0, 5.5].map((x) => (
+        <group key={`win${x}`} position={[x, 2.4, -2.0]}>
+          <mesh>
+            <boxGeometry args={[1.6, 1.8, 0.08]} />
+            <meshStandardMaterial color="#2a2035" />
+          </mesh>
+          <mesh position={[0, 0, 0.05]}>
+            <planeGeometry args={[1.3, 1.5]} />
+            <meshStandardMaterial
+              color="#f5e6c8"
+              emissive="#ffcc88"
+              emissiveIntensity={0.55}
+              transparent
+              opacity={0.85}
+            />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Chandeliers */}
+      {[-3, 0, 3].map((x) => (
+        <group key={x} position={[x, 3.85, 1]}>
+          <mesh>
+            <cylinderGeometry args={[0.04, 0.04, 0.6, 8]} />
+            <meshStandardMaterial color="#c9a227" metalness={0.7} />
+          </mesh>
+          <mesh position={[0, -0.45, 0]}>
+            <sphereGeometry args={[0.28, 16, 16]} />
+            <meshStandardMaterial color="#ffe6b3" emissive="#ffb703" emissiveIntensity={1.6} />
+          </mesh>
+          <pointLight position={[0, -0.5, 0]} intensity={0.9} color="#ffe0a0" distance={8} />
+        </group>
+      ))}
+
+      {/* Columns + bases */}
+      {[-6, -2, 2, 6].map((x) => (
+        <group key={`c${x}`} position={[x, 0, -1.55]}>
+          <mesh position={[0, 1.5, 0]}>
+            <cylinderGeometry args={[0.22, 0.28, 3, 12]} />
+            <meshStandardMaterial color="#7a6a8a" metalness={0.25} roughness={0.4} />
+          </mesh>
+          <mesh position={[0, 0.12, 0]}>
+            <cylinderGeometry args={[0.4, 0.42, 0.24, 12]} />
+            <meshStandardMaterial color="#6b5a7a" />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Side consoles / furniture silhouettes */}
+      {[-7.2, 7.2].map((x) => (
+        <mesh key={`desk${x}`} position={[x, 0.45, 1.5]}>
+          <boxGeometry args={[1.2, 0.9, 0.55]} />
+          <meshStandardMaterial color="#4a3848" roughness={0.7} />
+        </mesh>
+      ))}
 
       {frames.map((f) => {
         const active = activeId === f.project.id
         return (
-          <group key={f.project.id} position={[f.x, 1.05, f.z]}>
+          <group key={f.project.id} position={[f.x, 1.45, f.z]}>
+            {/* ornate gold frame */}
             <mesh>
-              <boxGeometry args={[1.55, 1.15, 0.1]} />
+              <boxGeometry args={[1.75, 1.3, 0.14]} />
               <meshStandardMaterial
-                color={active ? '#1b2a6b' : '#16122a'}
-                emissive={active ? '#00E5FF' : '#4c1d95'}
-                emissiveIntensity={active ? 0.65 : 0.22}
+                color={active ? '#d4a84b' : '#b8923f'}
+                metalness={0.55}
+                roughness={0.35}
+                emissive={active ? '#00F5D4' : '#5a4010'}
+                emissiveIntensity={active ? 0.4 : 0.08}
               />
             </mesh>
-            <Text position={[0, -0.8, 0.1]} fontSize={0.13} color="#e8ecff" anchorX="center">
+            <mesh position={[0, 0, 0.09]}>
+              <planeGeometry args={[1.4, 1.0]} />
+              <meshStandardMaterial
+                color={active ? '#3d5a80' : '#6b5a4a'}
+                emissive={active ? '#1b4d6e' : '#2a2018'}
+                emissiveIntensity={0.25}
+              />
+            </mesh>
+            <Text position={[0, -0.9, 0.12]} fontSize={0.13} color="#f8f0e0" anchorX="center">
               {f.project.category}
             </Text>
             {active ? (
-              <Text position={[0, 0.85, 0.15]} fontSize={0.11} color="#00E5FF" anchorX="center">
-                Espace pour entrer
-              </Text>
+              <Float speed={2} floatIntensity={0.3}>
+                <Text position={[0, 0.95, 0.2]} fontSize={0.12} color="#00F5D4" anchorX="center">
+                  Espace · entrer
+                </Text>
+              </Float>
             ) : null}
           </group>
         )
@@ -138,89 +249,69 @@ function GalleryScene({
   )
 }
 
-function MagicBookWorld({
-  project,
-  all,
-  onBack,
-}: {
-  project: Project
-  all: Project[]
-  onBack: () => void
-}) {
-  const [openId, setOpenId] = useState(project.id)
-  const open = all.find((p) => p.id === openId) ?? project
-
+function ProjectRoom({ project, onBack }: { project: Project; onBack: () => void }) {
   return (
-    <div className="relative h-full">
-      <Canvas camera={{ position: [0, 2.8, 7], fov: 48 }}>
-        <color attach="background" args={['#04020a']} />
-        <ambientLight intensity={0.35} />
-        <pointLight position={[2, 4, 3]} intensity={1.6} color="#c4b5fd" />
-        <pointLight position={[-3, 2, 1]} intensity={1.2} color="#00E5FF" />
-        {all.map((p, i) => {
-          const x = -4 + i * 1.7
-          const isOpen = p.id === openId
-          return (
-            <Float key={p.id} speed={1 + i * 0.1} floatIntensity={0.5}>
-              <group
-                position={[x, isOpen ? 1.1 : 0.7, 0]}
-                rotation={[isOpen ? -0.35 : -0.15, 0.2, 0]}
-                onClick={() => setOpenId(p.id)}
-              >
-                {/* closed / open book */}
-                <mesh position={[-0.18, 0, 0]} rotation={[0, 0.15, 0]}>
-                  <boxGeometry args={[0.55, 0.08, 0.75]} />
-                  <meshStandardMaterial
-                    color="#2a1548"
-                    emissive="#7c3aed"
-                    emissiveIntensity={isOpen ? 0.7 : 0.25}
-                  />
-                </mesh>
-                <mesh
-                  position={[0.18, isOpen ? 0.12 : 0, 0]}
-                  rotation={[0, isOpen ? -0.9 : -0.15, isOpen ? 0.4 : 0]}
-                >
-                  <boxGeometry args={[0.55, 0.08, 0.75]} />
-                  <meshStandardMaterial
-                    color="#3b1d6e"
-                    emissive="#00E5FF"
-                    emissiveIntensity={isOpen ? 0.45 : 0.15}
-                  />
-                </mesh>
-                {isOpen ? (
-                  <Text position={[0, 0.55, 0.2]} fontSize={0.12} color="#e9d5ff" anchorX="center">
-                    {p.title.split('—')[0]?.trim() ?? p.title}
-                  </Text>
-                ) : null}
-              </group>
-            </Float>
-          )
-        })}
+    <div className="relative h-full overflow-hidden">
+      <Canvas camera={{ position: [0, 2.4, 6.5], fov: 48 }}>
+        <color attach="background" args={['#3a2d48']} />
+        <ambientLight intensity={0.75} />
+        <pointLight position={[2, 4, 3]} intensity={1.8} color="#f5d0a9" />
+        <pointLight position={[-3, 2, 1]} intensity={1.2} color="#7C5CFF" />
+        <pointLight position={[0, 3, 2]} intensity={1} color="#00F5D4" />
+        {/* Room box */}
+        <mesh position={[0, 1.5, -2]}>
+          <boxGeometry args={[10, 4, 0.3]} />
+          <meshStandardMaterial color="#5a4a68" />
+        </mesh>
+        <mesh rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[12, 10]} />
+          <meshStandardMaterial color="#4a3d52" />
+        </mesh>
+        <mesh position={[-3.2, 1.4, 1]} rotation={[0, 0.4, 0]}>
+          <circleGeometry args={[0.55, 32]} />
+          <meshStandardMaterial color="#0a2030" emissive="#00F5D4" emissiveIntensity={0.45} />
+        </mesh>
+        {/* Floating magical book opens */}
+        <Float speed={1.4} floatIntensity={0.5}>
+          <group position={[0, 1.2, 0]} rotation={[-0.4, 0.25, 0]}>
+            <mesh position={[-0.35, 0, 0]}>
+              <boxGeometry args={[0.7, 0.1, 0.95]} />
+              <meshStandardMaterial color="#4c1d95" emissive="#7c3aed" emissiveIntensity={0.6} />
+            </mesh>
+            <mesh position={[0.4, 0.15, 0]} rotation={[0, -1.1, 0.35]}>
+              <boxGeometry args={[0.7, 0.1, 0.95]} />
+              <meshStandardMaterial color="#312e81" emissive="#00F5D4" emissiveIntensity={0.35} />
+            </mesh>
+          </group>
+        </Float>
+        {/* Return portal ring */}
+        <mesh position={[-3.2, 1.4, 1]} rotation={[0, 0.4, 0]}>
+          <torusGeometry args={[0.7, 0.06, 16, 48]} />
+          <meshStandardMaterial color="#00F5D4" emissive="#00F5D4" emissiveIntensity={0.9} />
+        </mesh>
       </Canvas>
 
-      <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-3 py-1.5 text-xs backdrop-blur"
-        >
-          <ArrowLeft size={14} /> Retour galerie
-        </button>
-        <p className="text-xs tracking-wide text-violet-200/80 uppercase">Monde des livres magiques</p>
-      </div>
+      <button
+        type="button"
+        onClick={onBack}
+        className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 overflow-hidden rounded-full border border-[#00F5D4]/50 bg-black/55 px-4 py-2 text-xs text-[#00F5D4] shadow-[0_0_24px_rgba(0,245,212,0.25)] backdrop-blur transition hover:scale-[1.03] hover:bg-black/70"
+      >
+        <span className="absolute inset-0 animate-pulse bg-gradient-to-r from-[#00F5D4]/10 to-[#FF46A2]/10" />
+        <ArrowLeft size={14} className="relative" />
+        <span className="relative">Portail · retour manoir</span>
+      </button>
 
-      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-violet-400/30 bg-black/65 p-4 backdrop-blur md:inset-x-auto md:right-4 md:bottom-4 md:w-[360px]">
-        <p className="text-[10px] tracking-wide text-cyan uppercase">{open.category}</p>
-        <h2 className="mt-1 font-display text-lg font-semibold">{open.title}</h2>
-        <p className="mt-2 text-sm text-white/70">{open.description}</p>
+      <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/15 bg-[#1a1424]/90 p-5 backdrop-blur md:inset-x-auto md:right-4 md:w-[380px]">
+        <p className="text-[10px] tracking-wide text-[#00F5D4] uppercase">{project.category}</p>
+        <h2 className="mt-1 font-display text-xl font-semibold">{project.title}</h2>
+        <p className="mt-2 text-sm text-white/70">{project.description}</p>
         <ul className="mt-3 flex flex-wrap gap-1.5">
-          {open.technologies.map((t) => (
-            <li key={t} className="rounded-md bg-white/10 px-2 py-0.5 text-[11px] text-cyan">
+          {project.technologies.map((t) => (
+            <li key={t} className="rounded-md bg-white/10 px-2 py-0.5 text-[11px] text-[#FF46A2]">
               {t}
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-[11px] text-white/40">Clique un livre pour l’ouvrir.</p>
       </div>
     </div>
   )
@@ -228,10 +319,11 @@ function MagicBookWorld({
 
 export function Projets() {
   const items = useMemo(() => [...projects], [])
-  const [mode, setMode] = useState<Mode>('gallery')
+  const [mode, setMode] = useState<Mode>('mansion')
   const [near, setNear] = useState<Project | null>(null)
   const [canEnter, setCanEnter] = useState(false)
   const [entered, setEntered] = useState<Project | null>(null)
+  const [transitioning, setTransitioning] = useState(false)
 
   const onNear = useCallback((p: Project | null, close: boolean) => {
     setNear(p)
@@ -239,50 +331,61 @@ export function Projets() {
   }, [])
 
   const onEnter = useCallback((p: Project) => {
-    setEntered(p)
-    setMode('books')
+    setTransitioning(true)
+    window.setTimeout(() => {
+      setEntered(p)
+      setMode('room')
+      setTransitioning(false)
+    }, 550)
   }, [])
 
   return (
     <PageTransition>
       <div className="page-pad !pt-24">
         <div className="wrap mb-4">
-          <p className="text-xs tracking-[0.28em] text-cyan uppercase">Projets</p>
-          <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">
-            Le chat noir & les cadres
-          </h1>
+          <p className="text-xs tracking-[0.28em] text-[#FF46A2] uppercase">Projets</p>
+          <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">Manoir des cadres</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted">
-            Déplace le chat avec les flèches (ou ZQSD / WASD). Place-toi devant un cadre, puis appuie
-            sur <strong className="text-snow">Espace</strong> pour entrer dans le monde des livres
-            magiques.
+            Visite le hall : flèches pour marcher, place le chat devant un cadre, Espace pour passer
+            le portail. Chaque salle raconte un projet.
           </p>
         </div>
 
-        <div className="relative mx-auto h-[min(70vh,620px)] w-[min(1180px,calc(100%-1.5rem))] overflow-hidden rounded-2xl border border-white/15">
-          {mode === 'gallery' ? (
-            <>
-              <Canvas camera={{ position: [0, 4.2, 8], fov: 48 }}>
-                <GalleryScene items={items} onNear={onNear} onEnter={onEnter} />
-              </Canvas>
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-sm">
-                {canEnter && near ? (
-                  <p className="text-cyan">
-                    Devant « {near.title} » — appuie sur <kbd className="text-snow">Espace</kbd>
-                  </p>
-                ) : (
-                  <p className="text-white/55">Flèches pour marcher · approche un cadre lumineux</p>
-                )}
-              </div>
-            </>
+        <div className="relative mx-auto h-[min(72vh,640px)] w-[min(1180px,calc(100%-1.5rem))] overflow-hidden rounded-2xl border border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+          {mode === 'mansion' ? (
+            <Canvas camera={{ position: [0, 5, 10], fov: 48 }}>
+              <MansionScene items={items} onNear={onNear} onEnter={onEnter} />
+            </Canvas>
           ) : entered ? (
-            <MagicBookWorld
+            <ProjectRoom
               project={entered}
-              all={items}
               onBack={() => {
-                setMode('gallery')
-                setEntered(null)
+                setTransitioning(true)
+                window.setTimeout(() => {
+                  setMode('mansion')
+                  setEntered(null)
+                  setTransitioning(false)
+                }, 400)
               }}
             />
+          ) : null}
+
+          {transitioning ? (
+            <div className="absolute inset-0 z-20 grid place-items-center bg-black/70 backdrop-blur-sm">
+              <div className="h-16 w-16 animate-spin rounded-full border-2 border-[#00F5D4]/30 border-t-[#FF46A2]" />
+            </div>
+          ) : null}
+
+          {mode === 'mansion' ? (
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 text-sm">
+              {canEnter && near ? (
+                <p className="text-[#00F5D4]">
+                  Cadre « {near.title} » — appuie sur <kbd className="text-white">Espace</kbd>
+                </p>
+              ) : (
+                <p className="text-white/60">Explore le manoir · trouve les cadres dorés</p>
+              )}
+            </div>
           ) : null}
         </div>
       </div>
