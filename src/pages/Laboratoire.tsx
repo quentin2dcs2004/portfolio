@@ -7,6 +7,9 @@ import { labExperiments } from '@/data/site'
 const GalaxyScene = lazy(() =>
   import('@/components/three/GalaxyScene').then((m) => ({ default: m.GalaxyScene })),
 )
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 export function Laboratoire() {
   useGsapReveal()
@@ -35,6 +38,13 @@ export function Laboratoire() {
           </div>
         </div>
 
+        <Suspense fallback={null}>
+          <div className="mb-10 grid gap-4 md:grid-cols-2" data-reveal>
+            <HyperField theme="cyan" density="hero" height="h-[220px] md:h-[280px]" />
+            <HyperField theme="pink" density="hero" height="h-[220px] md:h-[280px]" />
+          </div>
+        </Suspense>
+
         <div className="grid gap-4 md:grid-cols-2">
           {labExperiments.map((exp, i) => (
             <article
@@ -55,11 +65,12 @@ export function Laboratoire() {
           <ul className="mt-4 grid gap-2 text-sm text-muted sm:grid-cols-2">
             <li>Intro Q cinématique + son</li>
             <li>Univers Three.js (hero + ambient + lab)</li>
+            <li>HyperField : planètes, comètes, cristaux, rings</li>
+            <li>Constellation compétences (Apprendre)</li>
             <li>GSAP ScrollTrigger reveals</li>
-            <li>Portrait tilt 3D (GSAP)</li>
-            <li>Alternance de rôles</li>
+            <li>Portrait orbital + tilt</li>
             <li>Story typing + livre flip</li>
-            <li>Particules / sparkles / orbites</li>
+            <li>Manoir sparkles + Arena néon</li>
             <li>prefers-reduced-motion</li>
           </ul>
         </div>

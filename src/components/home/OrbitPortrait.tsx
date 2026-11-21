@@ -3,11 +3,14 @@ import { site } from '@/data/site'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 
 const PLANETS = [
-  { size: 18, orbit: 58, speed: 18, color: '#00F5D4', delay: 0 },
-  { size: 14, orbit: 72, speed: 28, color: '#FF46A2', delay: -4 },
-  { size: 22, orbit: 88, speed: 36, color: '#7C5CFF', delay: -9 },
-  { size: 12, orbit: 102, speed: 22, color: '#FFB020', delay: -14 },
-  { size: 16, orbit: 118, speed: 44, color: '#4CC9F0', delay: -2 },
+  { size: 18, orbit: 54, speed: 16, color: '#00F5D4', delay: 0 },
+  { size: 12, orbit: 64, speed: 24, color: '#FF46A2', delay: -3 },
+  { size: 20, orbit: 74, speed: 32, color: '#7C5CFF', delay: -7 },
+  { size: 10, orbit: 86, speed: 20, color: '#FFB020', delay: -11 },
+  { size: 16, orbit: 98, speed: 40, color: '#4CC9F0', delay: -2 },
+  { size: 14, orbit: 110, speed: 28, color: '#FF46A2', delay: -15 },
+  { size: 11, orbit: 122, speed: 48, color: '#00F5D4', delay: -6 },
+  { size: 9, orbit: 132, speed: 36, color: '#7C5CFF', delay: -19 },
 ]
 
 /** Large circular portrait with small planets orbiting around it. */

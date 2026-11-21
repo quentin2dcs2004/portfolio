@@ -1,8 +1,12 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { lazy, Suspense, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { LogoQ } from '@/components/brand/LogoQ'
 import { site } from '@/data/site'
+
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -60,12 +64,17 @@ export function Contact() {
           }}
         />
 
-        <div className="wrap mb-8 max-w-2xl">
+        <div className="wrap mb-8">
           <p className="text-xs tracking-[0.28em] text-[#FF46A2] uppercase">Discutons</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Contact</h1>
-          <p className="mt-3 text-sm text-white/65">
+          <p className="mt-3 max-w-2xl text-sm text-white/65">
             Brief clair, retour soigné. Identité, print, 3D ou web — on construit l’univers ensemble.
           </p>
+          <Suspense fallback={null}>
+            <div className="mt-6">
+              <HyperField theme="cyan" density="panel" height="h-[180px] md:h-[240px]" />
+            </div>
+          </Suspense>
         </div>
 
         <div className="wrap grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">

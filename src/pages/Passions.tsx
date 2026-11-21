@@ -1,67 +1,29 @@
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Stars } from '@react-three/drei'
+import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { useRef } from 'react'
-import type { Mesh } from 'three'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { passions } from '@/data/site'
 
-function OrbitRings() {
-  const a = useRef<Mesh>(null)
-  const b = useRef<Mesh>(null)
-  useFrame((_, dt) => {
-    if (a.current) a.current.rotation.z += dt * 0.35
-    if (b.current) b.current.rotation.z -= dt * 0.22
-  })
-  return (
-    <>
-      <color attach="background" args={['#050509']} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[2, 3, 2]} intensity={1.2} color="#00F5D4" />
-      <pointLight position={[-2, 1, -2]} intensity={0.8} color="#FF46A2" />
-      <Stars radius={40} depth={30} count={1200} factor={2.5} fade speed={0.5} />
-      <Float speed={1.2} floatIntensity={0.5}>
-        <mesh>
-          <icosahedronGeometry args={[0.7, 0]} />
-          <meshStandardMaterial color="#00F5D4" emissive="#00F5D4" emissiveIntensity={0.5} metalness={0.4} />
-        </mesh>
-      </Float>
-      <mesh ref={a} rotation={[Math.PI / 2.4, 0, 0]}>
-        <torusGeometry args={[1.4, 0.02, 16, 80]} />
-        <meshStandardMaterial color="#FF46A2" emissive="#FF46A2" emissiveIntensity={0.6} />
-      </mesh>
-      <mesh ref={b} rotation={[Math.PI / 3, 0.4, 0]}>
-        <torusGeometry args={[1.9, 0.015, 16, 80]} />
-        <meshStandardMaterial color="#7C5CFF" emissive="#7C5CFF" emissiveIntensity={0.5} />
-      </mesh>
-    </>
-  )
-}
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 export function Passions() {
   return (
     <PageTransition>
       <div className="relative min-h-[100svh] overflow-hidden pt-24">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              'radial-gradient(ellipse at 20% 10%, rgba(255,70,162,0.18), transparent 45%), radial-gradient(ellipse at 80% 60%, rgba(124,92,255,0.14), transparent 40%), #050509',
-          }}
-        />
-
         <div className="wrap">
           <p className="text-xs tracking-[0.28em] text-[#FF46A2] uppercase">Centres d’intérêt</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Passions</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/65">
-            Photo, 3D, jeux, création — des univers vivants avec images et motion Three.js.
+            Photo, 3D, jeux, création — univers vivants avec motion Three.js partout.
           </p>
 
-          <div className="mt-8 h-[220px] overflow-hidden rounded-3xl border border-white/10 md:h-[280px]">
-            <Canvas camera={{ position: [0, 0.5, 4.2], fov: 42 }}>
-              <OrbitRings />
-            </Canvas>
-          </div>
+          <Suspense fallback={null}>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              <HyperField theme="pink" density="hero" height="h-[240px] md:h-[320px]" />
+              <HyperField theme="violet" density="hero" height="h-[240px] md:h-[320px]" />
+            </div>
+          </Suspense>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {passions.map((p, i) => (
@@ -85,12 +47,6 @@ export function Passions() {
                     style={{ background: `linear-gradient(135deg, ${p.accent}, transparent 60%)` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                  <span
-                    className="absolute top-4 left-4 rounded-full px-3 py-1 text-[10px] font-semibold tracking-[0.2em] uppercase"
-                    style={{ background: `${p.accent}33`, color: p.accent, border: `1px solid ${p.accent}66` }}
-                  >
-                    Passion
-                  </span>
                   <p className="absolute bottom-4 left-4 font-display text-2xl font-bold">{p.title}</p>
                 </div>
                 <div className="p-5">

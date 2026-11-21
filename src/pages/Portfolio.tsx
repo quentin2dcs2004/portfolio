@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { LogoQ } from '@/components/brand/LogoQ'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { bookSpreads } from '@/data/site'
+
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 export function Portfolio() {
   const [index, setIndex] = useState(0)
@@ -27,6 +31,11 @@ export function Portfolio() {
         <p className="mt-2 max-w-2xl text-sm text-muted">
           Couverture → sommaire → doubles pages (photo + fiche technique / matériel).
         </p>
+        <Suspense fallback={null}>
+          <div className="mt-6">
+            <HyperField theme="violet" density="panel" height="h-[160px] md:h-[200px]" />
+          </div>
+        </Suspense>
 
         <div className="mx-auto mt-8 max-w-5xl [perspective:2400px]">
           <div

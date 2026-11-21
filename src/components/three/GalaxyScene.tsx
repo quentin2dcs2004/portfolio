@@ -169,7 +169,7 @@ function CameraRig({ enabled }: { enabled: boolean }) {
 }
 
 function SceneCore({ reduced, mode }: { reduced: boolean; mode: 'hero' | 'ambient' | 'stage' }) {
-  const particleCount = reduced ? 400 : mode === 'ambient' ? 900 : 2400
+  const particleCount = reduced ? 400 : mode === 'ambient' ? 1600 : 2800
   const showLogo = mode !== 'ambient'
   const logoScale = mode === 'stage' ? 1.15 : 0.85
 
@@ -179,20 +179,38 @@ function SceneCore({ reduced, mode }: { reduced: boolean; mode: 'hero' | 'ambien
       <pointLight position={[5, 4, 3]} intensity={2.2} color="#00E5FF" />
       <pointLight position={[-5, -2, -2]} intensity={1.8} color="#8B5CF6" />
       <pointLight position={[0, 3, 4]} intensity={1.2} color="#176BFF" />
+      <pointLight position={[2, -3, 1]} intensity={0.9} color="#FF46A2" />
       {!reduced && (
-        <Stars radius={80} depth={50} count={mode === 'ambient' ? 1200 : 2800} factor={4} saturation={0} fade speed={0.6} />
+        <Stars radius={80} depth={50} count={mode === 'ambient' ? 2200 : 3200} factor={4} saturation={0} fade speed={0.75} />
       )}
       <Sparkles
-        count={reduced ? 40 : mode === 'ambient' ? 60 : 120}
+        count={reduced ? 40 : mode === 'ambient' ? 110 : 160}
         scale={[12, 7, 10]}
         size={3}
-        speed={0.45}
-        opacity={0.7}
+        speed={0.55}
+        opacity={0.75}
         color="#00E5FF"
       />
+      <Sparkles
+        count={reduced ? 20 : 80}
+        scale={[10, 6, 8]}
+        size={2.2}
+        speed={0.35}
+        opacity={0.55}
+        color="#FF46A2"
+      />
       <NebulaParticles count={particleCount} />
+      {/* Ambient also gets rings + floating crystals for constant motion */}
+      {!reduced ? <OrbitRings /> : null}
       {showLogo ? <LogoQ3D scale={logoScale} /> : null}
-      {showLogo && !reduced ? <OrbitRings /> : null}
+      {!reduced && mode === 'ambient' ? (
+        <Float speed={1.2} floatIntensity={0.6}>
+          <mesh position={[3.2, 1.2, -1]}>
+            <octahedronGeometry args={[0.35, 0]} />
+            <meshStandardMaterial color="#FF46A2" emissive="#FF46A2" emissiveIntensity={0.8} />
+          </mesh>
+        </Float>
+      ) : null}
       <CameraRig enabled={!reduced && mode !== 'ambient'} />
     </>
   )

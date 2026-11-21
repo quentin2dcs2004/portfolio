@@ -1,28 +1,42 @@
+import { lazy, Suspense, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { skillGroups } from '@/data/site'
 
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
+const SkillConstellation = lazy(() =>
+  import('@/components/three/SkillConstellation').then((m) => ({ default: m.SkillConstellation })),
+)
+
 const LEVEL_LABEL = ['Découverte', 'Bases', 'Opérationnel', 'Solide', 'Avancé'] as const
 
 export function Apprendre() {
+  const nodes = useMemo(
+    () =>
+      skillGroups.flatMap((g) =>
+        g.skills.map((s) => ({ name: s.name, level: s.level, accent: s.accent })),
+      ),
+    [],
+  )
+
   return (
     <PageTransition>
       <div className="relative min-h-[100svh] overflow-hidden pt-24">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              'radial-gradient(ellipse at 10% 0%, rgba(124,92,255,0.22), transparent 45%), radial-gradient(ellipse at 90% 30%, rgba(0,245,212,0.12), transparent 40%), #050509',
-          }}
-        />
-
         <div className="wrap">
           <p className="text-xs tracking-[0.28em] text-[#7C5CFF] uppercase">Compétences</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Apprendre</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/65">
-            Cartographie claire de ce que j’ai réellement travaillé — niveau, contexte, et progression.
-            Lecture rapide, signal fort.
+            Cartographie 3D de ce que j’ai réellement travaillé — constellation live + niveaux.
           </p>
+
+          <Suspense fallback={<div className="mt-8 h-[280px] rounded-3xl bg-white/5" />}>
+            <div className="mt-8 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+              <SkillConstellation nodes={nodes} />
+              <HyperField theme="violet" density="hero" height="h-[280px] md:h-[360px]" />
+            </div>
+          </Suspense>
 
           <div className="mt-12 space-y-14">
             {skillGroups.map((group, gi) => (
@@ -64,8 +78,7 @@ export function Apprendre() {
                             key={i}
                             className="h-1.5 flex-1 rounded-full"
                             style={{
-                              background:
-                                i < skill.level ? skill.accent : 'rgba(255,255,255,0.08)',
+                              background: i < skill.level ? skill.accent : 'rgba(255,255,255,0.08)',
                             }}
                           />
                         ))}

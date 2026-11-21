@@ -1,25 +1,28 @@
+import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { timeline } from '@/data/site'
+
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 export function Parcours() {
   return (
     <PageTransition>
       <div className="relative min-h-[100svh] overflow-hidden pt-24">
-        <div
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              'radial-gradient(ellipse at 50% 0%, rgba(0,245,212,0.14), transparent 50%), #050509',
-          }}
-        />
-
         <div className="wrap">
           <p className="text-xs tracking-[0.28em] text-[#00F5D4] uppercase">Timeline</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Parcours</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/65">
-            Formation, stages, créations et tournants — chaque étape avec un vrai marqueur.
+            Formation, stages, créations — chaque étape avec marqueur et scène 3D.
           </p>
+
+          <Suspense fallback={null}>
+            <div className="mt-8">
+              <HyperField theme="cyan" density="hero" height="h-[220px] md:h-[300px]" />
+            </div>
+          </Suspense>
 
           <ol className="relative mt-14 space-y-0 border-l border-white/15 pl-8 md:pl-10">
             {timeline.map((step, i) => (

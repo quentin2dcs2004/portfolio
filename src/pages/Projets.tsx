@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Float, Text } from '@react-three/drei'
+import { Float, Sparkles, Text } from '@react-three/drei'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ArrowLeft } from 'lucide-react'
@@ -101,6 +101,8 @@ function MansionScene({
       <pointLight position={[-4, 3.5, 4]} intensity={1.2} color="#ffd6a0" distance={14} />
       <pointLight position={[4, 3.2, 3]} intensity={1} color="#c4b5fd" distance={14} />
       <spotLight position={[0, 7, 4]} angle={0.55} penumbra={0.6} intensity={1.4} color="#fff2d8" castShadow />
+      <Sparkles count={80} scale={[16, 4, 12]} size={2.5} speed={0.4} opacity={0.55} color="#f5d0a9" />
+      <Sparkles count={40} scale={[14, 3, 10]} size={3} speed={0.25} opacity={0.4} color="#00F5D4" />
 
       {/* Floor marble warm */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 2.5]} receiveShadow>

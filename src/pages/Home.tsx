@@ -8,11 +8,15 @@ import { useIntro } from '@/components/intro/IntroContext'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { TypewriterRoles } from '@/components/ui/TypewriterRoles'
+import { HoverOrb } from '@/components/three/HoverOrb'
 import { useGsapReveal } from '@/hooks/useGsapReveal'
 import { site, skills, projects } from '@/data/site'
 
 const GalaxyScene = lazy(() =>
   import('@/components/three/GalaxyScene').then((m) => ({ default: m.GalaxyScene })),
+)
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
 )
 
 export function Home() {
@@ -107,6 +111,11 @@ export function Home() {
             Bac Pro RPIP, univers Luminart, formation testeur jeux vidéo. Détails dans Parcours.
           </p>
         </div>
+        <Suspense fallback={null}>
+          <div className="mb-8" data-reveal>
+            <HyperField theme="mixed" density="panel" height="h-[200px] md:h-[260px]" />
+          </div>
+        </Suspense>
         <div className="grid gap-4 sm:grid-cols-3">
           {site.stats.map((s, i) => (
             <div key={s.label} data-reveal data-reveal-delay={i * 0.08}>
@@ -131,7 +140,10 @@ export function Home() {
               data-reveal-delay={i * 0.06}
               className="glass group rounded-2xl p-5 transition hover:-translate-y-1"
             >
-              <div className="mb-3 h-1 w-12 rounded-full transition group-hover:w-20" style={{ background: skill.accent }} />
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <div className="h-1 w-12 rounded-full transition group-hover:w-20" style={{ background: skill.accent }} />
+                <HoverOrb color={skill.accent} className="h-12 w-12" />
+              </div>
               <p className="text-[10px] tracking-wide uppercase" style={{ color: skill.accent }}>
                 {skill.level}
               </p>

@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Stars, Text } from '@react-three/drei'
+import { Float, Sparkles, Stars, Text } from '@react-three/drei'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { BlackCat } from '@/components/three/BlackCat'
@@ -115,7 +115,9 @@ function World({
       <pointLight position={[0, 8, 0]} intensity={2} color="#00F5D4" />
       <pointLight position={[5, 4, -3]} intensity={1.4} color="#FF46A2" />
       <pointLight position={[-4, 3, 4]} intensity={1} color="#a78bfa" />
-      <Stars radius={50} depth={40} count={2200} factor={3} fade speed={0.6} />
+      <Stars radius={50} depth={40} count={2800} factor={3.2} fade speed={0.75} />
+      <Sparkles count={90} scale={[16, 4, 16]} size={3} speed={0.55} opacity={0.7} color="#00F5D4" />
+      <Sparkles count={50} scale={[14, 3, 14]} size={2.5} speed={0.4} opacity={0.5} color="#FF46A2" />
 
       {/* Arena island */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>

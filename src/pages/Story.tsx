@@ -1,7 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { site } from '@/data/site'
+
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 import {
   storyCategories,
   storyQA,
@@ -148,6 +152,11 @@ export function Story() {
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/65">
             Ambiance Vice / GTA VI — catégories colorées, questions au tap, réponses tapées en direct.
           </p>
+          <Suspense fallback={null}>
+            <div className="mx-auto mt-6 max-w-3xl">
+              <HyperField theme="pink" density="panel" height="h-[160px] md:h-[200px]" />
+            </div>
+          </Suspense>
         </div>
 
         <div className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-black/55 shadow-[0_40px_100px_rgba(255,70,162,0.15)] backdrop-blur-xl lg:grid-cols-[260px_1fr]">
