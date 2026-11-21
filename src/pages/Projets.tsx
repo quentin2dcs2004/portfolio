@@ -250,11 +250,12 @@ function RoomScene({ project }: { project: Project }) {
     <>
       <color attach="background" args={[theme.wall]} />
       <fog attach="fog" args={[theme.wall, 8, 18]} />
-      <ambientLight intensity={0.7} />
-      <pointLight position={[2, 4, 3]} intensity={1.8} color="#f5d0a9" />
-      <pointLight position={[-3, 2, 1]} intensity={1.4} color={theme.glow} />
-      <pointLight position={[0, 3, 2]} intensity={1.1} color="#00F5D4" />
-      <Sparkles count={60} scale={[10, 4, 8]} size={2.8} speed={0.45} opacity={0.55} color={theme.glow} />
+      <ambientLight intensity={0.95} />
+      <hemisphereLight args={['#ffe8c8', theme.floor, 0.45]} />
+      <pointLight position={[2, 4, 3]} intensity={2.2} color="#f5d0a9" />
+      <pointLight position={[-3, 2, 1]} intensity={1.8} color={theme.glow} />
+      <pointLight position={[0, 3, 2]} intensity={1.4} color="#00F5D4" />
+      <Sparkles count={80} scale={[10, 4, 8]} size={2.8} speed={0.45} opacity={0.65} color={theme.glow} />
 
       {/* Walls */}
       <mesh position={[0, 1.6, -3.2]}>

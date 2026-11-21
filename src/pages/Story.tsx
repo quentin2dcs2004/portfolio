@@ -10,7 +10,6 @@ import {
   type StoryQA,
 } from '@/data/story'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { useTypewriter } from '@/hooks/useTypewriter'
 
 const HyperField = lazy(() =>
   import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
@@ -21,13 +20,9 @@ type Msg = {
   from: 'me' | 'them'
   text: string
   time: string
+  /** Still typing this bubble (cursor visible). */
+  live?: boolean
 }
-
-type Phase =
-  | { kind: 'idle' }
-  | { kind: 'question'; qa: StoryQA; full: string }
-  | { kind: 'wait'; qa: StoryQA }
-  | { kind: 'answer'; qa: StoryQA; full: string }
 
 const THREADS: {
   id: StoryPersona
@@ -56,6 +51,28 @@ function clock() {
   return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
 }
 
+/** Type full string into a message id, char by char (Graphiste-style). */
+function typeInto(
+  full: string,
+  speed: number,
+  onChar: (partial: string) => void,
+  onDone: () => void,
+) {
+  let i = 0
+  let timer = 0
+  const tick = () => {
+    i += 1
+    onChar(full.slice(0, i))
+    if (i >= full.length) {
+      onDone()
+      return
+    }
+    timer = window.setTimeout(tick, speed)
+  }
+  timer = window.setTimeout(tick, speed)
+  return () => window.clearTimeout(timer)
+}
+
 export function Story() {
   const reduced = usePrefersReducedMotion()
   const [persona, setPersona] = useState<StoryPersona>('quentin')
@@ -68,11 +85,11 @@ export function Story() {
       time: clock(),
     },
   ])
-  const [phase, setPhase] = useState<Phase>({ kind: 'idle' })
+  const [busy, setBusy] = useState(false)
+  const [waiting, setWaiting] = useState(false)
+  const cancelRef = useRef<(() => void) | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
-  const pendingQa = useRef<StoryQA | null>(null)
   const catMeta = storyCategories.find((c) => c.id === category)
-  const busy = phase.kind !== 'idle'
   const active = THREADS.find((t) => t.id === persona)!
 
   const suggestions = useMemo(() => {
@@ -83,68 +100,69 @@ export function Story() {
     })
   }, [persona, category])
 
-  const questionFull = phase.kind === 'question' ? phase.full : null
-  const answerFull = phase.kind === 'answer' ? phase.full : null
-
-  const qType = useTypewriter(questionFull, {
-    speed: 42,
-    enabled: !reduced,
-    onDone: (text) => {
-      const qa = pendingQa.current
-      if (!qa) return
-      setMessages((m) => [...m, { id: `q-${qa.id}-${Date.now()}`, from: 'me', text, time: clock() }])
-      setPhase({ kind: 'wait', qa })
-    },
-  })
-
-  const aType = useTypewriter(answerFull, {
-    speed: 28,
-    enabled: !reduced,
-    onDone: (text) => {
-      setMessages((m) => [...m, { id: `a-${Date.now()}`, from: 'them', text, time: clock() }])
-      pendingQa.current = null
-      setPhase({ kind: 'idle' })
-    },
-  })
-
-  // After question committed, short pause then start answer typing
-  useEffect(() => {
-    if (phase.kind !== 'wait') return
-    const qa = phase.qa
-    const id = window.setTimeout(() => {
-      if (reduced) {
-        setMessages((m) => [...m, { id: `a-${Date.now()}`, from: 'them', text: qa.answer, time: clock() }])
-        setPhase({ kind: 'idle' })
-      } else {
-        setPhase({ kind: 'answer', qa, full: qa.answer })
-      }
-    }, reduced ? 120 : 480)
-    return () => window.clearTimeout(id)
-  }, [phase, reduced])
-
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
-  }, [messages, qType.text, aType.text, phase.kind, reduced])
+  }, [messages, waiting, reduced])
+
+  useEffect(() => () => cancelRef.current?.(), [])
 
   const ask = (qa: StoryQA) => {
     if (busy) return
+    cancelRef.current?.()
+    setBusy(true)
+    setWaiting(false)
+
     if (reduced) {
       setMessages((m) => [
         ...m,
         { id: `q-${qa.id}-${Date.now()}`, from: 'me', text: qa.question, time: clock() },
         { id: `a-${Date.now()}`, from: 'them', text: qa.answer, time: clock() },
       ])
+      setBusy(false)
       return
     }
-    pendingQa.current = qa
-    setPhase({ kind: 'question', qa, full: qa.question })
+
+    const qId = `q-${qa.id}-${Date.now()}`
+    setMessages((m) => [...m, { id: qId, from: 'me', text: '', time: clock(), live: true }])
+
+    cancelRef.current = typeInto(
+      qa.question,
+      40,
+      (partial) => {
+        setMessages((m) => m.map((msg) => (msg.id === qId ? { ...msg, text: partial } : msg)))
+      },
+      () => {
+        setMessages((m) => m.map((msg) => (msg.id === qId ? { ...msg, live: false } : msg)))
+        setWaiting(true)
+        const pause = window.setTimeout(() => {
+          setWaiting(false)
+          const aId = `a-${Date.now()}`
+          setMessages((m) => [...m, { id: aId, from: 'them', text: '', time: clock(), live: true }])
+          cancelRef.current = typeInto(
+            qa.answer,
+            26,
+            (partial) => {
+              setMessages((m) => m.map((msg) => (msg.id === aId ? { ...msg, text: partial } : msg)))
+            },
+            () => {
+              setMessages((m) => m.map((msg) => (msg.id === aId ? { ...msg, live: false } : msg)))
+              setBusy(false)
+              cancelRef.current = null
+            },
+          )
+        }, 520)
+        cancelRef.current = () => window.clearTimeout(pause)
+      },
+    )
   }
 
   const switchPersona = (t: (typeof THREADS)[number]) => {
-    pendingQa.current = null
+    cancelRef.current?.()
+    cancelRef.current = null
+    setBusy(false)
+    setWaiting(false)
     setPersona(t.id)
     setCategory('Tous')
-    setPhase({ kind: 'idle' })
     setMessages([
       {
         id: 'switch',
@@ -169,15 +187,15 @@ export function Story() {
           }}
         />
 
-        <div className="wrap mb-6 text-center">
+        <div className="wrap mb-5 text-center">
           <p className="text-xs tracking-[0.35em] text-[#FF46A2] uppercase">Story immersive</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Messagerie</h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/65">
-            Clique une question — elle s’écrit lettre par lettre, puis la réponse aussi.
+            Clique une question — elle s’écrit lettre à lettre, puis la réponse aussi.
           </p>
           <Suspense fallback={null}>
             <div className="mx-auto mt-5 max-w-3xl">
-              <HyperField theme="pink" density="panel" height="h-[110px] md:h-[140px]" />
+              <HyperField theme="pink" density="panel" height="h-[100px] md:h-[130px]" />
             </div>
           </Suspense>
         </div>
@@ -214,7 +232,7 @@ export function Story() {
             </ul>
           </aside>
 
-          <section className="flex min-h-[580px] flex-col">
+          <section className="flex min-h-[560px] flex-col">
             <header className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
               <span
                 className="grid h-9 w-9 place-items-center rounded-full text-sm font-bold text-black"
@@ -224,7 +242,10 @@ export function Story() {
               </span>
               <div>
                 <p className="text-sm font-semibold">{active.name}</p>
-                <p className="text-[11px] text-white/45">{active.handle} · en train d’écrire…</p>
+                <p className="text-[11px] text-white/45">
+                  {active.handle}
+                  {busy || waiting ? ' · en train d’écrire…' : ''}
+                </p>
               </div>
             </header>
 
@@ -252,33 +273,26 @@ export function Story() {
                       }
                     >
                       {msg.text}
+                      {msg.live ? (
+                        <span
+                          className={`ml-0.5 inline-block h-4 w-[2px] animate-pulse align-middle ${
+                            msg.from === 'me' ? 'bg-black/70' : 'bg-[#00F5D4]'
+                          }`}
+                        />
+                      ) : null}
                     </div>
-                    <p className={`mt-1 text-[10px] text-white/35 ${msg.from === 'me' ? 'text-right' : ''}`}>
-                      {msg.time}
-                    </p>
+                    {!msg.live ? (
+                      <p className={`mt-1 text-[10px] text-white/35 ${msg.from === 'me' ? 'text-right' : ''}`}>
+                        {msg.time}
+                      </p>
+                    ) : null}
                   </motion.div>
                 ))}
               </AnimatePresence>
 
-              {/* Live typing question (me) */}
-              {phase.kind === 'question' ? (
-                <div className="max-w-[80%] self-end">
-                  <div
-                    className="rounded-[22px] rounded-br-md px-3.5 py-2 text-[14px] leading-snug text-black"
-                    style={{
-                      background: `linear-gradient(135deg, ${catMeta?.color ?? '#00F5D4'}, ${active.accent})`,
-                    }}
-                  >
-                    {qType.text}
-                    <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-black/70 align-middle" />
-                  </div>
-                </div>
-              ) : null}
-
-              {/* Waiting dots */}
-              {phase.kind === 'wait' ? (
+              {waiting ? (
                 <div className="max-w-[80%] self-start">
-                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-4 py-3 text-white/70">
+                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-4 py-3">
                     <span className="inline-flex gap-1">
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00F5D4]" />
                       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00F5D4] [animation-delay:120ms]" />
@@ -287,17 +301,6 @@ export function Story() {
                   </div>
                 </div>
               ) : null}
-
-              {/* Live typing answer (them) */}
-              {phase.kind === 'answer' ? (
-                <div className="max-w-[80%] self-start">
-                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-3.5 py-2 text-[14px] leading-snug text-white">
-                    {aType.text}
-                    <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-[#00F5D4] align-middle" />
-                  </div>
-                </div>
-              ) : null}
-
               <div ref={endRef} />
             </div>
 
