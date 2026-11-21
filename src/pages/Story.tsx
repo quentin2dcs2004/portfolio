@@ -2,10 +2,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { site } from '@/data/site'
-
-const HyperField = lazy(() =>
-  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
-)
 import {
   storyCategories,
   storyQA,
@@ -14,14 +10,24 @@ import {
   type StoryQA,
 } from '@/data/story'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
+import { useTypewriter } from '@/hooks/useTypewriter'
+
+const HyperField = lazy(() =>
+  import('@/components/three/HyperField').then((m) => ({ default: m.HyperField })),
+)
 
 type Msg = {
   id: string
   from: 'me' | 'them'
   text: string
   time: string
-  typing?: boolean
 }
+
+type Phase =
+  | { kind: 'idle' }
+  | { kind: 'question'; qa: StoryQA; full: string }
+  | { kind: 'wait'; qa: StoryQA }
+  | { kind: 'answer'; qa: StoryQA; full: string }
 
 const THREADS: {
   id: StoryPersona
@@ -50,30 +56,6 @@ function clock() {
   return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
 }
 
-/** Typewriter helper: reveals text char by char into state. */
-function useTypewriterReveal(
-  full: string | null,
-  enabled: boolean,
-  onDone: (text: string) => void,
-) {
-  const [partial, setPartial] = useState('')
-  useEffect(() => {
-    if (!full || !enabled) return
-    setPartial('')
-    let i = 0
-    const id = window.setInterval(() => {
-      i += 1
-      setPartial(full.slice(0, i))
-      if (i >= full.length) {
-        window.clearInterval(id)
-        onDone(full)
-      }
-    }, 22)
-    return () => window.clearInterval(id)
-  }, [full, enabled, onDone])
-  return partial
-}
-
 export function Story() {
   const reduced = usePrefersReducedMotion()
   const [persona, setPersona] = useState<StoryPersona>('quentin')
@@ -86,10 +68,12 @@ export function Story() {
       time: clock(),
     },
   ])
-  const [busy, setBusy] = useState(false)
-  const [typingAnswer, setTypingAnswer] = useState<string | null>(null)
+  const [phase, setPhase] = useState<Phase>({ kind: 'idle' })
   const endRef = useRef<HTMLDivElement>(null)
+  const pendingQa = useRef<StoryQA | null>(null)
   const catMeta = storyCategories.find((c) => c.id === category)
+  const busy = phase.kind !== 'idle'
+  const active = THREADS.find((t) => t.id === persona)!
 
   const suggestions = useMemo(() => {
     return storyQA.filter((q) => {
@@ -99,45 +83,84 @@ export function Story() {
     })
   }, [persona, category])
 
-  const typed = useTypewriterReveal(typingAnswer, !reduced && !!typingAnswer, (text) => {
-    setTypingAnswer(null)
-    setMessages((m) => [
-      ...m.filter((x) => !x.typing),
-      { id: `a-${Date.now()}`, from: 'them', text, time: clock() },
-    ])
-    setBusy(false)
+  const questionFull = phase.kind === 'question' ? phase.full : null
+  const answerFull = phase.kind === 'answer' ? phase.full : null
+
+  const qType = useTypewriter(questionFull, {
+    speed: 42,
+    enabled: !reduced,
+    onDone: (text) => {
+      const qa = pendingQa.current
+      if (!qa) return
+      setMessages((m) => [...m, { id: `q-${qa.id}-${Date.now()}`, from: 'me', text, time: clock() }])
+      setPhase({ kind: 'wait', qa })
+    },
   })
+
+  const aType = useTypewriter(answerFull, {
+    speed: 28,
+    enabled: !reduced,
+    onDone: (text) => {
+      setMessages((m) => [...m, { id: `a-${Date.now()}`, from: 'them', text, time: clock() }])
+      pendingQa.current = null
+      setPhase({ kind: 'idle' })
+    },
+  })
+
+  // After question committed, short pause then start answer typing
+  useEffect(() => {
+    if (phase.kind !== 'wait') return
+    const qa = phase.qa
+    const id = window.setTimeout(() => {
+      if (reduced) {
+        setMessages((m) => [...m, { id: `a-${Date.now()}`, from: 'them', text: qa.answer, time: clock() }])
+        setPhase({ kind: 'idle' })
+      } else {
+        setPhase({ kind: 'answer', qa, full: qa.answer })
+      }
+    }, reduced ? 120 : 480)
+    return () => window.clearTimeout(id)
+  }, [phase, reduced])
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
-  }, [messages, typed, busy, reduced])
+  }, [messages, qType.text, aType.text, phase.kind, reduced])
 
   const ask = (qa: StoryQA) => {
     if (busy) return
-    setBusy(true)
-    setMessages((m) => [
-      ...m,
-      { id: `q-${qa.id}-${Date.now()}`, from: 'me', text: qa.question, time: clock() },
-    ])
-    window.setTimeout(() => {
-      if (reduced) {
-        setMessages((m) => [
-          ...m,
-          { id: `a-${Date.now()}`, from: 'them', text: qa.answer, time: clock() },
-        ])
-        setBusy(false)
-      } else {
-        setTypingAnswer(qa.answer)
-      }
-    }, reduced ? 200 : 500)
+    if (reduced) {
+      setMessages((m) => [
+        ...m,
+        { id: `q-${qa.id}-${Date.now()}`, from: 'me', text: qa.question, time: clock() },
+        { id: `a-${Date.now()}`, from: 'them', text: qa.answer, time: clock() },
+      ])
+      return
+    }
+    pendingQa.current = qa
+    setPhase({ kind: 'question', qa, full: qa.question })
   }
 
-  const active = THREADS.find((t) => t.id === persona)!
+  const switchPersona = (t: (typeof THREADS)[number]) => {
+    pendingQa.current = null
+    setPersona(t.id)
+    setCategory('Tous')
+    setPhase({ kind: 'idle' })
+    setMessages([
+      {
+        id: 'switch',
+        from: 'them',
+        text:
+          t.id === 'luminart'
+            ? 'Luminart à l’écoute — questions créatives & projets.'
+            : 'Quentin ici — parcours, skills, passions.',
+        time: clock(),
+      },
+    ])
+  }
 
   return (
     <PageTransition>
       <div className="relative min-h-[100svh] overflow-hidden pt-20">
-        {/* Immersive GTA VI-ish backdrop */}
         <div
           className="pointer-events-none absolute inset-0 -z-10"
           style={{
@@ -150,16 +173,16 @@ export function Story() {
           <p className="text-xs tracking-[0.35em] text-[#FF46A2] uppercase">Story immersive</p>
           <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Messagerie</h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/65">
-            Ambiance Vice / GTA VI — catégories colorées, questions au tap, réponses tapées en direct.
+            Clique une question — elle s’écrit lettre par lettre, puis la réponse aussi.
           </p>
           <Suspense fallback={null}>
-            <div className="mx-auto mt-6 max-w-3xl">
-              <HyperField theme="pink" density="panel" height="h-[160px] md:h-[200px]" />
+            <div className="mx-auto mt-5 max-w-3xl">
+              <HyperField theme="pink" density="panel" height="h-[110px] md:h-[140px]" />
             </div>
           </Suspense>
         </div>
 
-        <div className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-black/55 shadow-[0_40px_100px_rgba(255,70,162,0.15)] backdrop-blur-xl lg:grid-cols-[260px_1fr]">
+        <div className="mx-auto mb-10 grid max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-black/55 shadow-[0_40px_100px_rgba(255,70,162,0.15)] backdrop-blur-xl lg:grid-cols-[260px_1fr]">
           <aside className="border-b border-white/10 lg:border-r lg:border-b-0">
             <div className="border-b border-white/10 px-4 py-4">
               <p className="font-semibold">{site.name}</p>
@@ -170,21 +193,7 @@ export function Story() {
                 <li key={t.id}>
                   <button
                     type="button"
-                    onClick={() => {
-                      setPersona(t.id)
-                      setCategory('Tous')
-                      setMessages([
-                        {
-                          id: 'switch',
-                          from: 'them',
-                          text:
-                            t.id === 'luminart'
-                              ? 'Luminart à l’écoute — questions créatives & projets.'
-                              : 'Quentin ici — parcours, skills, passions.',
-                          time: clock(),
-                        },
-                      ])
-                    }}
+                    onClick={() => switchPersona(t)}
                     className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${
                       persona === t.id ? 'bg-white/10' : 'hover:bg-white/5'
                     }`}
@@ -215,7 +224,7 @@ export function Story() {
               </span>
               <div>
                 <p className="text-sm font-semibold">{active.name}</p>
-                <p className="text-[11px] text-white/45">{active.handle}</p>
+                <p className="text-[11px] text-white/45">{active.handle} · en train d’écrire…</p>
               </div>
             </header>
 
@@ -251,14 +260,44 @@ export function Story() {
                 ))}
               </AnimatePresence>
 
-              {typingAnswer ? (
+              {/* Live typing question (me) */}
+              {phase.kind === 'question' ? (
+                <div className="max-w-[80%] self-end">
+                  <div
+                    className="rounded-[22px] rounded-br-md px-3.5 py-2 text-[14px] leading-snug text-black"
+                    style={{
+                      background: `linear-gradient(135deg, ${catMeta?.color ?? '#00F5D4'}, ${active.accent})`,
+                    }}
+                  >
+                    {qType.text}
+                    <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-black/70 align-middle" />
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Waiting dots */}
+              {phase.kind === 'wait' ? (
                 <div className="max-w-[80%] self-start">
-                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-3.5 py-2 text-[14px] text-white">
-                    {typed}
+                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-4 py-3 text-white/70">
+                    <span className="inline-flex gap-1">
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00F5D4]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00F5D4] [animation-delay:120ms]" />
+                      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#00F5D4] [animation-delay:240ms]" />
+                    </span>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Live typing answer (them) */}
+              {phase.kind === 'answer' ? (
+                <div className="max-w-[80%] self-start">
+                  <div className="rounded-[22px] rounded-bl-md bg-white/10 px-3.5 py-2 text-[14px] leading-snug text-white">
+                    {aType.text}
                     <span className="ml-0.5 inline-block h-4 w-[2px] animate-pulse bg-[#00F5D4] align-middle" />
                   </div>
                 </div>
               ) : null}
+
               <div ref={endRef} />
             </div>
 
