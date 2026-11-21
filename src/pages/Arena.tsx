@@ -1,15 +1,59 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Float, Stars } from '@react-three/drei'
-import { useEffect, useRef, useState } from 'react'
+import { Stars } from '@react-three/drei'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import { PageHero } from '@/components/ui/PageHero'
+import { BlackCat } from '@/components/three/BlackCat'
 import { PageTransition } from '@/components/ui/PageTransition'
-import { LogoQ } from '@/components/brand/LogoQ'
 
-function Player() {
-  const ref = useRef<THREE.Mesh>(null)
+/**
+ * Unique mini-game: "Nebula Whiskers"
+ * Steer the black cat through a particle river, collect cyan motes,
+ * avoid violet shards. Score + combo. Particular neon/particle style.
+ */
+function GameWorld({
+  onScore,
+  onHit,
+}: {
+  onScore: (n: number) => void
+  onHit: () => void
+}) {
+  const pos = useRef(new THREE.Vector3(0, 0, 4))
+  const facing = useRef(Math.PI)
+  const walking = useRef(false)
   const keys = useRef<Record<string, boolean>>({})
-  const [score, setScore] = useState(0)
+  const motes = useRef<THREE.Points>(null)
+  const hazards = useRef<THREE.Points>(null)
+  const scoreRef = useRef(0)
+
+  const motePos = useMemo(() => {
+    const a = new Float32Array(90)
+    let seed = 1337
+    const rnd = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0
+      return seed / 0xffffffff
+    }
+    for (let i = 0; i < 30; i++) {
+      a[i * 3] = (rnd() - 0.5) * 10
+      a[i * 3 + 1] = 0.35
+      a[i * 3 + 2] = (rnd() - 0.5) * 10
+    }
+    return a
+  }, [])
+
+  const hazPos = useMemo(() => {
+    const a = new Float32Array(36)
+    let seed = 4242
+    const rnd = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0
+      return seed / 0xffffffff
+    }
+    for (let i = 0; i < 12; i++) {
+      a[i * 3] = (rnd() - 0.5) * 10
+      a[i * 3 + 1] = 0.4
+      a[i * 3 + 2] = (rnd() - 0.5) * 10
+    }
+    return a
+  }, [])
 
   useEffect(() => {
     const d = (e: KeyboardEvent) => {
@@ -27,86 +71,150 @@ function Player() {
   }, [])
 
   useFrame((state, dt) => {
-    const m = ref.current
-    if (!m) return
-    const sp = 4 * dt
-    if (keys.current['arrowleft'] || keys.current['a'] || keys.current['q']) m.position.x -= sp
-    if (keys.current['arrowright'] || keys.current['d']) m.position.x += sp
-    if (keys.current['arrowup'] || keys.current['w'] || keys.current['z']) m.position.z -= sp
-    if (keys.current['arrowdown'] || keys.current['s']) m.position.z += sp
-    m.position.x = THREE.MathUtils.clamp(m.position.x, -6, 6)
-    m.position.z = THREE.MathUtils.clamp(m.position.z, -6, 6)
-    m.position.y = 0.35 + Math.sin(state.clock.elapsedTime * 3) * 0.05
+    let wx = 0
+    let wz = 0
+    const sp = 4.2 * dt
+    if (keys.current['arrowleft'] || keys.current['a'] || keys.current['q']) wx -= 1
+    if (keys.current['arrowright'] || keys.current['d']) wx += 1
+    if (keys.current['arrowup'] || keys.current['w'] || keys.current['z']) wz -= 1
+    if (keys.current['arrowdown'] || keys.current['s']) wz += 1
+    walking.current = wx !== 0 || wz !== 0
+    if (walking.current) {
+      const len = Math.hypot(wx, wz) || 1
+      pos.current.x += (wx / len) * sp
+      pos.current.z += (wz / len) * sp
+      facing.current = Math.atan2(wx, -wz)
+    }
+    pos.current.x = THREE.MathUtils.clamp(pos.current.x, -5.5, 5.5)
+    pos.current.z = THREE.MathUtils.clamp(pos.current.z, -5.5, 5.5)
 
-    // score pulses near center Q
-    const d = m.position.length()
-    if (d < 1.4) setScore((s) => s + 1)
+    // drift mote field
+    if (motes.current) {
+      const arr = motePos
+      for (let i = 0; i < 30; i++) {
+        arr[i * 3 + 2]! += Math.sin(state.clock.elapsedTime + i) * 0.004
+        const dx = pos.current.x - arr[i * 3]!
+        const dz = pos.current.z - arr[i * 3 + 2]!
+        if (dx * dx + dz * dz < 0.35) {
+          arr[i * 3] = ((i * 97) % 100) / 10 - 5
+          arr[i * 3 + 2] = ((i * 53) % 100) / 10 - 5
+          scoreRef.current += 1
+          onScore(scoreRef.current)
+        }
+      }
+      motes.current.geometry.attributes.position!.needsUpdate = true
+    }
+
+    if (hazards.current) {
+      const arr = hazPos
+      for (let i = 0; i < 12; i++) {
+        arr[i * 3]! += Math.sin(state.clock.elapsedTime * 0.7 + i) * 0.01
+        const dx = pos.current.x - arr[i * 3]!
+        const dz = pos.current.z - arr[i * 3 + 2]!
+        if (dx * dx + dz * dz < 0.38) {
+          arr[i * 3] = ((i * 71) % 100) / 10 - 5
+          arr[i * 3 + 2] = ((i * 41) % 100) / 10 - 5
+          scoreRef.current = Math.max(0, scoreRef.current - 2)
+          onScore(scoreRef.current)
+          onHit()
+        }
+      }
+      hazards.current.geometry.attributes.position!.needsUpdate = true
+    }
+
+    state.camera.position.lerp(
+      new THREE.Vector3(pos.current.x, 7.5, pos.current.z + 7),
+      0.06,
+    )
+    state.camera.lookAt(pos.current.x, 0, pos.current.z)
   })
 
   return (
     <>
-      <mesh ref={ref} position={[0, 0.35, 3]}>
-        <dodecahedronGeometry args={[0.35, 0]} />
-        <meshStandardMaterial color="#00E5FF" emissive="#176BFF" emissiveIntensity={0.7} />
-      </mesh>
-      <HtmlScore score={score} />
-    </>
-  )
-}
+      <color attach="background" args={['#03010a']} />
+      <fog attach="fog" args={['#03010a', 8, 22]} />
+      <ambientLight intensity={0.35} />
+      <pointLight position={[0, 6, 0]} intensity={1.4} color="#00E5FF" />
+      <pointLight position={[4, 3, -2]} intensity={1.1} color="#a855f7" />
+      <Stars radius={40} depth={30} count={2500} factor={3} fade speed={0.7} />
 
-function HtmlScore({ score }: { score: number }) {
-  // lightweight overlay via DOM portal alternative: parent reads nothing; show in HUD outside
-  useEffect(() => {
-    const el = document.getElementById('arena-score')
-    if (el) el.textContent = String(Math.floor(score / 30))
-  }, [score])
-  return null
-}
-
-function ArenaScene() {
-  return (
-    <>
-      <color attach="background" args={['#050509']} />
-      <ambientLight intensity={0.4} />
-      <pointLight position={[4, 5, 2]} intensity={1.5} color="#00E5FF" />
-      <pointLight position={[-3, 2, -2]} intensity={1.2} color="#8B5CF6" />
-      <Stars radius={50} depth={40} count={2000} factor={3} fade speed={0.5} />
-      <Float speed={1.2} floatIntensity={0.6}>
-        <mesh>
-          <torusGeometry args={[1.1, 0.18, 32, 80]} />
-          <meshStandardMaterial color="#8B5CF6" emissive="#176BFF" emissiveIntensity={0.9} />
-        </mesh>
-      </Float>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-        <circleGeometry args={[8, 64]} />
-        <meshStandardMaterial color="#0a1024" metalness={0.3} roughness={0.7} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[7.5, 64]} />
+        <meshStandardMaterial
+          color="#0b0618"
+          emissive="#1e1b4b"
+          emissiveIntensity={0.25}
+          roughness={0.85}
+        />
       </mesh>
-      <Player />
+
+      <points ref={motes}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[motePos, 3]} />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.22}
+          color="#00E5FF"
+          transparent
+          opacity={0.95}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+
+      <points ref={hazards}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[hazPos, 3]} />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.28}
+          color="#c026d3"
+          transparent
+          opacity={0.9}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+
+      <BlackCat position={pos} facing={facing} walking={walking} />
     </>
   )
 }
 
 export function Arena() {
+  const [score, setScore] = useState(0)
+  const [flash, setFlash] = useState(false)
+
   return (
     <PageTransition>
-      <div className="page-pad wrap">
-        <PageHero
-          eyebrow="Arène 3D"
-          title="Espace de jeu Three.js"
-          lead="Mini-arène : déplace le cristal (ZQSD / WASD / flèches) vers le logo Q central pour marquer des points. Expérience ludique adaptée au portfolio."
-        />
+      <div className="page-pad wrap !pt-24">
+        <p className="text-xs tracking-[0.28em] text-cyan uppercase">Jeu unique</p>
+        <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">Nebula Whiskers</h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted">
+          Guide le chat noir dans une rivière de particules. Attrape les orbes cyan, évite les
+          éclats violets. Style néon / nébuleuse — flèches ou ZQSD.
+        </p>
 
-        <div className="mb-3 flex items-center gap-3 text-sm text-muted">
-          <LogoQ size={28} />
-          Score proximité Q :{' '}
-          <span id="arena-score" className="font-display text-cyan">
-            0
+        <div className="mt-4 flex items-center gap-4 text-sm">
+          <span className="rounded-full border border-cyan/40 px-3 py-1 text-cyan">
+            Score {score}
           </span>
+          {flash ? <span className="text-fuchsia-300">Ouch — éclat violet</span> : null}
         </div>
 
-        <div className="h-[420px] overflow-hidden rounded-3xl border border-cyan/35 md:h-[560px]">
-          <Canvas camera={{ position: [0, 7, 9], fov: 48 }}>
-            <ArenaScene />
+        <div
+          className={`mt-4 h-[min(70vh,560px)] overflow-hidden rounded-2xl border border-white/15 ${
+            flash ? 'ring-2 ring-fuchsia-500/70' : ''
+          }`}
+        >
+          <Canvas camera={{ position: [0, 8, 8], fov: 45 }}>
+            <GameWorld
+              onScore={setScore}
+              onHit={() => {
+                setFlash(true)
+                window.setTimeout(() => setFlash(false), 350)
+              }}
+            />
           </Canvas>
         </div>
       </div>

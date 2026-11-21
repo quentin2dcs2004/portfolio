@@ -2,32 +2,37 @@ import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { LogoQ } from '@/components/brand/LogoQ'
-import { navLinks, site } from '@/data/site'
+import { moreLinks, navLinks, site } from '@/data/site'
 
+/** Simple galaxy-style bar: brand left, text links right, underline active. */
 export function Navigation() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-void/70 backdrop-blur-xl">
-      <div className="wrap flex h-16 items-center justify-between gap-4">
-        <NavLink to="/" className="group flex items-center gap-2" onClick={() => setOpen(false)}>
-          <LogoQ size={36} />
-          <span className="hidden font-display text-sm font-semibold tracking-[0.18em] uppercase sm:inline">
+    <header className="fixed inset-x-0 top-0 z-50 bg-transparent">
+      <div className="wrap flex h-[4.25rem] items-center justify-between gap-6">
+        <NavLink
+          to="/"
+          className="flex items-center gap-2.5 tracking-[0.2em]"
+          onClick={() => setOpen(false)}
+        >
+          <LogoQ size={32} />
+          <span className="font-display text-[13px] font-semibold uppercase text-snow">
             {site.name}
           </span>
         </NavLink>
 
-        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Navigation principale">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Navigation principale">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               end={link.to === '/'}
               className={({ isActive }) =>
-                `rounded-md px-2 py-1.5 text-[11px] tracking-wide transition ${
+                `relative pb-1 text-[13px] font-light tracking-wide text-snow/85 transition hover:text-snow ${
                   isActive
-                    ? 'bg-white/8 text-cyan'
-                    : 'text-muted hover:bg-white/5 hover:text-snow'
+                    ? 'text-snow after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:bg-snow'
+                    : ''
                 }`
               }
             >
@@ -38,33 +43,31 @@ export function Navigation() {
 
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-md border border-white/10 text-snow xl:hidden"
+          className="grid h-9 w-9 place-items-center text-snow md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X size={18} /> : <Menu size={18} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {open ? (
         <nav
           id="mobile-nav"
-          className="max-h-[70vh] overflow-y-auto border-t border-white/5 bg-void/95 px-4 py-3 xl:hidden"
+          className="border-t border-white/10 bg-black/90 px-5 py-4 backdrop-blur-md md:hidden"
           aria-label="Navigation mobile"
         >
-          <ul className="grid gap-1">
-            {navLinks.map((link) => (
+          <ul className="grid gap-3">
+            {[...navLinks, ...moreLinks].map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
                   end={link.to === '/'}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    `block rounded-md px-3 py-2 text-sm ${
-                      isActive ? 'bg-white/10 text-cyan' : 'text-muted hover:text-snow'
-                    }`
+                    `block text-sm tracking-wide ${isActive ? 'text-snow' : 'text-snow/70'}`
                   }
                 >
                   {link.label}

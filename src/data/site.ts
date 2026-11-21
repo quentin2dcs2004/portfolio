@@ -1,6 +1,7 @@
 export const site = {
   name: 'Quentin',
   fullName: 'Quentin Da Costa Soares',
+  brand: 'Luminart',
   signature: 'QUENTIN – CREATE YOUR OWN UNIVERSE.',
   greeting: 'Bonjour, je m’appelle Quentin.',
   tagline:
@@ -31,18 +32,23 @@ export const site = {
   ],
 } as const
 
+/** Primary nav — simple, few links (galaxy / Aureus style). */
 export const navLinks = [
   { to: '/', label: 'Accueil' },
-  { to: '/apprendre', label: 'Apprendre' },
   { to: '/story', label: 'Story' },
   { to: '/projets', label: 'Projets' },
-  { to: '/portfolio', label: 'Portfolio' },
-  { to: '/arena', label: 'Arène 3D' },
+  { to: '/portfolio', label: 'Livre' },
+  { to: '/arena', label: 'Jeu' },
+  { to: '/contact', label: 'Contact' },
+] as const
+
+/** Secondary pages — footer / menu “Plus”. */
+export const moreLinks = [
+  { to: '/apprendre', label: 'Apprendre' },
   { to: '/materiel', label: 'Matériel' },
   { to: '/parcours', label: 'Parcours' },
   { to: '/passions', label: 'Passions' },
   { to: '/laboratoire', label: 'Laboratoire' },
-  { to: '/contact', label: 'Contact' },
 ] as const
 
 export const legalLinks = [
@@ -244,114 +250,6 @@ export const projects = [
   },
 ] as const
 
-export const storyThreads = [
-  {
-    id: 'qui',
-    contact: 'Exemple · Qui es-tu ?',
-    avatar: 'Q?',
-    preview: 'Quentin, tu peux te présenter ?',
-    time: '09:12',
-    messages: [
-      { from: 'them' as const, text: 'Quentin, tu peux te présenter ?', time: '09:12' },
-      {
-        from: 'me' as const,
-        text: 'Je suis une personne créative et polyvalente. J’aime apprendre, découvrir de nouveaux domaines et transformer mes idées en projets concrets.',
-        time: '09:13',
-      },
-    ],
-  },
-  {
-    id: 'graphisme',
-    contact: 'Exemple · Graphisme',
-    avatar: 'Gr',
-    preview: 'Pourquoi avoir choisi le graphisme ?',
-    time: '10:04',
-    messages: [
-      { from: 'them' as const, text: 'Pourquoi avoir choisi le graphisme ?', time: '10:04' },
-      {
-        from: 'me' as const,
-        text: 'Parce que j’aime donner vie aux idées, travailler les couleurs, les formes et créer des identités visuelles.',
-        time: '10:05',
-      },
-    ],
-  },
-  {
-    id: '3d',
-    contact: 'Exemple · La 3D',
-    avatar: '3D',
-    preview: 'Tu fais aussi de la modélisation 3D ?',
-    time: '11:22',
-    messages: [
-      { from: 'them' as const, text: 'Tu fais aussi de la modélisation 3D ?', time: '11:22' },
-      {
-        from: 'me' as const,
-        text: 'Oui. J’aime concevoir des objets en 3D et découvrir les possibilités offertes par la fabrication numérique.',
-        time: '11:23',
-      },
-    ],
-  },
-  {
-    id: 'passions',
-    contact: 'Exemple · Passions',
-    avatar: '♥',
-    preview: 'Qu’est-ce que tu aimes faire ?',
-    time: '14:18',
-    messages: [
-      { from: 'them' as const, text: 'Qu’est-ce que tu aimes faire ?', time: '14:18' },
-      {
-        from: 'me' as const,
-        text: 'La photographie, le dessin, les jeux vidéo, l’automobile, la création, la 3D et les nouvelles technologies.',
-        time: '14:19',
-      },
-    ],
-  },
-  {
-    id: 'avenir',
-    contact: 'Exemple · Avenir',
-    avatar: '→',
-    preview: 'Quels sont tes objectifs ?',
-    time: '16:40',
-    messages: [
-      { from: 'them' as const, text: 'Quels sont tes objectifs ?', time: '16:40' },
-      {
-        from: 'me' as const,
-        text: 'Continuer à apprendre, développer mes compétences et construire des projets professionnels ambitieux.',
-        time: '16:41',
-      },
-    ],
-  },
-  {
-    id: 'parcours',
-    contact: 'Exemple · Parcours',
-    avatar: 'Pr',
-    preview: 'Tu as suivi quelle formation ?',
-    time: '18:02',
-    messages: [
-      { from: 'them' as const, text: 'Tu as suivi quelle formation ?', time: '18:02' },
-      {
-        from: 'me' as const,
-        text: 'Je suis diplômé d’un Bac Pro RPIP. Aujourd’hui je poursuis une formation de testeur de jeux vidéo.',
-        time: '18:03',
-      },
-    ],
-  },
-  {
-    id: 'perso',
-    contact: 'Exemple · Personnalité',
-    avatar: '✦',
-    preview: 'Comment tu abordes un projet ?',
-    time: '19:11',
-    messages: [
-      { from: 'them' as const, text: 'Comment tu abordes un projet ?', time: '19:11' },
-      {
-        from: 'me' as const,
-        text: 'Je commence par comprendre le besoin, puis j’explore, je prototype et j’affine jusqu’à un résultat clair et soigné.',
-        time: '19:12',
-      },
-    ],
-  },
-] as const
-
 export const timeline = [
   {
     id: 'bac',
@@ -443,84 +341,83 @@ export const gear = [
   },
 ] as const
 
-export const bookPages = [
+/** Book spreads: each entry is a left+right page pair after cover. */
+export const bookSpreads = [
   {
     id: 'cover',
     kind: 'cover' as const,
     title: 'Quentin – Creative Portfolio',
-    body: 'Create your own universe',
+    subtitle: 'Create your own universe',
   },
   {
-    id: 'toc',
-    kind: 'toc' as const,
-    title: 'Sommaire',
-    body: 'Parcours des créations',
+    id: 's1',
+    kind: 'spread' as const,
+    left: {
+      title: 'Identité visuelle',
+      text: 'Emplacement : brief, process et livrables. Ajoute ta photo de projet à gauche.',
+      image: '/images/quentin.jpg',
+      caption: 'Photo projet — à remplacer',
+    },
+    right: {
+      title: 'Notes techniques',
+      text: 'Logiciels : Illustrator, Photoshop.\nObjectifs : identité claire et déclinable.\nRésultat : à documenter.',
+      image: null as string | null,
+      caption: null as string | null,
+    },
   },
   {
-    id: '1',
-    kind: 'project' as const,
-    title: 'Identité visuelle — à compléter',
-    date: 'À renseigner',
-    softwares: 'Illustrator, Photoshop',
-    objectives: 'Créer une identité claire et déclinable.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
+    id: 's2',
+    kind: 'spread' as const,
+    left: {
+      title: 'Modélisation 3D',
+      text: 'Emplacement pour une pièce ou scène 3D — contraintes, rendu, itérations.',
+      image: '/images/quentin.jpg',
+      caption: 'Rendu / capture — à remplacer',
+    },
+    right: {
+      title: 'Pipeline',
+      text: 'Logiciels : Blender, Fusion 360.\nDifficultés : à documenter.\nLivrable : visualisation ou fabrication.',
+      image: null,
+      caption: null,
+    },
   },
   {
-    id: '2',
-    kind: 'project' as const,
-    title: 'Campagne print — à compléter',
-    date: 'À renseigner',
-    softwares: 'InDesign, Illustrator',
-    objectives: 'Supports print cohérents.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
+    id: 's3',
+    kind: 'spread' as const,
+    left: {
+      title: 'Prototype imprimé',
+      text: 'Du STL à l’objet : tranchage, calibration, filament, essais.',
+      image: '/images/quentin.jpg',
+      caption: 'Photo du prototype — à remplacer',
+    },
+    right: {
+      title: 'Paramètres',
+      text: 'Outils : Cura, Simplify3D.\nObjectif : valider un prototype physique.\nNotes : à compléter.',
+      image: null,
+      caption: null,
+    },
   },
   {
-    id: '3',
-    kind: 'project' as const,
-    title: 'Pièce 3D — à compléter',
-    date: 'À renseigner',
-    softwares: 'Blender, Fusion 360',
-    objectives: 'Modéliser pour visualisation ou fabrication.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
-  },
-  {
-    id: '4',
-    kind: 'project' as const,
-    title: 'Prototype imprimé — à compléter',
-    date: 'À renseigner',
-    softwares: 'Cura, STL',
-    objectives: 'Valider un prototype physique.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
-  },
-  {
-    id: '5',
-    kind: 'project' as const,
-    title: 'Expérience web — à compléter',
-    date: 'À renseigner',
-    softwares: 'HTML, CSS, JavaScript',
-    objectives: 'Interface claire et responsive.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
-  },
-  {
-    id: '6',
-    kind: 'project' as const,
-    title: 'Univers Luminart — à compléter',
-    date: 'À renseigner',
-    softwares: 'Suite créative',
-    objectives: 'Renforcer une identité lumineuse et propre.',
-    challenges: 'À documenter.',
-    result: 'À documenter.',
+    id: 's4',
+    kind: 'spread' as const,
+    left: {
+      title: 'Expérience web',
+      text: 'Interfaces, motion, intégration — ce portfolio en est un exemple vivant.',
+      image: '/images/quentin.jpg',
+      caption: 'Capture UI — à remplacer',
+    },
+    right: {
+      title: 'Stack',
+      text: 'HTML, CSS, JavaScript, React, Three.js.\nFocus : immersion + clarté.\nSuite : à documenter.',
+      image: null,
+      caption: null,
+    },
   },
   {
     id: 'end',
     kind: 'cover' as const,
     title: 'Fin du volume',
-    body: 'QUENTIN – CREATE YOUR OWN UNIVERSE.',
+    subtitle: 'QUENTIN – CREATE YOUR OWN UNIVERSE.',
   },
 ] as const
 
@@ -538,22 +435,22 @@ export const labExperiments = [
     text: 'Construction lumineuse du logo Q façon intro Netflix.',
   },
   {
+    id: 'cat',
+    title: 'Chat noir & cadres',
+    type: 'Jeu / UX',
+    text: 'Personnage chat noir, flèches + Espace pour entrer dans un monde de livres magiques.',
+  },
+  {
     id: 'book',
-    title: 'Livre numérique',
+    title: 'Livre double page',
     type: 'Prototype UX',
-    text: 'Tourne-pages CSS 3D pour le portfolio créatif.',
+    text: 'Ouverture en double page photo + texte.',
   },
   {
     id: 'story-ui',
     title: 'Story messagerie',
     type: 'Expérience UI',
-    text: 'Interface type conversation pour découvrir Quentin.',
-  },
-  {
-    id: 'neon-ui',
-    title: 'Glass & néon',
-    type: 'Expérimentation graphique',
-    text: 'Panneaux glassmorphism et accents cyan / violet.',
+    text: 'Interface type Instagram DM pour découvrir Quentin.',
   },
   {
     id: 'placeholder',

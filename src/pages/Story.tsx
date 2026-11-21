@@ -1,187 +1,204 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { CheckCheck, Send } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { PageHero } from '@/components/ui/PageHero'
+import { Check, Info, Phone, Video } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { site } from '@/data/site'
 import { storyCategories, storyQA, type StoryCategory, type StoryQA } from '@/data/story'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 
-type ChatMsg = { id: string; from: 'me' | 'quentin'; text: string; time: string }
-
-function nowLabel() {
-  const d = new Date()
-  return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+type Msg = {
+  id: string
+  from: 'them' | 'me'
+  text: string
+  time: string
 }
 
+const THREADS = [
+  { id: 'quentin', name: 'Quentin', handle: '@quentin', preview: 'Pose-moi une question…' },
+  { id: 'luminart', name: 'Luminart', handle: '@luminart2dcs', preview: 'Univers créatif (exemple)' },
+] as const
+
+function clock() {
+  return new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+}
+
+/**
+ * Instagram DM-like chatbot:
+ * pick a thread → pick category → tap a suggested question → Quentin replies.
+ */
 export function Story() {
   const reduced = usePrefersReducedMotion()
-  const [category, setCategory] = useState<StoryCategory | 'Toutes'>('Toutes')
-  const [messages, setMessages] = useState<ChatMsg[]>([
+  const [threadId, setThreadId] = useState<(typeof THREADS)[number]['id']>('quentin')
+  const [category, setCategory] = useState<StoryCategory | 'Tous'>('Tous')
+  const [messages, setMessages] = useState<Msg[]>([
     {
-      id: 'welcome',
-      from: 'quentin',
-      text: 'Salut ! Choisis une catégorie puis une question — je réponds comme en MP. (Contacts & fils = exemples illustratifs.)',
-      time: nowLabel(),
+      id: 'hi',
+      from: 'them',
+      text: 'Salut 👋 Choisis une question en bas — je te réponds comme en MP.',
+      time: clock(),
     },
   ])
   const [typing, setTyping] = useState(false)
-  const [pendingId, setPendingId] = useState<string | null>(null)
   const endRef = useRef<HTMLDivElement>(null)
 
-  const filtered = useMemo(
-    () => (category === 'Toutes' ? storyQA : storyQA.filter((q) => q.category === category)),
-    [category],
-  )
+  const suggestions = useMemo(() => {
+    const list = category === 'Tous' ? storyQA : storyQA.filter((q) => q.category === category)
+    return list
+  }, [category])
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
   }, [messages, typing, reduced])
 
-  const ask = (qa: StoryQA) => {
-    if (typing || pendingId) return
-    setPendingId(qa.id)
-    const qMsg: ChatMsg = {
-      id: `q-${qa.id}-${Date.now()}`,
-      from: 'me',
-      text: qa.question,
-      time: nowLabel(),
-    }
-    setMessages((m) => [...m, qMsg])
+  const sendQuestion = (qa: StoryQA) => {
+    if (typing) return
+    setMessages((m) => [
+      ...m,
+      { id: `q-${qa.id}-${Date.now()}`, from: 'me', text: qa.question, time: clock() },
+    ])
     setTyping(true)
-
-    const delay = reduced ? 200 : 900 + Math.min(qa.answer.length * 8, 1600)
+    const delay = reduced ? 250 : 850 + Math.min(qa.answer.length * 6, 1400)
     window.setTimeout(() => {
       setTyping(false)
       setMessages((m) => [
         ...m,
-        {
-          id: `a-${qa.id}-${Date.now()}`,
-          from: 'quentin',
-          text: qa.answer,
-          time: nowLabel(),
-        },
+        { id: `a-${qa.id}-${Date.now()}`, from: 'them', text: qa.answer, time: clock() },
       ])
-      setPendingId(null)
     }, delay)
   }
 
+  const active = THREADS.find((t) => t.id === threadId) ?? THREADS[0]
+
   return (
     <PageTransition>
-      <div className="page-pad wrap">
-        <PageHero
-          eyebrow="Story"
-          title="Instagram · Messagerie"
-          lead="Interface type Instagram : catégories, questions au choix, réponses préparées (chatbot local, sans backend). Les fils sont des exemples."
-        />
+      <div className="page-pad wrap !pt-24">
+        <p className="mb-2 text-center text-xs tracking-[0.25em] text-white/50 uppercase">
+          Story · Instagram DM
+        </p>
+        <h1 className="mb-6 text-center font-display text-3xl font-bold md:text-4xl">Messagerie</h1>
 
-        <div className="glass grid min-h-[640px] overflow-hidden rounded-3xl lg:grid-cols-[300px_1fr]">
-          {/* Sidebar — Instagram-like */}
-          <aside className="flex flex-col border-b border-white/8 lg:border-r lg:border-b-0">
-            <div className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
-              <img
-                src={site.photo}
-                alt=""
-                className="h-11 w-11 rounded-full object-cover ring-2 ring-cyan/40"
-              />
-              <div>
-                <p className="text-sm font-semibold">{site.name}</p>
-                <p className="text-xs text-muted">Portfolio · MP démo</p>
-              </div>
+        {/* Phone / IG chrome */}
+        <div className="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-[0_30px_80px_rgba(0,0,0,0.55)] lg:grid-cols-[280px_1fr]">
+          {/* Threads */}
+          <aside className="border-b border-white/10 lg:border-r lg:border-b-0">
+            <div className="border-b border-white/10 px-4 py-3">
+              <p className="font-semibold">{site.name}</p>
+              <p className="text-xs text-white/45">Messages · exemples</p>
             </div>
-
-            <div className="border-b border-white/8 px-3 py-3">
-              <p className="mb-2 text-[10px] tracking-[0.2em] text-cyan uppercase">Catégories</p>
-              <div className="flex flex-wrap gap-1.5">
-                <CatChip active={category === 'Toutes'} onClick={() => setCategory('Toutes')}>
-                  Toutes
-                </CatChip>
-                {storyCategories.map((c) => (
-                  <CatChip key={c} active={category === c} onClick={() => setCategory(c)}>
-                    {c}
-                  </CatChip>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-2">
-              <p className="px-2 py-1 text-[10px] tracking-wide text-muted uppercase">
-                Questions ({filtered.length})
-              </p>
-              <ul className="space-y-1">
-                {filtered.map((qa) => (
-                  <li key={qa.id}>
-                    <button
-                      type="button"
-                      disabled={typing}
-                      onClick={() => ask(qa)}
-                      className="w-full rounded-xl px-3 py-2.5 text-left text-sm transition hover:bg-white/8 disabled:opacity-50"
-                    >
-                      <span className="block text-[10px] text-cyan">{qa.category}</span>
-                      <span className="line-clamp-2 text-snow/90">{qa.question}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul>
+              {THREADS.map((t) => (
+                <li key={t.id}>
+                  <button
+                    type="button"
+                    onClick={() => setThreadId(t.id)}
+                    className={`flex w-full items-center gap-3 px-4 py-3 text-left transition ${
+                      threadId === t.id ? 'bg-white/8' : 'hover:bg-white/5'
+                    }`}
+                  >
+                    <img
+                      src={site.photo}
+                      alt=""
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium">{t.name}</span>
+                      <span className="block truncate text-xs text-white/45">{t.preview}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <p className="px-4 py-3 text-[11px] leading-relaxed text-white/35">
+              Fils fictifs à but illustratif — pas une vraie messagerie Instagram.
+            </p>
           </aside>
 
-          {/* Chat thread */}
-          <section className="flex min-h-[420px] flex-col bg-void/40">
-            <header className="flex items-center gap-3 border-b border-white/8 px-4 py-3">
-              <img src={site.photo} alt="" className="h-9 w-9 rounded-full object-cover" />
-              <div>
-                <p className="text-sm font-semibold">{site.fullName}</p>
-                <p className="text-xs text-muted">Réponses automatiques · démo</p>
+          {/* Chat */}
+          <section className="flex min-h-[560px] flex-col bg-black">
+            <header className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+              <div className="flex items-center gap-3">
+                <img src={site.photo} alt="" className="h-9 w-9 rounded-full object-cover" />
+                <div>
+                  <p className="text-sm font-semibold leading-tight">{active.name}</p>
+                  <p className="text-[11px] text-white/45">{active.handle}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 text-white/70" aria-hidden>
+                <Phone size={18} />
+                <Video size={18} />
+                <Info size={18} />
               </div>
             </header>
 
-            <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+            <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
+              <p className="mb-2 text-center text-[11px] text-white/35">Aujourd’hui</p>
               <AnimatePresence initial={false}>
                 {messages.map((msg) => (
                   <motion.div
                     key={msg.id}
-                    initial={reduced ? false : { opacity: 0, y: 10 }}
+                    initial={reduced ? false : { opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`max-w-[85%] ${msg.from === 'me' ? 'self-end' : 'self-start'}`}
+                    className={`max-w-[78%] ${msg.from === 'me' ? 'self-end' : 'self-start'}`}
                   >
                     <div
-                      className={`rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                      className={`rounded-[22px] px-3.5 py-2 text-[14px] leading-snug ${
                         msg.from === 'me'
-                          ? 'rounded-br-md bg-gradient-to-br from-electric to-violet text-white'
-                          : 'rounded-bl-md border border-white/10 bg-white/8'
+                          ? 'rounded-br-md bg-[#3797f0] text-white'
+                          : 'rounded-bl-md bg-[#262626] text-white'
                       }`}
                     >
                       {msg.text}
                     </div>
                     <p
-                      className={`mt-1 flex items-center gap-1 text-[10px] text-muted ${
+                      className={`mt-1 flex items-center gap-1 text-[10px] text-white/35 ${
                         msg.from === 'me' ? 'justify-end' : ''
                       }`}
                     >
                       {msg.time}
-                      {msg.from === 'me' ? <CheckCheck size={12} className="text-cyan" /> : null}
+                      {msg.from === 'me' ? <Check size={11} className="text-[#3797f0]" /> : null}
                     </p>
                   </motion.div>
                 ))}
               </AnimatePresence>
-
               {typing ? (
-                <div className="self-start rounded-2xl border border-white/10 bg-white/8 px-4 py-3">
+                <div className="self-start rounded-[22px] rounded-bl-md bg-[#262626] px-4 py-3">
                   <span className="inline-flex gap-1">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.2s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted [animation-delay:-0.1s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/50 [animation-delay:-0.2s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/50 [animation-delay:-0.1s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/50" />
                   </span>
                 </div>
               ) : null}
               <div ref={endRef} />
             </div>
 
-            <div className="border-t border-white/8 px-4 py-3">
-              <p className="flex items-center gap-2 text-xs text-muted">
-                <Send size={14} className="text-cyan" />
-                Sélectionne une question à gauche — pas de saisie libre (réponses préparées, RGPD-friendly).
+            {/* Composer = suggested questions (no free text = controlled answers) */}
+            <div className="border-t border-white/10 bg-[#0a0a0a] px-3 py-3">
+              <div className="mb-2 flex gap-1.5 overflow-x-auto pb-1">
+                <Chip active={category === 'Tous'} onClick={() => setCategory('Tous')}>
+                  Tous
+                </Chip>
+                {storyCategories.map((c) => (
+                  <Chip key={c} active={category === c} onClick={() => setCategory(c)}>
+                    {c}
+                  </Chip>
+                ))}
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {suggestions.map((qa) => (
+                  <button
+                    key={qa.id}
+                    type="button"
+                    disabled={typing}
+                    onClick={() => sendQuestion(qa)}
+                    className="shrink-0 rounded-full border border-[#3797f0]/70 px-3 py-1.5 text-left text-xs text-[#3797f0] transition hover:bg-[#3797f0]/10 disabled:opacity-40"
+                  >
+                    {qa.question}
+                  </button>
+                ))}
+              </div>
+              <p className="mt-2 text-[10px] text-white/30">
+                Questions préparées uniquement (pas de saisie libre) — clair pour le RGPD.
               </p>
             </div>
           </section>
@@ -191,23 +208,21 @@ export function Story() {
   )
 }
 
-function CatChip({
+function Chip({
   active,
   onClick,
   children,
 }: {
   active: boolean
   onClick: () => void
-  children: ReactNode
+  children: string
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-2.5 py-1 text-[11px] transition ${
-        active
-          ? 'bg-gradient-to-r from-electric to-violet text-white'
-          : 'border border-white/15 text-muted hover:text-snow'
+      className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] ${
+        active ? 'bg-white text-black' : 'bg-white/10 text-white/70'
       }`}
     >
       {children}

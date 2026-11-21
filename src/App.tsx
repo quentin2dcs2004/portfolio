@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { NetflixIntro } from '@/components/intro/NetflixIntro'
+import { IntroProvider, useIntro } from '@/components/intro/IntroContext'
 import { CookieBanner } from '@/components/legal/CookieBanner'
 import { Layout } from '@/components/layout/Layout'
-import { useIntroGate } from '@/hooks/useIntroGate'
 import { Home } from '@/pages/Home'
 
 const Apprendre = lazy(() => import('@/pages/Apprendre').then((m) => ({ default: m.Apprendre })))
@@ -28,11 +28,11 @@ function PageFallback() {
   )
 }
 
-export default function App() {
-  const { showIntro, finishIntro } = useIntroGate()
+function AppShell() {
+  const { showIntro, finishIntro } = useIntro()
 
   return (
-    <BrowserRouter>
+    <>
       {showIntro ? <NetflixIntro onDone={finishIntro} /> : null}
       <CookieBanner />
       <Suspense fallback={<PageFallback />}>
@@ -58,6 +58,16 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
+    </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <IntroProvider>
+        <AppShell />
+      </IntroProvider>
     </BrowserRouter>
   )
 }

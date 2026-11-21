@@ -1,168 +1,152 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { PageHero } from '@/components/ui/PageHero'
-import { PageTransition } from '@/components/ui/PageTransition'
 import { LogoQ } from '@/components/brand/LogoQ'
-import { bookPages } from '@/data/site'
+import { PageTransition } from '@/components/ui/PageTransition'
+import { bookSpreads } from '@/data/site'
 
 export function Portfolio() {
   const [index, setIndex] = useState(0)
-  const [flip, setFlip] = useState<'idle' | 'next' | 'prev'>('idle')
-  const page = bookPages[index]
-  const projectPages = useMemo(() => bookPages.filter((p) => p.kind === 'project'), [])
+  const [anim, setAnim] = useState<'idle' | 'next' | 'prev'>('idle')
+  const spread = bookSpreads[index]
+  if (!spread) return null
 
   const go = (next: number, dir: 'next' | 'prev') => {
-    if (flip !== 'idle' || next < 0 || next >= bookPages.length) return
-    setFlip(dir)
+    if (anim !== 'idle' || next < 0 || next >= bookSpreads.length) return
+    setAnim(dir)
     window.setTimeout(() => {
       setIndex(next)
-      setFlip('idle')
-    }, 620)
+      setAnim('idle')
+    }, 700)
   }
 
-  if (!page) return null
+  const opened = spread.kind === 'spread'
 
   return (
     <PageTransition>
-      <div className="page-pad wrap">
-        <PageHero
-          eyebrow="Portfolio"
-          title="Livre créatif"
-          lead="Tourne les pages comme un vrai ouvrage : couverture, sommaire, fiches projet. Emplacements prêts à compléter."
-        />
+      <div className="page-pad wrap !pt-24">
+        <p className="text-xs tracking-[0.28em] text-cyan uppercase">Livre</p>
+        <h1 className="mt-2 font-display text-3xl font-bold md:text-4xl">Portfolio ouvert</h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted">
+          À l’ouverture : double page (photo + texte). Tourne les pages comme un vrai livre.
+        </p>
 
-        <div className="mx-auto max-w-3xl [perspective:1800px]">
+        <div className="mx-auto mt-8 max-w-5xl [perspective:2200px]">
           <div
-            className={`book-stage relative min-h-[460px] origin-left rounded-r-2xl rounded-l-md border border-violet/35 bg-gradient-to-br from-[#0e1230] via-[#0a0e1c] to-[#160a24] p-6 shadow-[0_30px_90px_rgba(139,92,246,0.28)] md:p-10 ${
-              flip === 'next' ? 'is-flip-next' : flip === 'prev' ? 'is-flip-prev' : ''
-            }`}
-            style={{
-              boxShadow:
-                'inset 10px 0 24px rgba(0,0,0,0.4), 0 30px 90px rgba(139, 92, 246, 0.25)',
-            }}
+            className={`book relative min-h-[420px] rounded-md border border-white/10 bg-[#120b1f] p-3 shadow-[0_40px_100px_rgba(88,28,135,0.35)] md:min-h-[480px] md:p-4 ${
+              anim === 'next' ? 'flip-next' : anim === 'prev' ? 'flip-prev' : ''
+            } ${opened ? 'is-open' : 'is-cover'}`}
           >
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-black/55 to-transparent" />
-            <div className="book-page relative z-[1]">
-              {page.kind === 'cover' ? (
-                <div className="flex min-h-[360px] flex-col items-center justify-center text-center">
-                  <LogoQ size={72} />
-                  <h2 className="mt-6 font-display text-3xl font-bold md:text-4xl">{page.title}</h2>
-                  <p className="mt-3 tracking-[0.22em] text-cyan uppercase">{page.body}</p>
-                </div>
-              ) : null}
-
-              {page.kind === 'toc' ? (
+            {!opened ? (
+              <div className="grid min-h-[380px] place-items-center rounded bg-gradient-to-br from-[#1a1030] to-[#0a0614] text-center md:min-h-[440px]">
                 <div>
-                  <h2 className="font-display text-2xl font-bold">{page.title}</h2>
-                  <ol className="mt-6 space-y-3">
-                    {projectPages.map((p, i) => (
-                      <li key={p.id}>
-                        <button
-                          type="button"
-                          className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm hover:border-cyan/40"
-                          onClick={() => go(bookPages.findIndex((b) => b.id === p.id), 'next')}
-                        >
-                          <span>
-                            {i + 1}. {p.title}
-                          </span>
-                          <span className="text-muted">p.{i + 3}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
+                  <LogoQ size={80} className="mx-auto" />
+                  <h2 className="mt-6 font-display text-3xl font-bold">{spread.title}</h2>
+                  <p className="mt-2 tracking-[0.25em] text-cyan uppercase">{spread.subtitle}</p>
+                  {index === 0 ? (
+                    <button
+                      type="button"
+                      className="mt-8 rounded-full border border-white/30 px-5 py-2 text-sm"
+                      onClick={() => go(1, 'next')}
+                    >
+                      Ouvrir le livre
+                    </button>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
+            ) : (
+              <div className="grid min-h-[380px] grid-cols-1 gap-3 md:min-h-[440px] md:grid-cols-2 md:gap-0">
+                {/* Left page */}
+                <article className="relative rounded-l-sm bg-[#f4efe6] p-5 text-[#1a1424] md:rounded-none md:border-r md:border-[#d6cbb8] md:p-7">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-black/10 to-transparent" />
+                  {spread.left.image ? (
+                    <img
+                      src={spread.left.image}
+                      alt={spread.left.caption ?? ''}
+                      className="mb-4 aspect-[4/3] w-full rounded-sm object-cover shadow"
+                    />
+                  ) : null}
+                  <h2 className="font-display text-xl font-bold">{spread.left.title}</h2>
+                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-[#3a3348]">
+                    {spread.left.text}
+                  </p>
+                  {spread.left.caption ? (
+                    <p className="mt-3 text-xs text-[#6b6478] italic">{spread.left.caption}</p>
+                  ) : null}
+                </article>
 
-              {page.kind === 'project' ? (
-                <div>
-                  <p className="text-xs tracking-wide text-cyan uppercase">{page.date}</p>
-                  <h2 className="mt-2 font-display text-2xl font-bold md:text-3xl">{page.title}</h2>
-                  <dl className="mt-6 grid gap-4 text-sm md:grid-cols-2">
-                    <div className="rounded-xl border border-white/8 bg-void/30 p-4">
-                      <dt className="text-muted">Logiciels</dt>
-                      <dd className="mt-1 text-snow">{page.softwares}</dd>
-                    </div>
-                    <div className="rounded-xl border border-white/8 bg-void/30 p-4">
-                      <dt className="text-muted">Objectifs</dt>
-                      <dd className="mt-1 text-snow">{page.objectives}</dd>
-                    </div>
-                    <div className="rounded-xl border border-white/8 bg-void/30 p-4">
-                      <dt className="text-muted">Difficultés</dt>
-                      <dd className="mt-1 text-snow">{page.challenges}</dd>
-                    </div>
-                    <div className="rounded-xl border border-white/8 bg-void/30 p-4">
-                      <dt className="text-muted">Résultat</dt>
-                      <dd className="mt-1 text-snow">{page.result}</dd>
-                    </div>
-                  </dl>
-                </div>
-              ) : null}
-            </div>
+                {/* Right page */}
+                <article className="relative rounded-r-sm bg-[#f7f2ea] p-5 text-[#1a1424] md:rounded-none md:p-7">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-black/10 to-transparent" />
+                  {spread.right.image ? (
+                    <img
+                      src={spread.right.image}
+                      alt={spread.right.caption ?? ''}
+                      className="mb-4 aspect-[4/3] w-full rounded-sm object-cover shadow"
+                    />
+                  ) : null}
+                  <h2 className="font-display text-xl font-bold">{spread.right.title}</h2>
+                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-[#3a3348]">
+                    {spread.right.text}
+                  </p>
+                  {spread.right.caption ? (
+                    <p className="mt-3 text-xs text-[#6b6478] italic">{spread.right.caption}</p>
+                  ) : null}
+                </article>
+              </div>
+            )}
 
-            <div className="book-sheet" aria-hidden />
-            <p className="absolute right-5 bottom-4 text-xs text-muted">
-              {index + 1} / {bookPages.length}
+            <div className="page-curl" aria-hidden />
+            <p className="mt-2 text-center text-xs text-white/45">
+              {index + 1} / {bookSpreads.length}
             </p>
           </div>
 
-          <div className="mt-6 flex items-center justify-between gap-3">
+          <div className="mt-5 flex justify-between">
             <button
               type="button"
+              disabled={index === 0 || anim !== 'idle'}
               onClick={() => go(index - 1, 'prev')}
-              disabled={index === 0 || flip !== 'idle'}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2 text-sm disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm disabled:opacity-35"
             >
-              <ChevronLeft size={16} /> Précédent
+              <ChevronLeft size={16} /> Page précédente
             </button>
             <button
               type="button"
+              disabled={index >= bookSpreads.length - 1 || anim !== 'idle'}
               onClick={() => go(index + 1, 'next')}
-              disabled={index >= bookPages.length - 1 || flip !== 'idle'}
-              className="inline-flex items-center gap-2 rounded-xl border border-cyan/40 bg-cyan/10 px-4 py-2 text-sm text-cyan disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-full border border-cyan/40 bg-cyan/10 px-4 py-2 text-sm text-cyan disabled:opacity-35"
             >
-              Suivant <ChevronRight size={16} />
+              Page suivante <ChevronRight size={16} />
             </button>
           </div>
         </div>
       </div>
 
       <style>{`
-        .book-stage { transform-style: preserve-3d; }
-        .book-sheet {
+        .book { transform-style: preserve-3d; }
+        .page-curl {
           pointer-events: none;
           position: absolute;
           inset: 0;
           border-radius: inherit;
-          background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent 40%);
+          background: linear-gradient(90deg, transparent 55%, rgba(255,255,255,0.08));
           transform-origin: left center;
           opacity: 0;
         }
-        .book-stage.is-flip-next .book-sheet {
-          animation: pageNext 0.62s ease-in-out;
+        .book.flip-next .page-curl { animation: curlNext 0.7s ease-in-out; }
+        .book.flip-prev .page-curl { animation: curlPrev 0.7s ease-in-out; }
+        @keyframes curlNext {
+          0% { opacity: 0.15; transform: rotateY(0); }
+          50% { opacity: 0.7; }
+          100% { opacity: 0; transform: rotateY(-160deg); }
         }
-        .book-stage.is-flip-prev .book-sheet {
-          animation: pagePrev 0.62s ease-in-out;
-        }
-        .book-stage.is-flip-next .book-page,
-        .book-stage.is-flip-prev .book-page {
-          animation: pageFade 0.62s ease-in-out;
-        }
-        @keyframes pageNext {
-          0% { opacity: 0.2; transform: rotateY(0deg); }
-          45% { opacity: 0.85; }
-          100% { opacity: 0; transform: rotateY(-165deg); }
-        }
-        @keyframes pagePrev {
-          0% { opacity: 0.2; transform: rotateY(-165deg); }
-          45% { opacity: 0.85; }
-          100% { opacity: 0; transform: rotateY(0deg); }
-        }
-        @keyframes pageFade {
-          0%, 100% { opacity: 1; }
-          45% { opacity: 0.25; }
+        @keyframes curlPrev {
+          0% { opacity: 0.15; transform: rotateY(-160deg); }
+          50% { opacity: 0.7; }
+          100% { opacity: 0; transform: rotateY(0); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .book-sheet, .book-page { animation: none !important; }
+          .page-curl { animation: none !important; }
         }
       `}</style>
     </PageTransition>

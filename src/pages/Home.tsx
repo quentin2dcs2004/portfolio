@@ -6,6 +6,7 @@ import { ChevronDown } from 'lucide-react'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { TypewriterRoles } from '@/components/ui/TypewriterRoles'
+import { useIntro } from '@/components/intro/IntroContext'
 import { useGsapReveal } from '@/hooks/useGsapReveal'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { site, skills, projects } from '@/data/site'
@@ -17,6 +18,7 @@ const GalaxyScene = lazy(() =>
 export function Home() {
   useGsapReveal()
   const reduced = usePrefersReducedMotion()
+  const { replayIntro } = useIntro()
   const portraitRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -59,9 +61,9 @@ export function Home() {
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-3 text-xs tracking-[0.3em] text-cyan uppercase"
+              className="mb-3 text-xs tracking-[0.3em] text-white/60 uppercase"
             >
-              Univers créatif · Three.js
+              Create your own universe
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
@@ -89,17 +91,24 @@ export function Home() {
               className="mt-8 flex flex-wrap gap-3"
             >
               <Link
-                to="/apprendre"
-                className="btn-neon rounded-xl bg-gradient-to-r from-electric to-violet px-5 py-3 text-sm font-semibold text-white"
-              >
-                Découvrir mon univers
-              </Link>
-              <Link
                 to="/projets"
-                className="rounded-xl border border-cyan/35 bg-white/5 px-5 py-3 text-sm font-semibold text-cyan backdrop-blur transition hover:border-cyan/60 hover:bg-white/10 hover:shadow-[0_0_24px_rgba(0,229,255,0.25)]"
+                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:scale-[1.02]"
               >
                 Voir mes projets
               </Link>
+              <Link
+                to="/story"
+                className="rounded-full border border-white/35 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Ouvrir la Story
+              </Link>
+              <button
+                type="button"
+                onClick={replayIntro}
+                className="rounded-full border border-white/20 px-4 py-3 text-xs tracking-wide text-white/70 hover:text-white"
+              >
+                Revoir l’intro
+              </button>
             </motion.div>
           </div>
 

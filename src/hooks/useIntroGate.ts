@@ -2,14 +2,28 @@ import { useCallback, useState } from 'react'
 
 const KEY = 'quentin-intro-seen'
 
+function readSeen() {
+  try {
+    return sessionStorage.getItem(KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
 export function useIntroGate() {
+  // Show intro until skipped/finished this session. Force with ?intro=1
   const [showIntro, setShowIntro] = useState(() => {
-    if (typeof window === 'undefined') return false
+    if (typeof window === 'undefined') return true
     try {
-      return sessionStorage.getItem(KEY) !== '1'
+      const force = new URLSearchParams(window.location.search).get('intro') === '1'
+      if (force) {
+        sessionStorage.removeItem(KEY)
+        return true
+      }
     } catch {
-      return true
+      /* ignore */
     }
+    return !readSeen()
   })
 
   const finishIntro = useCallback(() => {
@@ -21,5 +35,14 @@ export function useIntroGate() {
     setShowIntro(false)
   }, [])
 
-  return { showIntro, finishIntro }
+  const replayIntro = useCallback(() => {
+    try {
+      sessionStorage.removeItem(KEY)
+    } catch {
+      /* ignore */
+    }
+    setShowIntro(true)
+  }, [])
+
+  return { showIntro, finishIntro, replayIntro }
 }
