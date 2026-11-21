@@ -7,8 +7,8 @@ import { bookSpreads } from '@/data/site'
 export function Portfolio() {
   const [index, setIndex] = useState(0)
   const [anim, setAnim] = useState<'idle' | 'next' | 'prev'>('idle')
-  const spread = bookSpreads[index]
-  if (!spread) return null
+  const safeIndex = Math.min(index, bookSpreads.length - 1)
+  const spread = bookSpreads[safeIndex] ?? bookSpreads[0]!
 
   const go = (next: number, dir: 'next' | 'prev') => {
     if (anim !== 'idle' || next < 0 || next >= bookSpreads.length) return

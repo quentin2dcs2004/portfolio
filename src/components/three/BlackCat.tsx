@@ -1,16 +1,16 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, type MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
-import type { MutableRefObject } from 'react'
 import * as THREE from 'three'
 
 type Props = {
-  position: MutableRefObject<THREE.Vector3>
-  facing: MutableRefObject<number>
-  walking: MutableRefObject<boolean>
+  /** Avoid R3F reserved prop name `position`. */
+  posRef: MutableRefObject<THREE.Vector3>
+  facingRef: MutableRefObject<number>
+  walkingRef: MutableRefObject<boolean>
 }
 
 /** Simple stylized black cat (procedural meshes). */
-export function BlackCat({ position, facing, walking }: Props) {
+export function BlackCat({ posRef, facingRef, walkingRef }: Props) {
   const group = useRef<THREE.Group>(null)
   const tail = useRef<THREE.Mesh>(null)
   const mat = useMemo(
@@ -36,12 +36,14 @@ export function BlackCat({ position, facing, walking }: Props) {
 
   useFrame((state) => {
     const g = group.current
-    if (!g) return
-    g.position.copy(position.current)
-    g.position.y = 0.28 + (walking.current ? Math.sin(state.clock.elapsedTime * 12) * 0.03 : 0)
-    g.rotation.y = facing.current
+    const p = posRef.current
+    if (!g || !p) return
+    g.position.copy(p)
+    g.position.y = 0.28 + (walkingRef.current ? Math.sin(state.clock.elapsedTime * 12) * 0.03 : 0)
+    g.rotation.y = facingRef.current
     if (tail.current) {
-      tail.current.rotation.z = Math.sin(state.clock.elapsedTime * (walking.current ? 8 : 2)) * 0.35
+      tail.current.rotation.z =
+        Math.sin(state.clock.elapsedTime * (walkingRef.current ? 8 : 2)) * 0.35
     }
   })
 

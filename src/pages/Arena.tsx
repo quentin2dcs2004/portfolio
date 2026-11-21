@@ -176,7 +176,7 @@ function GameWorld({
         />
       </points>
 
-      <BlackCat position={pos} facing={facing} walking={walking} />
+      <BlackCat posRef={pos} facingRef={facing} walkingRef={walking} />
     </>
   )
 }

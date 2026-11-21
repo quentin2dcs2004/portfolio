@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { NetflixIntro } from '@/components/intro/NetflixIntro'
 import { IntroProvider, useIntro } from '@/components/intro/IntroContext'
 import { CookieBanner } from '@/components/legal/CookieBanner'
@@ -35,29 +36,45 @@ function AppShell() {
     <>
       {showIntro ? <NetflixIntro onDone={finishIntro} /> : null}
       <CookieBanner />
-      <Suspense fallback={<PageFallback />}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="apprendre" element={<Apprendre />} />
-            <Route path="story" element={<Story />} />
-            <Route path="projets" element={<Projets />} />
-            <Route path="portfolio" element={<Portfolio />} />
-            <Route path="arena" element={<Arena />} />
-            <Route path="materiel" element={<Materiel />} />
-            <Route path="parcours" element={<Parcours />} />
-            <Route path="passions" element={<Passions />} />
-            <Route path="laboratoire" element={<Laboratoire />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="mentions-legales" element={<LegalPage kind="mentions" />} />
-            <Route path="confidentialite" element={<LegalPage kind="privacy" />} />
-            <Route path="cookies" element={<LegalPage kind="cookies" />} />
-            <Route path="competences" element={<Navigate to="/apprendre" replace />} />
-            <Route path="a-propos" element={<Navigate to="/parcours" replace />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Suspense>
+      <ErrorBoundary label="application">
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="apprendre" element={<Apprendre />} />
+              <Route path="story" element={<Story />} />
+              <Route
+                path="projets"
+                element={
+                  <ErrorBoundary label="projets">
+                    <Projets />
+                  </ErrorBoundary>
+                }
+              />
+              <Route path="portfolio" element={<Portfolio />} />
+              <Route
+                path="arena"
+                element={
+                  <ErrorBoundary label="jeu">
+                    <Arena />
+                  </ErrorBoundary>
+                }
+              />
+              <Route path="materiel" element={<Materiel />} />
+              <Route path="parcours" element={<Parcours />} />
+              <Route path="passions" element={<Passions />} />
+              <Route path="laboratoire" element={<Laboratoire />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="mentions-legales" element={<LegalPage kind="mentions" />} />
+              <Route path="confidentialite" element={<LegalPage kind="privacy" />} />
+              <Route path="cookies" element={<LegalPage kind="cookies" />} />
+              <Route path="competences" element={<Navigate to="/apprendre" replace />} />
+              <Route path="a-propos" element={<Navigate to="/parcours" replace />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </>
   )
 }
